@@ -3,211 +3,562 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Karol — Developer Portfolio</title>
-  <meta name="description" content="Software developer crafting clean, fast, thoughtful products." />
+  <title>Karol — Software Developer</title>
+  <meta name="description" content="Software developer specialising in fast, thoughtful products. Available for freelance and full-time opportunities." />
+  <meta name="author" content="Karol" />
+
+  <!-- Open Graph -->
+  <meta property="og:title"       content="Karol — Software Developer" />
+  <meta property="og:description" content="Software developer specialising in fast, thoughtful products." />
+  <meta property="og:type"        content="website" />
+  <meta property="og:image"       content="og-image.png" />
+
+  <!-- Twitter card -->
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:title"       content="Karol — Software Developer" />
+  <meta name="twitter:description" content="Software developer specialising in fast, thoughtful products." />
+
+  <!-- Favicon -->
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Lora:ital@0;1&display=swap" rel="stylesheet" />
+
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
+  <!-- ─── SKIP LINK ────────────────────────────────────────── -->
+  <a href="#main" class="skip-link">Skip to content</a>
+
   <!-- ─── NAV ─────────────────────────────────────────────── -->
-  <nav class="nav">
-    <span class="nav-logo paper-tag">K.</span>
-    <ul class="nav-links">
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </nav>
-
-  <!-- ─── HERO ─────────────────────────────────────────────── -->
-  <section class="hero" id="hero">
-
-    <!-- Layered papercraft landscape -->
-    <div class="paper-world" aria-hidden="true">
-      <div class="layer layer-sky"></div>
-      <div class="layer layer-mountains"></div>
-      <div class="layer layer-hills-back"></div>
-      <div class="layer layer-hills-mid"></div>
-      <div class="layer layer-hills-front"></div>
-      <div class="layer layer-ground"></div>
-
-      <!-- Floating paper widgets -->
-      <div class="paper-widget widget-code js-tilt">
-        <span class="widget-label">const dev = true</span>
-      </div>
-      <div class="paper-widget widget-star js-tilt">
-        <span class="widget-icon">★</span>
-        <span class="widget-label">4.9k</span>
-      </div>
-      <div class="paper-widget widget-tag js-tilt">
-        <span class="widget-label">open&nbsp;source</span>
-      </div>
+  <header class="site-header" role="banner">
+    <nav class="nav" aria-label="Main navigation">
+      <a href="#hero" class="nav-logo" aria-label="Home">
+        <span class="nav-logo-mark">K</span>
+        <span class="nav-logo-dot"></span>
+      </a>
+      <ul class="nav-links" role="list">
+        <li><a href="#work"    class="nav-link">Work</a></li>
+        <li><a href="#process" class="nav-link">Process</a></li>
+        <li><a href="#about"   class="nav-link">About</a></li>
+        <li><a href="#contact" class="nav-link btn-nav">Let's talk</a></li>
+      </ul>
+      <button class="nav-burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+    <div class="mobile-menu" id="mobile-menu" hidden>
+      <ul role="list">
+        <li><a href="#work"    class="mobile-link">Work</a></li>
+        <li><a href="#process" class="mobile-link">Process</a></li>
+        <li><a href="#about"   class="mobile-link">About</a></li>
+        <li><a href="#contact" class="mobile-link">Let's talk</a></li>
+      </ul>
     </div>
+  </header>
 
-    <!-- Hero copy -->
-    <div class="hero-copy">
-      <h1 class="hero-title">
-        <span class="line">Building things</span>
-        <span class="line accent">that matter.</span>
-      </h1>
-      <p class="hero-sub">
-        Software developer. I ship fast, readable code and obsess over the details that make products feel alive.
-      </p>
-      <a href="#projects" class="btn btn-primary paper-btn">See my work</a>
-    </div>
+  <!-- ─── MAIN ─────────────────────────────────────────────── -->
+  <main id="main">
 
-  </section>
+    <!-- ── HERO ──────────────────────────────────────────────── -->
+    <section class="hero" id="hero" aria-labelledby="hero-heading">
 
-  <!-- ─── PROJECTS ─────────────────────────────────────────── -->
-  <section class="section projects" id="projects">
-    <div class="container">
-      <h2 class="section-title">
-        <span class="title-tape">Projects</span>
-      </h2>
+      <!-- Paper world scene -->
+      <div class="paper-world" aria-hidden="true">
 
-      <div class="project-grid">
-
-        <article class="project-card js-tilt" data-tilt-max="8">
-          <div class="card-fold"></div>
-          <header class="card-header">
-            <span class="card-label">Web App</span>
-            <div class="card-dots"><span></span><span></span><span></span></div>
-          </header>
-          <h3 class="card-title">Project Alpha</h3>
-          <p class="card-desc">A blazing-fast task manager with offline sync. Built with vanilla JS and a service worker.</p>
-          <footer class="card-footer">
-            <div class="card-tags">
-              <span class="tag">JavaScript</span>
-              <span class="tag">PWA</span>
-            </div>
-            <a href="#" class="card-link" aria-label="View Project Alpha">↗</a>
-          </footer>
-        </article>
-
-        <article class="project-card js-tilt" data-tilt-max="8">
-          <div class="card-fold"></div>
-          <header class="card-header">
-            <span class="card-label">CLI Tool</span>
-            <div class="card-dots"><span></span><span></span><span></span></div>
-          </header>
-          <h3 class="card-title">PaperCLI</h3>
-          <p class="card-desc">A zero-dep command-line scaffold generator. 12k weekly installs on npm.</p>
-          <footer class="card-footer">
-            <div class="card-tags">
-              <span class="tag">Node.js</span>
-              <span class="tag">Open Source</span>
-            </div>
-            <a href="#" class="card-link" aria-label="View PaperCLI">↗</a>
-          </footer>
-        </article>
-
-        <article class="project-card js-tilt" data-tilt-max="8">
-          <div class="card-fold"></div>
-          <header class="card-header">
-            <span class="card-label">API</span>
-            <div class="card-dots"><span></span><span></span><span></span></div>
-          </header>
-          <h3 class="card-title">Foldline API</h3>
-          <p class="card-desc">RESTful + GraphQL API serving 1M+ requests/day. Sub-20ms p99 latency.</p>
-          <footer class="card-footer">
-            <div class="card-tags">
-              <span class="tag">Go</span>
-              <span class="tag">GraphQL</span>
-            </div>
-            <a href="#" class="card-link" aria-label="View Foldline API">↗</a>
-          </footer>
-        </article>
-
-        <article class="project-card js-tilt" data-tilt-max="8">
-          <div class="card-fold"></div>
-          <header class="card-header">
-            <span class="card-label">Design System</span>
-            <div class="card-dots"><span></span><span></span><span></span></div>
-          </header>
-          <h3 class="card-title">CraftUI</h3>
-          <p class="card-desc">Accessible component library with 60+ components and first-class TypeScript support.</p>
-          <footer class="card-footer">
-            <div class="card-tags">
-              <span class="tag">TypeScript</span>
-              <span class="tag">React</span>
-            </div>
-            <a href="#" class="card-link" aria-label="View CraftUI">↗</a>
-          </footer>
-        </article>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── ABOUT ─────────────────────────────────────────────── -->
-  <section class="section about" id="about">
-    <div class="container about-inner">
-
-      <div class="about-card js-tilt" data-tilt-max="5">
-        <div class="card-fold"></div>
-        <div class="about-photo-wrap">
-          <div class="about-photo" aria-label="Photo placeholder">K</div>
+        <!-- Sky + sun -->
+        <div class="layer layer-sky"></div>
+        <div class="sun">
+          <div class="sun-ring"></div>
+          <div class="sun-ring sun-ring--2"></div>
         </div>
-        <div class="about-bio">
-          <h2 class="about-name">Hi, I'm Karol.</h2>
-          <p>Full-stack developer with a thing for performance, clean APIs, and UIs that feel physical. 5+ years shipping production software.</p>
-          <p>When I'm not coding I'm usually cycling, brewing espresso, or staring at CSS transitions for too long.</p>
-          <div class="about-skills">
-            <span class="skill-chip">TypeScript</span>
-            <span class="skill-chip">Go</span>
-            <span class="skill-chip">React</span>
-            <span class="skill-chip">Node.js</span>
-            <span class="skill-chip">Postgres</span>
-            <span class="skill-chip">CSS</span>
+
+        <!-- Clouds -->
+        <div class="cloud cloud-1"></div>
+        <div class="cloud cloud-2"></div>
+        <div class="cloud cloud-3"></div>
+
+        <!-- Mountain layers -->
+        <div class="layer layer-mountains"></div>
+        <div class="layer layer-hills-back"></div>
+        <div class="layer layer-hills-mid"></div>
+        <div class="layer layer-hills-front"></div>
+        <div class="layer layer-ground"></div>
+
+        <!-- Paper trees -->
+        <div class="tree tree-1" aria-hidden="true">
+          <div class="tree-top"></div>
+          <div class="tree-trunk"></div>
+        </div>
+        <div class="tree tree-2" aria-hidden="true">
+          <div class="tree-top"></div>
+          <div class="tree-trunk"></div>
+        </div>
+        <div class="tree tree-3" aria-hidden="true">
+          <div class="tree-top"></div>
+          <div class="tree-trunk"></div>
+        </div>
+
+        <!-- Paper crane (SVG, inline) -->
+        <div class="crane-wrap js-tilt" data-tilt-max="6">
+          <svg class="crane" viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Paper crane">
+            <!-- Body -->
+            <polygon points="60,10 100,70 60,55 20,70" fill="#e8412a" stroke="#1a1510" stroke-width="1.5" stroke-linejoin="round"/>
+            <!-- Left wing -->
+            <polygon points="20,70 60,55 10,90" fill="#f5c842" stroke="#1a1510" stroke-width="1.5" stroke-linejoin="round"/>
+            <!-- Right wing -->
+            <polygon points="100,70 60,55 110,90" fill="#f5c842" stroke="#1a1510" stroke-width="1.5" stroke-linejoin="round"/>
+            <!-- Head -->
+            <polygon points="60,10 75,30 60,38 45,30" fill="#e8412a" stroke="#1a1510" stroke-width="1.5" stroke-linejoin="round"/>
+            <!-- Tail -->
+            <polygon points="60,55 80,80 60,75 40,80" fill="#c9bfaf" stroke="#1a1510" stroke-width="1.5" stroke-linejoin="round"/>
+            <!-- Fold lines -->
+            <line x1="60" y1="10" x2="60" y2="75" stroke="#1a1510" stroke-width="0.8" stroke-dasharray="3,3" opacity="0.5"/>
+          </svg>
+        </div>
+
+        <!-- Floating sticky-note widgets -->
+        <div class="sticky sticky-1 js-tilt" data-tilt-max="5">
+          <span class="sticky-line sticky-line--accent">console.log(</span>
+          <span class="sticky-line">&nbsp;&nbsp;"hello world"</span>
+          <span class="sticky-line sticky-line--accent">)</span>
+        </div>
+
+        <div class="sticky sticky-2 js-tilt" data-tilt-max="5">
+          <span class="sticky-emoji">★</span>
+          <span class="sticky-text">4.9k stars</span>
+        </div>
+
+        <div class="sticky sticky-3 js-tilt" data-tilt-max="5">
+          <span class="sticky-badge">open source</span>
+        </div>
+
+        <div class="sticky sticky-4 js-tilt" data-tilt-max="5">
+          <span class="sticky-text">~12ms p99</span>
+          <div class="sticky-bar-wrap">
+            <div class="sticky-bar" style="--w:92%"></div>
           </div>
         </div>
+
+      </div><!-- /paper-world -->
+
+      <!-- Hero copy -->
+      <div class="hero-copy">
+        <p class="hero-eyebrow">
+          <span class="eyebrow-dot"></span>
+          Available for work
+        </p>
+        <h1 class="hero-title" id="hero-heading">
+          <span class="line">I build things</span>
+          <span class="line hero-title--accent">people love to use.</span>
+        </h1>
+        <p class="hero-sub">
+          Software developer with 5+ years turning complex problems into clean, fast, memorable products.
+          Currently open to freelance and full-time roles.
+        </p>
+        <div class="hero-actions">
+          <a href="#work" class="btn btn-primary">See my work</a>
+          <a href="#contact" class="btn btn-ghost">Get in touch</a>
+        </div>
       </div>
 
-      <!-- Stats strip -->
-      <div class="stats-strip">
-        <div class="stat-item paper-tag">
-          <span class="stat-num">5+</span>
-          <span class="stat-label">years exp.</span>
-        </div>
-        <div class="stat-item paper-tag">
-          <span class="stat-num">40+</span>
-          <span class="stat-label">projects shipped</span>
-        </div>
-        <div class="stat-item paper-tag">
-          <span class="stat-num">∞</span>
-          <span class="stat-label">espressos</span>
-        </div>
+      <!-- Scroll cue -->
+      <div class="scroll-cue" aria-hidden="true">
+        <div class="scroll-cue-line"></div>
+        <span>scroll</span>
       </div>
 
+    </section>
+
+    <!-- ── MARQUEE STRIP ──────────────────────────────────────── -->
+    <div class="marquee-section" aria-hidden="true">
+      <div class="marquee-track">
+        <div class="marquee-content">
+          <span>TypeScript</span><span class="marquee-dot">◆</span>
+          <span>Go</span><span class="marquee-dot">◆</span>
+          <span>React</span><span class="marquee-dot">◆</span>
+          <span>Node.js</span><span class="marquee-dot">◆</span>
+          <span>Postgres</span><span class="marquee-dot">◆</span>
+          <span>GraphQL</span><span class="marquee-dot">◆</span>
+          <span>Docker</span><span class="marquee-dot">◆</span>
+          <span>CSS</span><span class="marquee-dot">◆</span>
+          <span>Rust</span><span class="marquee-dot">◆</span>
+          <span>Redis</span><span class="marquee-dot">◆</span>
+        </div>
+        <!-- Duplicated for seamless loop -->
+        <div class="marquee-content" aria-hidden="true">
+          <span>TypeScript</span><span class="marquee-dot">◆</span>
+          <span>Go</span><span class="marquee-dot">◆</span>
+          <span>React</span><span class="marquee-dot">◆</span>
+          <span>Node.js</span><span class="marquee-dot">◆</span>
+          <span>Postgres</span><span class="marquee-dot">◆</span>
+          <span>GraphQL</span><span class="marquee-dot">◆</span>
+          <span>Docker</span><span class="marquee-dot">◆</span>
+          <span>CSS</span><span class="marquee-dot">◆</span>
+          <span>Rust</span><span class="marquee-dot">◆</span>
+          <span>Redis</span><span class="marquee-dot">◆</span>
+        </div>
+      </div>
     </div>
-  </section>
 
-  <!-- ─── CONTACT ──────────────────────────────────────────── -->
-  <section class="section contact" id="contact">
-    <div class="container contact-inner">
-      <div class="contact-paper js-tilt" data-tilt-max="4">
-        <div class="card-fold"></div>
-        <h2 class="contact-title">Let's build something.</h2>
-        <p class="contact-sub">Open to freelance, full-time, and interesting side projects.</p>
-        <a href="mailto:hello@karol.dev" class="btn btn-primary paper-btn">Say hello ✉</a>
-        <div class="contact-links">
-          <a href="https://github.com" target="_blank" rel="noopener" class="contact-icon-link">GitHub</a>
-          <span class="separator">·</span>
-          <a href="https://linkedin.com" target="_blank" rel="noopener" class="contact-icon-link">LinkedIn</a>
-          <span class="separator">·</span>
-          <a href="https://twitter.com" target="_blank" rel="noopener" class="contact-icon-link">Twitter</a>
+    <!-- ── WORK / PROJECTS ────────────────────────────────────── -->
+    <section class="section" id="work" aria-labelledby="work-heading">
+      <div class="container">
+        <header class="section-header reveal">
+          <p class="section-eyebrow">Selected work</p>
+          <h2 class="section-title" id="work-heading">
+            <span class="title-highlight">Projects</span> that shipped.
+          </h2>
+          <p class="section-sub">A sample of things I've built — from side projects to production systems.</p>
+        </header>
+
+        <div class="project-grid">
+
+          <article class="project-card reveal js-tilt" data-tilt-max="6"
+                   data-project="alpha"
+                   role="button" tabindex="0" aria-label="View Project Alpha case study">
+            <div class="card-tape card-tape--red"></div>
+            <div class="card-fold"></div>
+            <header class="card-header">
+              <span class="card-label">Web App</span>
+              <div class="card-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+            </header>
+            <h3 class="card-title">Task&nbsp;Flow</h3>
+            <p class="card-desc">
+              A keyboard-first task manager with real-time sync, offline mode, and a radically minimal UI.
+              Built without a framework — 14 KB gzipped.
+            </p>
+            <div class="card-metrics">
+              <div class="metric"><span class="metric-val">14 KB</span><span class="metric-label">bundle</span></div>
+              <div class="metric"><span class="metric-val">100</span><span class="metric-label">Lighthouse</span></div>
+              <div class="metric"><span class="metric-val">8 k</span><span class="metric-label">users</span></div>
+            </div>
+            <footer class="card-footer">
+              <div class="card-tags">
+                <span class="tag">JavaScript</span>
+                <span class="tag">Service Worker</span>
+                <span class="tag">IndexedDB</span>
+              </div>
+              <span class="card-cta">Read more <span aria-hidden="true">↗</span></span>
+            </footer>
+          </article>
+
+          <article class="project-card reveal js-tilt" data-tilt-max="6"
+                   data-project="papercli"
+                   role="button" tabindex="0" aria-label="View PaperCLI case study">
+            <div class="card-tape card-tape--yellow"></div>
+            <div class="card-fold"></div>
+            <header class="card-header">
+              <span class="card-label">CLI / npm</span>
+              <div class="card-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+            </header>
+            <h3 class="card-title">PaperCLI</h3>
+            <p class="card-desc">
+              Zero-dependency project scaffolding tool with opinionated defaults. Ships your first commit in seconds, not minutes.
+            </p>
+            <div class="card-metrics">
+              <div class="metric"><span class="metric-val">12 k</span><span class="metric-label">weekly installs</span></div>
+              <div class="metric"><span class="metric-val">0</span><span class="metric-label">deps</span></div>
+              <div class="metric"><span class="metric-val">98%</span><span class="metric-label">satisfaction</span></div>
+            </div>
+            <footer class="card-footer">
+              <div class="card-tags">
+                <span class="tag">Node.js</span>
+                <span class="tag">Open Source</span>
+              </div>
+              <span class="card-cta">Read more <span aria-hidden="true">↗</span></span>
+            </footer>
+          </article>
+
+          <article class="project-card reveal js-tilt" data-tilt-max="6"
+                   data-project="foldline"
+                   role="button" tabindex="0" aria-label="View Foldline API case study">
+            <div class="card-tape card-tape--green"></div>
+            <div class="card-fold"></div>
+            <header class="card-header">
+              <span class="card-label">Backend / API</span>
+              <div class="card-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+            </header>
+            <h3 class="card-title">Foldline API</h3>
+            <p class="card-desc">
+              High-throughput REST + GraphQL API serving a document-heavy SaaS. Built for sub-20 ms p99 with zero cold starts.
+            </p>
+            <div class="card-metrics">
+              <div class="metric"><span class="metric-val">1 M+</span><span class="metric-label">req / day</span></div>
+              <div class="metric"><span class="metric-val">18 ms</span><span class="metric-label">p99</span></div>
+              <div class="metric"><span class="metric-val">99.98%</span><span class="metric-label">uptime</span></div>
+            </div>
+            <footer class="card-footer">
+              <div class="card-tags">
+                <span class="tag">Go</span>
+                <span class="tag">GraphQL</span>
+                <span class="tag">Postgres</span>
+              </div>
+              <span class="card-cta">Read more <span aria-hidden="true">↗</span></span>
+            </footer>
+          </article>
+
+          <article class="project-card reveal js-tilt" data-tilt-max="6"
+                   data-project="craftui"
+                   role="button" tabindex="0" aria-label="View CraftUI case study">
+            <div class="card-tape card-tape--blue"></div>
+            <div class="card-fold"></div>
+            <header class="card-header">
+              <span class="card-label">Design System</span>
+              <div class="card-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+            </header>
+            <h3 class="card-title">CraftUI</h3>
+            <p class="card-desc">
+              Accessible, headless component library. Every component ships with full ARIA support, keyboard navigation, and TypeScript types.
+            </p>
+            <div class="card-metrics">
+              <div class="metric"><span class="metric-val">60+</span><span class="metric-label">components</span></div>
+              <div class="metric"><span class="metric-val">AA</span><span class="metric-label">WCAG 2.1</span></div>
+              <div class="metric"><span class="metric-val">2.1 k</span><span class="metric-label">GitHub stars</span></div>
+            </div>
+            <footer class="card-footer">
+              <div class="card-tags">
+                <span class="tag">TypeScript</span>
+                <span class="tag">React</span>
+                <span class="tag">Radix</span>
+              </div>
+              <span class="card-cta">Read more <span aria-hidden="true">↗</span></span>
+            </footer>
+          </article>
+
+        </div><!-- /project-grid -->
+      </div>
+    </section>
+
+    <!-- ── PROCESS ──────────────────────────────────────────────── -->
+    <section class="section process-section" id="process" aria-labelledby="process-heading">
+      <div class="container">
+        <header class="section-header reveal">
+          <p class="section-eyebrow">How I work</p>
+          <h2 class="section-title" id="process-heading">
+            From <span class="title-highlight">idea</span> to&nbsp;launch.
+          </h2>
+        </header>
+
+        <ol class="process-list" role="list">
+          <li class="process-step reveal">
+            <div class="step-number paper-pin" aria-hidden="true">01</div>
+            <div class="step-body">
+              <h3 class="step-title">Understand</h3>
+              <p class="step-desc">
+                I start by listening. What problem are we solving? Who for? What does success look like in three months?
+                Good software begins with good questions.
+              </p>
+            </div>
+          </li>
+          <li class="process-step reveal">
+            <div class="step-number paper-pin" aria-hidden="true">02</div>
+            <div class="step-body">
+              <h3 class="step-title">Design in code</h3>
+              <p class="step-desc">
+                I prototype in the browser, not in Figma. Real interactions, real constraints, real feedback.
+                This cuts design-to-dev translation loss to zero.
+              </p>
+            </div>
+          </li>
+          <li class="process-step reveal">
+            <div class="step-number paper-pin" aria-hidden="true">03</div>
+            <div class="step-body">
+              <h3 class="step-title">Ship small, often</h3>
+              <p class="step-desc">
+                Feature flags, incremental rollouts, observability from day one.
+                I'd rather ship 80% to real users than 100% to nobody.
+              </p>
+            </div>
+          </li>
+          <li class="process-step reveal">
+            <div class="step-number paper-pin" aria-hidden="true">04</div>
+            <div class="step-body">
+              <h3 class="step-title">Measure + iterate</h3>
+              <p class="step-desc">
+                Data over opinion. I instrument everything, watch the numbers, and let users tell me what to build next.
+              </p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ── ABOUT ────────────────────────────────────────────────── -->
+    <section class="section about-section" id="about" aria-labelledby="about-heading">
+      <div class="container">
+        <div class="about-layout">
+
+          <div class="about-left reveal">
+            <header class="section-header">
+              <p class="section-eyebrow">About me</p>
+              <h2 class="section-title" id="about-heading">
+                A developer who cares about the <span class="title-highlight">details.</span>
+              </h2>
+            </header>
+            <div class="about-bio">
+              <p>
+                I've been writing code for over a decade, professionally for five years.
+                I've worked at startups, agencies, and as a solo freelancer — which means I know
+                how to operate in chaos <em>and</em> how to build for scale.
+              </p>
+              <p>
+                My sweet spot is the full stack: I'm comfortable owning a feature from database schema to
+                pixel-perfect UI. I care about performance not as a metric but because slow software
+                is disrespectful of people's time.
+              </p>
+              <p>
+                Outside work: cycling, espresso, and reading way too much about type systems.
+              </p>
+            </div>
+            <div class="about-skills" aria-label="Skills">
+              <span class="skill-chip">TypeScript</span>
+              <span class="skill-chip">Go</span>
+              <span class="skill-chip">React</span>
+              <span class="skill-chip">Node.js</span>
+              <span class="skill-chip">Postgres</span>
+              <span class="skill-chip">Redis</span>
+              <span class="skill-chip">Docker</span>
+              <span class="skill-chip">CSS</span>
+              <span class="skill-chip">Rust</span>
+            </div>
+          </div>
+
+          <div class="about-right reveal">
+            <!-- Photo card -->
+            <div class="about-photo-card js-tilt" data-tilt-max="5">
+              <div class="card-fold"></div>
+              <div class="about-photo" aria-label="Photo of Karol">K</div>
+              <div class="about-photo-caption">
+                <span>Karol</span>
+                <span class="caption-role">Software Developer</span>
+              </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="stat-grid">
+              <div class="stat-card reveal paper-pin-card">
+                <span class="stat-num">5+</span>
+                <span class="stat-label">years experience</span>
+              </div>
+              <div class="stat-card reveal paper-pin-card">
+                <span class="stat-num">40+</span>
+                <span class="stat-label">projects shipped</span>
+              </div>
+              <div class="stat-card reveal paper-pin-card">
+                <span class="stat-num">3</span>
+                <span class="stat-label">countries worked in</span>
+              </div>
+              <div class="stat-card reveal paper-pin-card">
+                <span class="stat-num">∞</span>
+                <span class="stat-label">espressos consumed</span>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+
+    <!-- ── CONTACT ──────────────────────────────────────────────── -->
+    <section class="section contact-section" id="contact" aria-labelledby="contact-heading">
+      <div class="container">
+        <div class="contact-layout">
+
+          <div class="contact-left reveal">
+            <p class="section-eyebrow">Get in touch</p>
+            <h2 class="contact-title" id="contact-heading">
+              Let's build<br>something great.
+            </h2>
+            <p class="contact-sub">
+              Whether you have a project in mind, want to chat about an opportunity, or just want to say hi —
+              my inbox is open.
+            </p>
+            <a href="mailto:hello@karol.dev" class="btn btn-primary btn-large">
+              <span>hello@karol.dev</span>
+              <span aria-hidden="true">→</span>
+            </a>
+            <div class="contact-links" role="list" aria-label="Social links">
+              <a href="https://github.com"   class="contact-social" target="_blank" rel="noopener" role="listitem">GitHub</a>
+              <span class="contact-sep" aria-hidden="true">·</span>
+              <a href="https://linkedin.com" class="contact-social" target="_blank" rel="noopener" role="listitem">LinkedIn</a>
+              <span class="contact-sep" aria-hidden="true">·</span>
+              <a href="https://twitter.com"  class="contact-social" target="_blank" rel="noopener" role="listitem">Twitter</a>
+            </div>
+          </div>
+
+          <div class="contact-right reveal">
+            <div class="contact-card js-tilt" data-tilt-max="4">
+              <div class="card-fold"></div>
+              <div class="card-tape card-tape--red"></div>
+              <form class="contact-form" id="contact-form" novalidate>
+                <div class="form-group">
+                  <label for="form-name">Name</label>
+                  <input id="form-name" name="name" type="text" autocomplete="name"
+                         placeholder="Your name" required />
+                </div>
+                <div class="form-group">
+                  <label for="form-email">Email</label>
+                  <input id="form-email" name="email" type="email" autocomplete="email"
+                         placeholder="you@example.com" required />
+                </div>
+                <div class="form-group">
+                  <label for="form-message">Message</label>
+                  <textarea id="form-message" name="message" rows="4"
+                            placeholder="Tell me about your project…" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Send message</button>
+                <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+              </form>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
 
   <!-- ─── FOOTER ────────────────────────────────────────────── -->
-  <footer class="footer">
-    <span>© 2026 Karol — crafted with CSS 3D & care</span>
+  <footer class="site-footer" role="contentinfo">
+    <div class="container footer-inner">
+      <span class="footer-brand">Karol.</span>
+      <span class="footer-copy">© 2026 — crafted with CSS 3D &amp; care</span>
+      <a href="#hero" class="footer-back" aria-label="Back to top">↑ Top</a>
+    </div>
   </footer>
+
+  <!-- ─── MODAL (case study) ───────────────────────────────── -->
+  <div class="modal-overlay" id="modal-overlay" role="dialog" aria-modal="true"
+       aria-labelledby="modal-title" hidden>
+    <article class="modal-sheet">
+      <button class="modal-close" id="modal-close" aria-label="Close case study">✕</button>
+      <div class="card-fold"></div>
+
+      <p class="modal-eyebrow" id="modal-eyebrow"></p>
+      <h2 class="modal-title" id="modal-title"></h2>
+      <p class="modal-desc" id="modal-desc"></p>
+
+      <div class="modal-metrics" id="modal-metrics"></div>
+
+      <h3 class="modal-section-title">The problem</h3>
+      <p class="modal-body" id="modal-problem"></p>
+
+      <h3 class="modal-section-title">What I built</h3>
+      <p class="modal-body" id="modal-solution"></p>
+
+      <h3 class="modal-section-title">Outcome</h3>
+      <p class="modal-body" id="modal-outcome"></p>
+
+      <footer class="modal-footer">
+        <div class="modal-tags" id="modal-tags"></div>
+        <a class="btn btn-primary" id="modal-link" href="#" target="_blank" rel="noopener">View live ↗</a>
+      </footer>
+    </article>
+  </div>
 
   <script src="main.js" defer></script>
 </body>
