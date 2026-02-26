@@ -115,14 +115,15 @@ button { cursor: pointer; font: inherit; border: none; background: none; }
 .skip-link:focus { top: 1rem; }
 
 /* ─── SCROLL REVEAL ──────────────────────────────────────── */
-.reveal {
+/* Only hide .reveal elements when JS is confirmed running (js-ready on <html>) */
+.js-ready .reveal {
   opacity: 0;
-  translate: 0 28px;
+  translate: 0 20px;
   transition:
-    opacity .55s var(--ease-out),
-    translate .55s var(--ease-out);
+    opacity .5s var(--ease-out),
+    translate .5s var(--ease-out);
 }
-.reveal.visible { opacity: 1; translate: 0 0; }
+.js-ready .reveal.visible { opacity: 1; translate: 0 0; }
 
 /* ─── 3D TILT ────────────────────────────────────────────── */
 .js-tilt {

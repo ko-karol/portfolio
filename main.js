@@ -62,19 +62,27 @@ function initScrollReveal() {
   const targets = $$('.reveal');
   if (!targets.length) return;
 
+  const reveal = (el) => {
+    el.classList.add('visible');
+    io.unobserve(el);
+  };
+
   const io = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((e) => {
-        if (e.isIntersecting) {
-          e.target.classList.add('visible');
-          io.unobserve(e.target);
-        }
-      });
-    },
-    { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+    (entries) => entries.forEach((e) => { if (e.isIntersecting) reveal(e.target); }),
+    // No negative rootMargin — let the browser decide intersection naturally.
+    // threshold 0.05 = reveal as soon as 5% of the element enters the viewport.
+    { threshold: 0.05 }
   );
 
-  targets.forEach((el) => io.observe(el));
+  targets.forEach((el) => {
+    // Elements already visible on load (above the fold) reveal instantly.
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+      reveal(el);
+    } else {
+      io.observe(el);
+    }
+  });
 }
 
 /* ─── CSS 3D TILT ────────────────────────────────────────── */
@@ -323,6 +331,12 @@ function initNavShadow() {
 }
 
 /* ─── INIT ────────────────────────────────────────────────── */
+
+// Mark JS as active immediately so CSS can gate the reveal hiding.
+// This runs synchronously before DOMContentLoaded so elements are
+// never invisible in a no-JS / slow-JS scenario.
+document.documentElement.classList.add('js-ready');
+
 document.addEventListener('DOMContentLoaded', () => {
   initScrollReveal();
   initTilt();
