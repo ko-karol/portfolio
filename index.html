@@ -27,8 +27,21 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Lora:ital@0;1&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="styles.css" />
+
+  <!-- Three.js importmap — loaded from CDN, cached across sites -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+    }
+  }
+  </script>
 </head>
 <body>
+
+  <!-- ─── THREE.JS BACKGROUND CANVAS ──────────────────────── -->
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
 
   <!-- ─── SKIP LINK ────────────────────────────────────────── -->
   <a href="#main" class="skip-link">Skip to content</a>
@@ -65,85 +78,6 @@
 
     <!-- ── HERO ──────────────────────────────────────────────── -->
     <section class="hero" id="hero" aria-labelledby="hero-heading">
-
-      <!-- Paper world scene -->
-      <div class="paper-world" aria-hidden="true">
-
-        <!-- Sky + sun -->
-        <div class="layer layer-sky"></div>
-        <div class="sun">
-          <div class="sun-ring"></div>
-          <div class="sun-ring sun-ring--2"></div>
-        </div>
-
-        <!-- Clouds -->
-        <div class="cloud cloud-1"></div>
-        <div class="cloud cloud-2"></div>
-        <div class="cloud cloud-3"></div>
-
-        <!-- Mountain layers -->
-        <div class="layer layer-mountains"></div>
-        <div class="layer layer-hills-back"></div>
-        <div class="layer layer-hills-mid"></div>
-        <div class="layer layer-hills-front"></div>
-        <div class="layer layer-ground"></div>
-
-        <!-- Paper trees -->
-        <div class="tree tree-1" aria-hidden="true">
-          <div class="tree-top"></div>
-          <div class="tree-trunk"></div>
-        </div>
-        <div class="tree tree-2" aria-hidden="true">
-          <div class="tree-top"></div>
-          <div class="tree-trunk"></div>
-        </div>
-        <div class="tree tree-3" aria-hidden="true">
-          <div class="tree-top"></div>
-          <div class="tree-trunk"></div>
-        </div>
-
-        <!-- Paper crane (SVG, inline) -->
-        <div class="crane-wrap js-tilt" data-tilt-max="6">
-          <svg class="crane" viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Paper crane">
-            <!-- Body -->
-            <polygon points="60,10 100,70 60,55 20,70" fill="#e8412a" stroke="#1a1510" stroke-width="1.5" stroke-linejoin="round"/>
-            <!-- Left wing -->
-            <polygon points="20,70 60,55 10,90" fill="#f5c842" stroke="#1a1510" stroke-width="1.5" stroke-linejoin="round"/>
-            <!-- Right wing -->
-            <polygon points="100,70 60,55 110,90" fill="#f5c842" stroke="#1a1510" stroke-width="1.5" stroke-linejoin="round"/>
-            <!-- Head -->
-            <polygon points="60,10 75,30 60,38 45,30" fill="#e8412a" stroke="#1a1510" stroke-width="1.5" stroke-linejoin="round"/>
-            <!-- Tail -->
-            <polygon points="60,55 80,80 60,75 40,80" fill="#c9bfaf" stroke="#1a1510" stroke-width="1.5" stroke-linejoin="round"/>
-            <!-- Fold lines -->
-            <line x1="60" y1="10" x2="60" y2="75" stroke="#1a1510" stroke-width="0.8" stroke-dasharray="3,3" opacity="0.5"/>
-          </svg>
-        </div>
-
-        <!-- Floating sticky-note widgets -->
-        <div class="sticky sticky-1 js-tilt" data-tilt-max="5">
-          <span class="sticky-line sticky-line--accent">console.log(</span>
-          <span class="sticky-line">&nbsp;&nbsp;"hello world"</span>
-          <span class="sticky-line sticky-line--accent">)</span>
-        </div>
-
-        <div class="sticky sticky-2 js-tilt" data-tilt-max="5">
-          <span class="sticky-emoji">★</span>
-          <span class="sticky-text">4.9k stars</span>
-        </div>
-
-        <div class="sticky sticky-3 js-tilt" data-tilt-max="5">
-          <span class="sticky-badge">open source</span>
-        </div>
-
-        <div class="sticky sticky-4 js-tilt" data-tilt-max="5">
-          <span class="sticky-text">~12ms p99</span>
-          <div class="sticky-bar-wrap">
-            <div class="sticky-bar" style="--w:92%"></div>
-          </div>
-        </div>
-
-      </div><!-- /paper-world -->
 
       <!-- Hero copy -->
       <div class="hero-copy">
@@ -217,7 +151,7 @@
 
         <div class="project-grid">
 
-          <article class="project-card reveal js-tilt" data-tilt-max="6"
+          <article class="project-card reveal"
                    data-project="alpha"
                    role="button" tabindex="0" aria-label="View Project Alpha case study">
             <div class="card-tape card-tape--red"></div>
@@ -246,7 +180,7 @@
             </footer>
           </article>
 
-          <article class="project-card reveal js-tilt" data-tilt-max="6"
+          <article class="project-card reveal"
                    data-project="papercli"
                    role="button" tabindex="0" aria-label="View PaperCLI case study">
             <div class="card-tape card-tape--yellow"></div>
@@ -273,7 +207,7 @@
             </footer>
           </article>
 
-          <article class="project-card reveal js-tilt" data-tilt-max="6"
+          <article class="project-card reveal"
                    data-project="foldline"
                    role="button" tabindex="0" aria-label="View Foldline API case study">
             <div class="card-tape card-tape--green"></div>
@@ -301,7 +235,7 @@
             </footer>
           </article>
 
-          <article class="project-card reveal js-tilt" data-tilt-max="6"
+          <article class="project-card reveal"
                    data-project="craftui"
                    role="button" tabindex="0" aria-label="View CraftUI case study">
             <div class="card-tape card-tape--blue"></div>
@@ -429,7 +363,7 @@
 
           <div class="about-right reveal">
             <!-- Photo card -->
-            <div class="about-photo-card js-tilt" data-tilt-max="5">
+            <div class="about-photo-card">
               <div class="card-fold"></div>
               <div class="about-photo" aria-label="Photo of Karol">K</div>
               <div class="about-photo-caption">
@@ -491,7 +425,7 @@
           </div>
 
           <div class="contact-right reveal">
-            <div class="contact-card js-tilt" data-tilt-max="4">
+            <div class="contact-card">
               <div class="card-fold"></div>
               <div class="card-tape card-tape--red"></div>
               <form class="contact-form" id="contact-form" novalidate>
@@ -560,6 +494,6 @@
     </article>
   </div>
 
-  <script src="main.js" defer></script>
+  <script type="module" src="main.js"></script>
 </body>
 </html>

@@ -78,11 +78,16 @@ html {
 
 body {
   font-family: var(--font-sans);
-  background: var(--paper-cream);
+  /* Sky colour shows while canvas loads, matches Three.js scene background */
+  background: var(--sky);
   color: var(--ink-900);
   min-height: 100dvh;
   overflow-x: hidden;
-  /* Subtle ruled-paper lines */
+}
+
+/* No-WebGL fallback: restore paper background */
+body.no-webgl {
+  background: var(--paper-cream);
   background-image: repeating-linear-gradient(
     0deg,
     transparent,
@@ -91,12 +96,45 @@ body {
     rgba(22,18,14,.028) 32px
   );
 }
+body.no-webgl .section,
+body.no-webgl .process-section,
+body.no-webgl .about-section {
+  background: var(--paper-cream);
+  backdrop-filter: none;
+}
+body.no-webgl .contact-section {
+  background: var(--ink-900);
+  backdrop-filter: none;
+}
+body.no-webgl #bg-canvas { display: none; }
 
 img { display: block; max-width: 100%; }
 a   { color: inherit; text-decoration: none; }
 ul, ol { list-style: none; }
 button { cursor: pointer; font: inherit; border: none; background: none; }
 ::selection { background: var(--yellow); color: var(--ink-900); }
+
+/* ─── THREE.JS BACKGROUND CANVAS ────────────────────────── */
+#bg-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  /* Fades in once Three.js is ready */
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+#bg-canvas.ready { opacity: 1; }
+
+/* All page content sits above the canvas */
+.site-header,
+main,
+.site-footer {
+  position: relative;
+  z-index: 1;
+}
 
 /* ─── SKIP LINK ──────────────────────────────────────────── */
 .skip-link {
@@ -359,289 +397,7 @@ em { font-family: var(--font-serif); font-style: italic; }
   min-height: 100dvh;
   display: flex;
   align-items: center;
-  overflow: hidden;
-  perspective: 1200px;
-}
-
-/* ── Paper world ─────────────────────────────────────────── */
-.paper-world {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.layer {
-  position: absolute;
-  left: -5%; width: 110%;
-}
-
-.layer-sky {
-  inset: 0;
-  background: linear-gradient(180deg, var(--sky-light) 0%, var(--sky) 100%);
-}
-
-.layer-mountains {
-  bottom: 36%; height: 46%;
-  background: var(--mountain);
-  clip-path: polygon(
-    0% 100%, 6% 52%, 13% 70%, 20% 32%, 28% 62%, 36% 18%,
-    44% 55%, 52% 22%, 60% 50%, 68% 12%, 76% 46%, 84% 26%, 92% 52%, 100% 38%, 100% 100%
-  );
-  box-shadow: 0 -8px 0 rgba(22,18,14,.07);
-  will-change: transform;
-}
-
-.layer-hills-back {
-  bottom: 30%; height: 24%;
-  background: var(--hill-back);
-  clip-path: polygon(
-    0 100%, 0 58%, 10% 36%, 22% 62%, 36% 30%, 50% 56%, 64% 26%, 78% 52%, 90% 38%, 100% 58%, 100% 100%
-  );
-  box-shadow: 0 -6px 0 rgba(22,18,14,.08);
-  will-change: transform;
-}
-
-.layer-hills-mid {
-  bottom: 20%; height: 22%;
-  background: var(--hill-mid);
-  clip-path: polygon(
-    0 100%, 0 54%, 8% 34%, 20% 60%, 34% 28%, 48% 54%, 62% 22%, 76% 50%, 88% 34%, 100% 54%, 100% 100%
-  );
-  box-shadow: 0 -5px 0 rgba(22,18,14,.09);
-  will-change: transform;
-}
-
-.layer-hills-front {
-  bottom: 8%; height: 22%;
-  background: var(--hill-front);
-  clip-path: polygon(
-    0 100%, 0 60%, 6% 36%, 18% 66%, 32% 30%, 46% 62%, 60% 26%, 74% 60%, 86% 34%, 100% 56%, 100% 100%
-  );
-  box-shadow: 0 -4px 0 rgba(22,18,14,.10);
-  will-change: transform;
-}
-
-.layer-ground {
-  bottom: 0; height: 12%;
-  background: var(--ground);
-  box-shadow: 0 -3px 0 rgba(22,18,14,.11);
-  border-radius: 0;
-  will-change: transform;
-}
-
-/* ── Sun ─────────────────────────────────────────────────── */
-.sun {
-  position: absolute;
-  top: 14%; right: 20%;
-  width: 56px; height: 56px;
-  background: var(--yellow);
-  border: 2.5px solid var(--ink-900);
-  border-radius: 50%;
-  box-shadow: var(--shadow-sm);
-  animation: sunPulse 6s ease-in-out infinite;
-}
-
-.sun-ring {
-  position: absolute;
-  inset: -8px;
-  border: 1.5px dashed rgba(22,18,14,.25);
-  border-radius: 50%;
-  animation: sunSpin 20s linear infinite;
-}
-
-.sun-ring--2 {
-  inset: -16px;
-  animation-duration: 30s;
-  animation-direction: reverse;
-}
-
-@keyframes sunPulse {
-  0%, 100% { transform: scale(1); }
-  50%       { transform: scale(1.05); }
-}
-@keyframes sunSpin {
-  to { transform: rotate(360deg); }
-}
-
-/* ── Clouds ──────────────────────────────────────────────── */
-.cloud {
-  position: absolute;
-  background: var(--paper-white);
-  border: 2px solid rgba(22,18,14,.18);
-  border-radius: 999px;
-  box-shadow: var(--shadow-xs);
-}
-
-.cloud::before {
-  content: '';
-  position: absolute;
-  background: inherit;
-  border: inherit;
-  border-radius: 50%;
-}
-
-.cloud-1 {
-  top: 18%; left: 15%;
-  width: 80px; height: 24px;
-  animation: cloudDrift 18s linear infinite;
-}
-.cloud-1::before { width: 36px; height: 36px; top: -18px; left: 12px; }
-
-.cloud-2 {
-  top: 12%; left: 38%;
-  width: 60px; height: 18px;
-  animation: cloudDrift 24s linear infinite .5s;
-  opacity: .8;
-}
-.cloud-2::before { width: 28px; height: 28px; top: -14px; left: 8px; }
-
-.cloud-3 {
-  top: 20%; left: 65%;
-  width: 70px; height: 20px;
-  animation: cloudDrift 20s linear infinite 1s;
-  opacity: .85;
-}
-.cloud-3::before { width: 32px; height: 32px; top: -16px; left: 10px; }
-
-@keyframes cloudDrift {
-  from { translate: 0 0; }
-  50%  { translate: 12px -4px; }
-  to   { translate: 0 0; }
-}
-
-/* ── Paper trees ─────────────────────────────────────────── */
-.tree {
-  position: absolute;
-  bottom: 9%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.tree-top {
-  width: 0; height: 0;
-  border-left: 18px solid transparent;
-  border-right: 18px solid transparent;
-  border-bottom: 32px solid var(--hill-mid);
-  filter: drop-shadow(1px -1px 0 var(--ink-900));
-}
-
-.tree-trunk {
-  width: 8px; height: 12px;
-  background: var(--ink-700);
-  border-radius: 1px;
-}
-
-.tree-1 { left: 6%;  }
-.tree-2 { left: 10%; bottom: 9.5%; }
-.tree-2 .tree-top {
-  border-left-width: 14px;
-  border-right-width: 14px;
-  border-bottom-width: 26px;
-}
-.tree-3 { left: 4%; bottom: 8%; }
-.tree-3 .tree-top {
-  border-left-width: 22px;
-  border-right-width: 22px;
-  border-bottom-width: 38px;
-  border-bottom-color: var(--hill-front);
-}
-
-/* ── Paper crane ─────────────────────────────────────────── */
-.crane-wrap {
-  position: absolute;
-  top: 20%; right: 10%;
-  width: 110px;
-  animation: craneFloat 5s ease-in-out infinite;
-  pointer-events: auto;
-  cursor: pointer;
-}
-
-.crane { width: 100%; filter: drop-shadow(3px 3px 0 rgba(22,18,14,.25)); }
-
-@keyframes craneFloat {
-  0%, 100% { translate: 0 0;    rotate: 0deg; }
-  30%       { translate: 6px -10px; rotate: 3deg; }
-  70%       { translate: -4px -6px; rotate: -2deg; }
-}
-
-.crane-wrap:hover { animation-play-state: paused; }
-
-/* ── Sticky notes / widgets ──────────────────────────────── */
-.sticky {
-  position: absolute;
-  background: var(--paper-white);
-  border: 2px solid var(--ink-900);
-  border-radius: 2px;
-  padding: .5rem .85rem;
-  font-size: .76rem;
-  font-weight: 600;
-  pointer-events: auto;
-  box-shadow: var(--shadow-md);
-  animation: stickyFloat 5s ease-in-out infinite;
-}
-
-.sticky-1 {
-  top: 28%; right: 22%;
-  font-family: 'Courier New', monospace;
-  transform: rotate(2deg);
-  display: flex; flex-direction: column; gap: 2px;
-  animation-delay: 0s;
-}
-
-.sticky-line { display: block; line-height: 1.4; }
-.sticky-line--accent { color: var(--blue); }
-
-.sticky-2 {
-  top: 46%; right: 8%;
-  transform: rotate(-3deg);
-  display: flex; align-items: center; gap: .4rem;
-  animation-delay: -1.8s;
-}
-
-.sticky-emoji { font-size: 1rem; color: var(--yellow); }
-.sticky-text  { color: var(--ink-700); }
-
-.sticky-3 {
-  top: 60%; right: 26%;
-  transform: rotate(1.5deg);
-  background: var(--green);
-  border-color: var(--ink-900);
-  animation-delay: -0.9s;
-}
-
-.sticky-badge {
-  color: #fff;
-  text-transform: uppercase;
-  letter-spacing: .06em;
-  font-size: .7rem;
-}
-
-.sticky-4 {
-  top: 36%; right: 34%;
-  transform: rotate(-1.5deg);
-  display: flex; flex-direction: column; gap: .35rem;
-  animation-delay: -2.4s;
-}
-
-.sticky-bar-wrap {
-  width: 80px; height: 6px;
-  background: var(--paper-tan);
-  border-radius: 1px;
-  overflow: hidden;
-  border: 1.5px solid var(--ink-900);
-}
-
-.sticky-bar {
-  height: 100%;
-  width: var(--w, 70%);
-  background: var(--green);
-  border-radius: 1px;
-}
-
-@keyframes stickyFloat {
-  0%, 100% { translate: 0 0; }
-  50%       { translate: 0 -9px; }
+  /* No background — Three.js canvas shows through */
 }
 
 /* ── Hero copy ───────────────────────────────────────────── */
@@ -780,6 +536,10 @@ em { font-family: var(--font-serif); font-style: italic; }
 /* ─── SECTIONS ────────────────────────────────────────────── */
 .section {
   padding: var(--space-2xl) 0;
+  /* Frosted paper effect so 3D world peeks through gaps */
+  background: rgba(237, 232, 223, 0.88);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
 }
 
 .container {
@@ -970,9 +730,11 @@ em { font-family: var(--font-serif); font-style: italic; }
 
 /* ─── PROCESS ────────────────────────────────────────────── */
 .process-section {
-  background: var(--paper-white);
+  background: rgba(248, 244, 239, 0.90);
   border-top: 2.5px dashed var(--ink-100);
   border-bottom: 2.5px dashed var(--ink-100);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
 }
 
 .process-list {
@@ -1019,7 +781,11 @@ em { font-family: var(--font-serif); font-style: italic; }
 }
 
 /* ─── ABOUT ─────────────────────────────────────────────────── */
-.about-section { background: var(--paper-cream); }
+.about-section {
+  background: rgba(237, 232, 223, 0.88);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
 
 .about-layout {
   display: grid;
@@ -1163,16 +929,10 @@ em { font-family: var(--font-serif); font-style: italic; }
 
 /* ─── CONTACT ────────────────────────────────────────────── */
 .contact-section {
-  background: var(--ink-900);
+  background: rgba(22, 18, 14, 0.92);
   color: var(--paper-white);
-  /* Override paper texture */
-  background-image: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 31px,
-    rgba(255,255,255,.03) 31px,
-    rgba(255,255,255,.03) 32px
-  );
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
 }
 
 .contact-layout {
