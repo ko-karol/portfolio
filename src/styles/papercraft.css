@@ -469,6 +469,77 @@ em { font-family: var(--font-serif); font-style: italic; }
   align-items: center;
 }
 
+/* ── Hero extra elements ─────────────────────────────────── */
+.hero-polaroid {
+  position: absolute;
+  top: -20px;
+  right: -40px;
+  width: 140px;
+  background: var(--paper-white);
+  padding: .6rem .6rem 1.2rem .6rem;
+  border: 2px solid var(--ink-900);
+  border-radius: 2px;
+  box-shadow: var(--shadow-md);
+  transform: rotate(12deg);
+  z-index: 1;
+  transition: transform var(--dur) var(--ease-spring), box-shadow var(--dur) var(--ease-out);
+}
+.hero-polaroid:hover {
+  transform: rotate(8deg) translateY(-8px);
+  box-shadow: var(--shadow-md);
+  z-index: 5;
+}
+.polaroid-photo {
+  background: var(--blue);
+  height: 110px;
+  border: 2px solid var(--ink-900);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  color: var(--paper-white);
+}
+.polaroid-caption {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 700;
+  text-align: center;
+  margin-top: .6rem;
+  color: var(--ink-700);
+  font-size: .85rem;
+}
+
+.hero-post-it {
+  position: absolute;
+  bottom: -40px;
+  right: -20px;
+  width: 110px;
+  height: 110px;
+  background: var(--yellow);
+  border: 2px solid var(--ink-900);
+  box-shadow: var(--shadow-sm);
+  transform: rotate(-8deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 700;
+  font-size: .85rem;
+  line-height: 1.3;
+  color: var(--ink-900);
+  z-index: 4;
+  border-bottom-right-radius: 12px 2px;
+  transition: transform var(--dur) var(--ease-spring), box-shadow var(--dur) var(--ease-out);
+}
+.hero-post-it:hover {
+  transform: rotate(-3deg) scale(1.05);
+  box-shadow: var(--shadow-md);
+}
+
 /* ── Scroll cue ──────────────────────────────────────────── */
 .scroll-cue {
   position: absolute;
@@ -1293,6 +1364,16 @@ em { font-family: var(--font-serif); font-style: italic; }
   }
   .hero-paper-card-inner {
     transform: rotate(0);
+  }
+  .hero-polaroid {
+    right: -10px;
+    top: -50px;
+    transform: rotate(5deg) scale(0.85);
+  }
+  .hero-post-it {
+    right: -10px;
+    bottom: -30px;
+    transform: rotate(-5deg) scale(0.85);
   }
 }
 
