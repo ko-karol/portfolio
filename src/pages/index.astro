@@ -8,8 +8,18 @@ import Layout from '../layouts/Layout.astro';
     <!-- ── HERO ──────────────────────────────────────────────── -->
     <section class="hero" id="hero" aria-labelledby="hero-heading">
 
-      <!-- Hero copy -->
-      <div class="hero-copy">
+      <!-- Massive display headline -->
+      <div class="hero-headline">
+        <h1 class="hero-display" id="hero-heading">
+          <span class="line">Hey, I'm</span>
+          <span class="line"><span class="title-highlight">Karol.</span></span>
+          <span class="line hero-display--accent">Full&#8209;Stack</span>
+          <span class="line hero-display--accent">Developer.</span>
+        </h1>
+      </div>
+
+      <!-- Floating papercraft card -->
+      <div class="hero-card-float">
 
         <!-- Background Polaroid -->
         <div class="hero-polaroid reveal" aria-hidden="true">
@@ -22,7 +32,7 @@ import Layout from '../layouts/Layout.astro';
           <div class="card-fold"></div>
           <div class="card-tape card-tape--red" style="top: -15px; left: auto; right: 20px; transform: rotate(15deg);"></div>
           <div class="card-tape card-tape--yellow" style="bottom: -15px; left: 20px; transform: rotate(-8deg);"></div>
-          
+
           <!-- Post-it Note Overlapping -->
           <div class="hero-post-it js-tilt">
             <div class="card-tape card-tape--green" style="top: -10px; left: 50%; transform: translateX(-50%) rotate(3deg); width: 30px;"></div>
@@ -34,10 +44,6 @@ import Layout from '../layouts/Layout.astro';
               <span class="eyebrow-dot"></span>
               Available for work
             </p>
-            <h1 class="hero-title" id="hero-heading">
-              <span class="line">Hey, I'm <span class="title-highlight" style="z-index: 1;">Karol</span></span>
-              <span class="line hero-title--accent">Full-Stack Developer</span>
-            </h1>
             <p class="hero-sub" style="font-weight: 700; color: var(--ink-700);">
               JavaScript · TypeScript · React | AI-Assisted Web Engineering
             </p>
@@ -50,6 +56,7 @@ import Layout from '../layouts/Layout.astro';
             </div>
           </div>
         </div>
+
       </div>
 
       <!-- Scroll cue -->

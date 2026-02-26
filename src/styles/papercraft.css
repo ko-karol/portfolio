@@ -79,35 +79,12 @@ html {
 
 body {
   font-family: var(--font-sans);
-  /* Sky colour shows while canvas loads, matches Three.js scene background */
-  background: var(--sky);
+  background: var(--paper-cream);
   color: var(--ink-900);
   min-height: 100dvh;
   overflow-x: hidden;
 }
 
-/* No-WebGL fallback: restore paper background */
-body.no-webgl {
-  background: var(--paper-cream);
-  background-image: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 31px,
-    rgba(22,18,14,.028) 31px,
-    rgba(22,18,14,.028) 32px
-  );
-}
-body.no-webgl .section,
-body.no-webgl .process-section,
-body.no-webgl .about-section {
-  background: var(--paper-cream);
-  backdrop-filter: none;
-}
-body.no-webgl .contact-section {
-  background: var(--ink-900);
-  backdrop-filter: none;
-}
-body.no-webgl #bg-canvas { display: none; }
 
 img { display: block; max-width: 100%; }
 a   { color: inherit; text-decoration: none; }
@@ -115,19 +92,8 @@ ul, ol { list-style: none; }
 button { cursor: pointer; font: inherit; border: none; background: none; }
 ::selection { background: var(--yellow); color: var(--ink-900); }
 
-/* ─── THREE.JS BACKGROUND CANVAS ────────────────────────── */
-#bg-canvas {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  width: 100%;
-  height: 100%;
-  display: block;
-  /* Fades in once Three.js is ready */
-  opacity: 0;
-  transition: opacity 0.6s ease;
-}
-#bg-canvas.ready { opacity: 1; }
+/* ─── THREE.JS BACKGROUND CANVAS ─── disabled; CSS pattern used instead ── */
+#bg-canvas { display: none; }
 
 /* All page content sits above the canvas */
 .site-header,
@@ -396,18 +362,46 @@ em { font-family: var(--font-serif); font-style: italic; }
 .hero {
   position: relative;
   min-height: 100dvh;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   align-items: center;
-  /* No background — Three.js canvas shows through */
+  gap: 4rem;
+  padding: 7rem clamp(2rem, 7vw, 8rem) 5rem;
+  background-color: var(--paper-cream);
+  background-image: radial-gradient(var(--ink-300) 1.5px, transparent 1.5px);
+  background-size: 28px 28px;
 }
 
-/* ── Hero copy ───────────────────────────────────────────── */
-.hero-copy {
+/* ── Hero headline ──────────────────────────────────────── */
+.hero-headline {
   position: relative;
   z-index: 2;
-  padding: 9rem 2rem 5rem;
-  max-width: 660px;
-  margin-left: clamp(1.5rem, 8vw, 10rem);
+}
+
+.hero-display {
+  font-size: clamp(3.8rem, 9vw, 8.5rem);
+  line-height: 1.0;
+  letter-spacing: -0.04em;
+  font-weight: 700;
+}
+
+.hero-display .line { display: block; }
+
+.hero-display--accent {
+  color: var(--red);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* ── Hero card float ────────────────────────────────────── */
+.hero-card-float {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .hero-eyebrow {
@@ -435,23 +429,6 @@ em { font-family: var(--font-serif); font-style: italic; }
   50%       { opacity: .5; transform: scale(.8); }
 }
 
-.hero-title {
-  font-size: clamp(2.6rem, 6.5vw, 4.6rem);
-  line-height: 1.05;
-  letter-spacing: -.035em;
-  margin-bottom: 1.25rem;
-  
-}
-
-.hero-title .line { display: block; }
-
-.hero-title--accent {
-  color: var(--red);
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-weight: 700;
-  letter-spacing: -.02em;
-}
 
 .hero-sub {
   font-size: clamp(1rem, 2.2vw, 1.15rem);
@@ -1292,9 +1269,10 @@ em { font-family: var(--font-serif); font-style: italic; }
 
   .sticky { display: none; }
 
-  .hero-copy {
-    padding: 8rem 1.5rem 4rem;
-    margin-left: 0;
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    padding: 7rem 1.5rem 4rem;
   }
 }
 
@@ -1345,7 +1323,6 @@ em { font-family: var(--font-serif); font-style: italic; }
   box-shadow: 12px 18px 0 var(--shadow-color), 24px 32px 0 var(--shadow-color-light);
   transform: rotate(-1.5deg);
   transition: transform 0.4s var(--ease-spring);
-  margin-top: 4rem;
 }
 
 .hero-paper-card:hover {
