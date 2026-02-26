@@ -22,50 +22,28 @@ document.documentElement.classList.add('js-ready');
 
 // ─── PROJECT DATA ─────────────────────────────────────────────
 const PROJECTS = {
-  alpha: {
-    label:    'Web App',
-    title:    'Task Flow',
-    desc:     'A keyboard-first task manager with real-time sync, offline mode, and a radically minimal UI. Built without a framework — 14 KB gzipped.',
-    metrics:  [{ val: '14 KB', label: 'bundle' }, { val: '100', label: 'Lighthouse' }, { val: '8 k', label: 'users' }],
-    tags:     ['JavaScript', 'Service Worker', 'IndexedDB'],
-    problem:  'Most task apps are overengineered — they load megabytes of JS just to show you a to-do list. Users complained that competitors felt sluggish on slower devices and used too much battery.',
-    solution: 'Built from scratch in vanilla JS with zero runtime dependencies. A Service Worker handles offline sync; IndexedDB stores data locally. The entire app ships in 14 KB gzipped.',
-    outcome:  '8,000 active users, a 100/100 Lighthouse score, and a sub-1s TTI on 3G. Featured in the Chrome Developers blog.',
-    link: '#',
+  repwise: {
+    label:    'Local-First Mobile App',
+    title:    'Repwise',
+    desc:     'A production-ready, local-first React Native strength training app. Built with an Expo SQLite database and a custom natural language parsing engine. Backed by a robust suite of 120+ passing Jest tests to ensure offline reliability.',
+    metrics:  [{ val: '120+', label: 'Jest tests' }, { val: '100%', label: 'Offline' }],
+    tags:     ['React Native', 'Expo', 'TypeScript', 'SQLite', 'Jest'],
+    problem:  'Fitness apps rely on cloud connections that drop in gym basements. They also force slow, clunky UI taps to enter workout data instead of just letting users type naturally.',
+    solution: 'Built a custom natural language parsing engine to quickly log workouts. A local-first architecture using Expo SQLite ensures instant interactions and complete offline functionality, validated by an extensive test suite.',
+    outcome:  'A lightning-fast, highly reliable app where users can log their strength training uninterrupted, regardless of internet connectivity.',
+    link: 'https://github.com/ko-karol/strength-app',
   },
-  papercli: {
-    label:    'CLI / npm',
-    title:    'PaperCLI',
-    desc:     'Zero-dependency project scaffolding tool with opinionated defaults. Ships your first commit in seconds, not minutes.',
-    metrics:  [{ val: '12 k', label: 'weekly installs' }, { val: '0', label: 'deps' }, { val: '98%', label: 'satisfaction' }],
-    tags:     ['Node.js', 'Open Source'],
-    problem:  'Every team I worked with wasted the first hour of a new project on the same yak-shaving: ESLint config, Prettier, TypeScript setup, CI boilerplate.',
-    solution: 'A single CLI command that asks three questions and generates a production-ready project. No dependencies — just Node.js. The entire source fits in one file.',
-    outcome:  '12,000 weekly npm installs, 98% satisfaction from a survey of 400+ users, contributions from 23 developers worldwide.',
-    link: '#',
-  },
-  foldline: {
-    label:    'Backend / API',
-    title:    'Foldline API',
-    desc:     'High-throughput REST + GraphQL API serving a document-heavy SaaS. Built for sub-20 ms p99 with zero cold starts.',
-    metrics:  [{ val: '1 M+', label: 'req / day' }, { val: '18 ms', label: 'p99' }, { val: '99.98%', label: 'uptime' }],
-    tags:     ['Go', 'GraphQL', 'Postgres', 'Redis'],
-    problem:  'The client had a Node.js API hitting ~300 ms p99 under load. Users noticed slowdowns during document exports. They needed a replacement with room to grow.',
-    solution: 'Rewrote critical paths in Go behind the same GraphQL interface — zero frontend changes. Added pgxpool connection pooling, Redis result caching, and distributed tracing from day one.',
-    outcome:  'p99 dropped from 300 ms to 18 ms. 99.98% uptime over 14 months, handling 1M+ requests/day without autoscaling.',
-    link: '#',
-  },
-  craftui: {
-    label:    'Design System',
-    title:    'CraftUI',
-    desc:     'Accessible, headless component library. Every component ships with full ARIA support, keyboard navigation, and TypeScript types.',
-    metrics:  [{ val: '60+', label: 'components' }, { val: 'AA', label: 'WCAG 2.1' }, { val: '2.1 k', label: 'GitHub stars' }],
-    tags:     ['TypeScript', 'React', 'Radix', 'Storybook'],
-    problem:  'The team was rebuilding the same Modal, Dropdown, and DatePicker in every project. Each had subtly different accessibility bugs. No shared source of truth.',
-    solution: 'Headless library on Radix primitives, styled with CSS variables for easy theming. Every component tested with axe-core and a real screen reader.',
-    outcome:  'Adopted by 5 internal teams, open-sourced, 2,100 GitHub stars in the first year. Per-project component work reduced from ~3 weeks to ~1 day.',
-    link: '#',
-  },
+  lifeofdeath: {
+    label:    'Interactive Web Tribute',
+    title:    'The Life of Death',
+    desc:     'A responsive, interactive web tribute showcasing strong command of semantic HTML, modern CSS, pacing, and frontend visual storytelling. Designed to prove that technical code must serve the user experience.',
+    metrics:  [{ val: '100', label: 'Lighthouse' }, { val: '0', label: 'Dependencies' }],
+    tags:     ['HTML', 'CSS', 'JavaScript', 'UI/UX Design'],
+    problem:  'Most modern websites lose the art of pacing and visual storytelling, relying heavily on bulky JavaScript frameworks to do what native web technologies can already handle elegantly.',
+    solution: 'Engineered a tribute site using only semantic HTML, scoped CSS, and minimal plain JavaScript. Focused entirely on rhythm, smooth interactions, and responsive design without heavy libraries.',
+    outcome:  'A beautifully paced, blisteringly fast interactive experience that respects the user\'s device resources and attention.',
+    link: 'https://ko-karol.github.io/life-of-death-tribute/',
+  }
 };
 
 // ─── UTILS ────────────────────────────────────────────────────

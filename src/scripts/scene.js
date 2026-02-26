@@ -9,8 +9,8 @@ import * as THREE from 'three';
 
 // ─── PALETTE (matches CSS tokens) ──────────────────────────
 const C = {
-  skyTop:     0xddeefa,
-  skyBot:     0xc8dfef,
+  skyTop: 0xe6ebf2,
+  skyBot: 0xd8e0e8,
   mountain:   0x97b4c8,
   hillBack:   0x7aaa88,
   hillMid:    0x5a9468,
@@ -342,101 +342,6 @@ export function init(canvas, state) {
   skyMesh.position.set(0, 0, -8);
   scene.add(skyMesh);
 
-  // ── Sun ────────────────────────────────────────────────────
-  const sunObj = buildSun(5, 5);
-  scene.add(sunObj);
-
-  // ── Clouds ─────────────────────────────────────────────────
-  const cloud1 = buildCloud(-6, 5.5, 1.1);
-  const cloud2 = buildCloud(0.5, 6.2, 0.85);
-  const cloud3 = buildCloud(7, 5.8, 0.95);
-  scene.add(cloud1, cloud2, cloud3);
-
-  // ── Terrain layers ─────────────────────────────────────────
-  // Mountains — sharp peaked silhouette
-  const mountains = buildMountains(C.mountain,
-    [
-      { x: -12, h: 5.5, w: 4.5 },
-      { x: -7,  h: 7.2, w: 5.0 },
-      { x: -2,  h: 4.8, w: 4.0 },
-      { x:  3,  h: 6.8, w: 5.5 },
-      { x:  9,  h: 5.2, w: 4.2 },
-      { x: 13,  h: 4.2, w: 3.5 },
-    ],
-    1.2, -2
-  );
-  scene.add(mountains);
-
-  // Hill layers (wavy terrain slabs)
-  const wavePts = (rawPts) =>
-    rawPts.map(([x, y]) => ({ x: x - 14, y }));
-
-  const hillBack = buildTerrain(C.hillBack, wavePts([
-    [0,1.8],[2,0.8],[4,2.2],[6,0.6],[8,1.9],[10,0.5],[12,1.7],[14,0.8],[16,1.6],[18,0.4],[20,1.5],[22,0.7],[24,1.3],[26,0.5],[28,1.0],
-  ]), -1);
-  scene.add(hillBack);
-
-  const hillMid = buildTerrain(C.hillMid, wavePts([
-    [0,0.5],[2,-0.4],[4,1.0],[6,-0.6],[8,0.7],[10,-0.7],[12,0.5],[14,-0.5],[16,0.6],[18,-0.8],[20,0.4],[22,-0.6],[24,0.3],[26,-0.5],[28,0.2],
-  ]), 0);
-  scene.add(hillMid);
-
-  const hillFront = buildTerrain(C.hillFront, wavePts([
-    [0,-0.8],[2,-1.6],[4,-0.3],[6,-1.8],[8,-0.6],[10,-1.9],[12,-0.7],[14,-1.5],[16,-0.5],[18,-1.7],[20,-0.9],[22,-1.6],[24,-0.8],[26,-1.5],[28,-1.0],
-  ]), 1);
-  scene.add(hillFront);
-
-  const ground = buildTerrain(C.ground, wavePts([
-    [0,-2.2],[4,-2.5],[8,-2.1],[12,-2.4],[16,-2.0],[20,-2.3],[24,-2.1],[28,-2.2],
-  ]), 2);
-  scene.add(ground);
-
-  // ── Trees ──────────────────────────────────────────────────
-  scene.add(buildTree(-10.5, -2.1, 1.0));
-  scene.add(buildTree(-9.2,  -2.3, 0.8));
-  scene.add(buildTree(-11.5, -2.4, 1.2));
-  scene.add(buildTree( 9.0,  -2.2, 0.9));
-  scene.add(buildTree( 10.2, -2.4, 1.1));
-
-  // ── Paper crane ────────────────────────────────────────────
-  const crane = buildCrane();
-  crane.scale.setScalar(1.6);
-  crane.position.set(5.5, 3.2, 1.0);
-  scene.add(crane);
-
-  // ── Sticky notes ───────────────────────────────────────────
-  const note1 = buildStickyNote(
-    [
-      { text: 'console.log(', accent: true },
-      { text: '  "hello"', accent: false },
-      { text: ')', accent: true },
-    ],
-    5.5, 0.5, 2.5, 0.04
-  );
-  scene.add(note1);
-
-  const note2 = buildStickyNote(
-    [{ text: '★  4.9k stars', accent: false }],
-    7.5, -0.8, 2.5, -0.05,
-    '#f8f4ef', '#f5c538'
-  );
-  scene.add(note2);
-
-  const note3 = buildStickyNote(
-    [{ text: 'open source', accent: false }],
-    6.8, -2.0, 2.5, 0.03,
-    '#3a7d44', '#f8f4ef'
-  );
-  scene.add(note3);
-
-  const note4 = buildStickyNote(
-    [
-      { text: '~12ms p99', accent: false },
-      { text: '████████░░', accent: true },
-    ],
-    4.2, -1.4, 2.5, -0.03
-  );
-  scene.add(note4);
 
   // ── Resize handler ─────────────────────────────────────────
   function onResize() {
@@ -461,24 +366,6 @@ export function init(canvas, state) {
     requestAnimationFrame(animate);
     const dt = 0.016; // ~60fps assumption for animations
     craneT += dt;
-
-    // ── Crane float animation
-    crane.position.y = 3.2 + Math.sin(craneT * 0.9) * 0.18;
-    crane.rotation.z = Math.sin(craneT * 0.6) * 0.06;
-
-    // ── Cloud drift
-    cloud1.position.x = -6 + Math.sin(craneT * 0.08) * 0.4;
-    cloud2.position.x = 0.5 + Math.sin(craneT * 0.06 + 1) * 0.3;
-    cloud3.position.x = 7 + Math.sin(craneT * 0.07 + 2) * 0.35;
-
-    // ── Sun halo spin (rotate the whole sunObj slowly)
-    sunObj.rotation.z = craneT * 0.03;
-
-    // ── Notes gentle bob
-    note1.position.y = 0.5  + Math.sin(craneT * 0.7) * 0.05;
-    note2.position.y = -0.8 + Math.sin(craneT * 0.8 + 1) * 0.04;
-    note3.position.y = -2.0 + Math.sin(craneT * 0.65 + 2) * 0.05;
-    note4.position.y = -1.4 + Math.sin(craneT * 0.75 + 3) * 0.04;
 
     // ── Scroll-driven camera: pan up/out as user scrolls
     const maxScroll = document.documentElement.scrollHeight - window.innerHeight;

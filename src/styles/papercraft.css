@@ -5,66 +5,67 @@
 
 /* ─── TOKENS ─────────────────────────────────────────────── */
 :root {
-  /* Paper palette */
-  --paper-white:   #f8f4ef;
-  --paper-cream:   #ede8df;
-  --paper-tan:     #d9cfc1;
-  --paper-warm:    #c4b9a8;
-  --paper-dark:    #b0a496;
+  /* Pastel Paper palette */
+  --paper-white:   oklch(0.98 0.01 90);
+  --paper-cream:   oklch(0.95 0.02 90);
+  --paper-tan:     oklch(0.92 0.03 90);
+  --paper-warm:    oklch(0.88 0.04 90);
+  --paper-dark:    oklch(0.80 0.03 90);
 
-  /* Ink */
-  --ink-900:  #16120e;
-  --ink-700:  #3a3228;
-  --ink-500:  #6b5f52;
-  --ink-300:  #a89f94;
-  --ink-100:  #e0d8cf;
+  /* Ink (Dark text for contrast on light pastels) */
+  --ink-900:  oklch(0.25 0.02 250);
+  --ink-700:  oklch(0.35 0.02 250);
+  --ink-500:  oklch(0.50 0.02 250);
+  --ink-300:  oklch(0.70 0.02 250);
+  --ink-100:  oklch(0.85 0.02 250);
 
-  /* Accent — felt-tip marker palette */
-  --red:      #e03a22;
-  --red-dark: #b82e18;
-  --yellow:   #f5c538;
-  --green:    #3a7d44;
-  --blue:     #2860a0;
-  --orange:   #e07332;
+  /* Pastel Accents */
+  --red:      oklch(0.65 0.15 25);
+  --orange:   oklch(0.75 0.12 45);
+  --yellow:   oklch(0.88 0.15 90);
+  --green:    oklch(0.70 0.12 150);
+  --teal:     oklch(0.70 0.10 180);
+  --blue:     oklch(0.65 0.10 250);
+  --purple:   oklch(0.70 0.10 300);
 
-  /* Layer colours for landscape */
-  --sky:          #c8dfef;
-  --sky-light:    #ddeefa;
-  --mountain:     #97b4c8;
-  --hill-back:    #7aaa88;
-  --hill-mid:     #5a9468;
-  --hill-front:   #3e8054;
-  --ground:       #4a7040;
+  /* Pastel Sky / Landscape */
+  --sky:          oklch(0.92 0.02 250);
+  --sky-light:    oklch(0.96 0.02 250);
+  --mountain:     oklch(0.85 0.05 250);
+  --hill-back:    oklch(0.80 0.08 150);
+  --hill-mid:     oklch(0.75 0.10 150);
+  --hill-front:   oklch(0.70 0.12 150);
+  --ground:       oklch(0.65 0.10 150);
 
   /* Hard-offset shadows (papercraft) */
-  --shadow-xs:  2px 2px 0 rgba(22,18,14,.14);
-  --shadow-sm:  3px 4px 0 rgba(22,18,14,.16), 6px 8px 0 rgba(22,18,14,.06);
-  --shadow-md:  4px 6px 0 rgba(22,18,14,.18), 10px 16px 0 rgba(22,18,14,.07);
-  --shadow-lg:  5px 8px 0 rgba(22,18,14,.20), 14px 24px 0 rgba(22,18,14,.08);
-  --shadow-xl:  6px 10px 0 rgba(22,18,14,.22), 18px 32px 0 rgba(22,18,14,.09);
+  --shadow-color: oklch(0.25 0.02 250 / 0.15);
+  --shadow-color-light: oklch(0.25 0.02 250 / 0.05);
+  --shadow-xs:  2px 2px 0 var(--shadow-color);
+  --shadow-sm:  3px 4px 0 var(--shadow-color), 6px 8px 0 var(--shadow-color-light);
+  --shadow-md:  4px 6px 0 var(--shadow-color), 10px 16px 0 var(--shadow-color-light);
+
 
   /* Typography */
-  --font-sans:  'Space Grotesk', system-ui, sans-serif;
-  --font-serif: 'Lora', Georgia, serif;
+  --font-sans: 'Space Grotesk', system-ui, sans-serif;
+  --font-serif: 'Lora', ui-serif, Georgia, serif;
 
-  /* Spacing scale */
-  --space-xs:  0.5rem;
-  --space-sm:  0.75rem;
-  --space-md:  1.25rem;
-  --space-lg:  2rem;
-  --space-xl:  3.5rem;
-  --space-2xl: 6rem;
+  /* Animation */
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.2);
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --dur: 0.3s;
 
-  /* Motion */
-  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-in:     cubic-bezier(0.5, 0, 1, 0.5);
-  --dur-fast:    180ms;
-  --dur:         260ms;
-  --dur-slow:    400ms;
+  /* Spacing */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 2rem;
+  --space-lg: 3rem;
+  --space-xl: 6rem;
+  --space-2xl: 8rem;
 
-  /* Border radius (minimal — paper is flat) */
-  --radius: 3px;
+  /* Radii */
+  --radius: 4px;
+  --radius-lg: 8px;
+
 }
 
 /* ─── RESET + BASE ───────────────────────────────────────── */
@@ -439,6 +440,7 @@ em { font-family: var(--font-serif); font-style: italic; }
   line-height: 1.05;
   letter-spacing: -.035em;
   margin-bottom: 1.25rem;
+  
 }
 
 .hero-title .line { display: block; }
@@ -453,7 +455,8 @@ em { font-family: var(--font-serif); font-style: italic; }
 
 .hero-sub {
   font-size: clamp(1rem, 2.2vw, 1.15rem);
-  color: var(--ink-500);
+  color: var(--ink-900);
+  
   max-width: 460px;
   line-height: 1.65;
   margin-bottom: 2.25rem;
@@ -593,7 +596,7 @@ em { font-family: var(--font-serif); font-style: italic; }
 /* ─── PROJECT CARDS ──────────────────────────────────────── */
 .project-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: var(--space-lg);
 }
 
@@ -739,7 +742,7 @@ em { font-family: var(--font-serif); font-style: italic; }
 
 .process-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: var(--space-lg);
   counter-reset: steps;
 }
@@ -1259,4 +1262,42 @@ em { font-family: var(--font-serif); font-style: italic; }
   .sun           { animation: none; }
   .sun-ring      { animation: none; }
   .cloud         { animation: none; }
+}
+
+
+.hero-paper-card {
+  position: relative;
+  background: var(--paper-cream);
+  border: 3px solid var(--ink-900);
+  border-radius: var(--radius-lg);
+  padding: 4rem 3rem;
+  box-shadow: 12px 18px 0 var(--shadow-color), 24px 32px 0 var(--shadow-color-light);
+  transform: rotate(-1.5deg);
+  transition: transform 0.4s var(--ease-spring);
+  margin-top: 4rem;
+}
+
+.hero-paper-card:hover {
+  transform: rotate(-0.5deg) translateY(-5px);
+  box-shadow: 16px 22px 0 var(--shadow-color), 30px 40px 0 var(--shadow-color-light);
+}
+
+.hero-paper-card-inner {
+  transform: rotate(1.5deg); /* Counter-rotate inner content to stay upright */
+}
+
+@media (max-width: 768px) {
+  .hero-paper-card {
+    padding: 2.5rem 1.5rem;
+    transform: rotate(0);
+  }
+  .hero-paper-card-inner {
+    transform: rotate(0);
+  }
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
 }

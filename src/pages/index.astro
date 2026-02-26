@@ -1,0 +1,335 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Karol | Full-Stack Developer">
+  <main id="main">
+
+    <!-- ── HERO ──────────────────────────────────────────────── -->
+    <section class="hero" id="hero" aria-labelledby="hero-heading">
+
+      <!-- Hero copy -->
+      <div class="hero-copy">
+        <div class="hero-paper-card reveal">
+          <div class="card-tape card-tape--red" style="top: -15px; left: auto; right: 20px; transform: rotate(15deg);"></div>
+          <div class="card-tape card-tape--yellow" style="bottom: -15px; left: 20px; transform: rotate(-8deg);"></div>
+          <div class="hero-paper-card-inner">
+            <p class="hero-eyebrow">
+              <span class="eyebrow-dot"></span>
+              Available for work
+            </p>
+            <h1 class="hero-title" id="hero-heading">
+              <span class="line">Karol</span>
+              <span class="line hero-title--accent">Full-Stack Developer</span>
+            </h1>
+            <p class="hero-sub" style="font-weight: 700; color: var(--ink-700);">
+              JavaScript · TypeScript · React | AI-Assisted Web Engineering
+            </p>
+            <p class="hero-sub">
+              I focus on programming quality, clean code, and the seamless interaction between web technologies to build resilient applications.
+            </p>
+            <div class="hero-actions">
+              <a href="#work" class="btn btn-primary">See my work</a>
+              <a href="#contact" class="btn btn-ghost">Get in touch</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scroll cue -->
+      <div class="scroll-cue" aria-hidden="true">
+        <div class="scroll-cue-line"></div>
+        <span>scroll</span>
+      </div>
+
+    </section>
+
+    <!-- ── MARQUEE STRIP ──────────────────────────────────────── -->
+    <div class="marquee-section" aria-hidden="true">
+      <div class="marquee-track">
+        <div class="marquee-content">
+          <span>JavaScript</span><span class="marquee-dot">◆</span>
+          <span>TypeScript</span><span class="marquee-dot">◆</span>
+          <span>React</span><span class="marquee-dot">◆</span>
+          <span>Astro</span><span class="marquee-dot">◆</span>
+          <span>SQLite</span><span class="marquee-dot">◆</span>
+          <span>Node.js</span><span class="marquee-dot">◆</span>
+          <span>CSS</span><span class="marquee-dot">◆</span>
+          <span>HTML</span><span class="marquee-dot">◆</span>
+        </div>
+        <!-- Duplicated for seamless loop -->
+        <div class="marquee-content" aria-hidden="true">
+          <span>JavaScript</span><span class="marquee-dot">◆</span>
+          <span>TypeScript</span><span class="marquee-dot">◆</span>
+          <span>React</span><span class="marquee-dot">◆</span>
+          <span>Astro</span><span class="marquee-dot">◆</span>
+          <span>SQLite</span><span class="marquee-dot">◆</span>
+          <span>Node.js</span><span class="marquee-dot">◆</span>
+          <span>CSS</span><span class="marquee-dot">◆</span>
+          <span>HTML</span><span class="marquee-dot">◆</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── WORK / PROJECTS ────────────────────────────────────── -->
+    <section class="section" id="work" aria-labelledby="work-heading">
+      <div class="container">
+        <header class="section-header reveal">
+          <p class="section-eyebrow">Selected work</p>
+          <h2 class="section-title" id="work-heading">
+            <span class="title-highlight">Projects</span> that shipped.
+          </h2>
+          <p class="section-sub">A sample of things I've built to ensure production-ready stability.</p>
+        </header>
+
+        <div class="project-grid">
+
+          <article class="project-card reveal"
+                   data-project="repwise"
+                   role="button" tabindex="0" aria-label="View Repwise case study">
+            <div class="card-tape card-tape--red"></div>
+            <div class="card-fold"></div>
+            <header class="card-header">
+              <span class="card-label">Local-First Mobile App</span>
+              <div class="card-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+            </header>
+            <h3 class="card-title">Repwise</h3>
+            <p class="card-desc">
+              A production-ready, local-first React Native strength training app. Built with an Expo SQLite database and a custom natural language parsing engine. Backed by a robust suite of 120+ passing Jest tests to ensure offline reliability.
+            </p>
+            <div class="card-metrics">
+              <div class="metric"><span class="metric-val">120+</span><span class="metric-label">Jest tests</span></div>
+              <div class="metric"><span class="metric-val">100%</span><span class="metric-label">Offline</span></div>
+            </div>
+            <footer class="card-footer">
+              <div class="card-tags">
+                <span class="tag">React Native</span>
+                <span class="tag">TypeScript</span>
+                <span class="tag">SQLite</span>
+              </div>
+              <span class="card-cta">Read more <span aria-hidden="true">↗</span></span>
+            </footer>
+          </article>
+
+          <article class="project-card reveal"
+                   data-project="lifeofdeath"
+                   role="button" tabindex="0" aria-label="View The Life of Death case study">
+            <div class="card-tape card-tape--blue"></div>
+            <div class="card-fold"></div>
+            <header class="card-header">
+              <span class="card-label">Interactive Web Tribute</span>
+              <div class="card-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+            </header>
+            <h3 class="card-title">The Life of Death</h3>
+            <p class="card-desc">
+              A responsive, interactive web tribute showcasing strong command of semantic HTML, modern CSS, pacing, and frontend visual storytelling. Designed to prove that technical code must serve the user experience.
+            </p>
+            <div class="card-metrics">
+              <div class="metric"><span class="metric-val">100</span><span class="metric-label">Lighthouse</span></div>
+              <div class="metric"><span class="metric-val">0</span><span class="metric-label">Dependencies</span></div>
+            </div>
+            <footer class="card-footer">
+              <div class="card-tags">
+                <span class="tag">HTML</span>
+                <span class="tag">CSS</span>
+                <span class="tag">JavaScript</span>
+              </div>
+              <span class="card-cta">Read more <span aria-hidden="true">↗</span></span>
+            </footer>
+          </article>
+
+        </div><!-- /project-grid -->
+      </div>
+    </section>
+
+    <!-- ── EXPERIENCE / PROCESS ──────────────────────────────────────────────── -->
+    <section class="section process-section" id="process" aria-labelledby="process-heading">
+      <div class="container">
+        <header class="section-header reveal">
+          <p class="section-eyebrow">Experience</p>
+          <h2 class="section-title" id="process-heading">
+            My <span class="title-highlight">Journey</span>.
+          </h2>
+        </header>
+
+        <ol class="process-list" role="list">
+          <li class="process-step reveal">
+            <div class="step-number paper-pin" aria-hidden="true">01</div>
+            <div class="step-body">
+              <h3 class="step-title">Freelance Web Developer (3 Years)</h3>
+              <p class="step-desc">
+                Specialized in delivering professional web solutions for charitable organizations. Notably collaborated in a team to migrate a psychotherapist guild from a legacy CMS (SilverStripe) to WordPress, building custom features that directly increased patient referrals.
+              </p>
+            </div>
+          </li>
+          <li class="process-step reveal">
+            <div class="step-number paper-pin" aria-hidden="true">02</div>
+            <div class="step-body">
+              <h3 class="step-title">Founders &amp; Coders</h3>
+              <p class="step-desc">
+                Graduate of the highly selective full-stack apprenticeship program, where I solidified my foundation in software engineering and team-driven development.
+              </p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ── ABOUT ────────────────────────────────────────────────── -->
+    <section class="section about-section" id="about" aria-labelledby="about-heading">
+      <div class="container">
+        <div class="about-layout">
+
+          <div class="about-left reveal">
+            <header class="section-header">
+              <p class="section-eyebrow">About me</p>
+              <h2 class="section-title" id="about-heading">
+                Structuring <span class="title-highlight">clean</span> applications.
+              </h2>
+            </header>
+            <div class="about-bio">
+              <p>
+                In an era where AI tools can quickly generate boilerplate code, my focus is on what automation can't do on its own: structuring clean applications, defining clear data flows, and effectively orchestrating AI to accelerate development without sacrificing code quality.
+              </p>
+              <p>
+                A graduate of the Founders &amp; Coders full-stack apprenticeship, I recently transitioned from 3 years of freelance development where I delivered professional, high-quality web solutions for charitable organizations.
+              </p>
+              <h3 class="mt-4 font-bold text-lg mb-2">Core Capabilities</h3>
+              <ul class="list-disc ml-4 space-y-2">
+                <li><strong>Programming Quality:</strong> Writing maintainable, high-quality code with rigorous automated testing for production-ready stability.</li>
+                <li><strong>Frontend Craftsmanship:</strong> Deep understanding of how CSS, plain JavaScript, and the DOM interact to create seamless user experiences.</li>
+                <li><strong>System Integration:</strong> Connecting front-end and back-end systems, migrating legacy databases, and integrating modern AI APIs.</li>
+              </ul>
+            </div>
+            <div class="about-skills" aria-label="Skills">
+              <span class="skill-chip">JavaScript</span>
+              <span class="skill-chip">TypeScript</span>
+              <span class="skill-chip">React</span>
+              <span class="skill-chip">Astro</span>
+              <span class="skill-chip">SQLite</span>
+              <span class="skill-chip">HTML/CSS</span>
+            </div>
+          </div>
+
+          <div class="about-right reveal">
+            <!-- Photo card -->
+            <div class="about-photo-card">
+              <div class="card-fold"></div>
+              <div class="about-photo" aria-label="Photo of Karol">K</div>
+              <div class="about-photo-caption">
+                <span>Karol</span>
+                <span class="caption-role">Full-Stack Developer</span>
+              </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="stat-grid">
+              <div class="stat-card reveal paper-pin-card">
+                <span class="stat-num">3</span>
+                <span class="stat-label">years freelance</span>
+              </div>
+              <div class="stat-card reveal paper-pin-card">
+                <span class="stat-num">120+</span>
+                <span class="stat-label">tests written</span>
+              </div>
+              <div class="stat-card reveal paper-pin-card">
+                <span class="stat-num">∞</span>
+                <span class="stat-label">AI prompts crafted</span>
+              </div>
+              <div class="stat-card reveal paper-pin-card">
+                <span class="stat-num">100</span>
+                <span class="stat-label">Lighthouse scores</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CONTACT ──────────────────────────────────────────────── -->
+    <section class="section contact-section" id="contact" aria-labelledby="contact-heading">
+      <div class="container">
+        <div class="contact-layout">
+
+          <div class="contact-left reveal">
+            <p class="section-eyebrow">Get in touch</p>
+            <h2 class="contact-title" id="contact-heading">
+              Let's build<br>something great.
+            </h2>
+            <p class="contact-sub">
+              Whether you have a project in mind, want to chat about an opportunity, or just want to say hi —
+              my inbox is open.
+            </p>
+            <a href="mailto:hello@karol.dev" class="btn btn-primary btn-large">
+              <span>hello@karol.dev</span>
+              <span aria-hidden="true">→</span>
+            </a>
+            <div class="contact-links" role="list" aria-label="Social links">
+              <a href="https://github.com/ko-karol" class="contact-social" target="_blank" rel="noopener" role="listitem">GitHub</a>
+              <span class="contact-sep" aria-hidden="true">·</span>
+              <a href="https://www.linkedin.com/in/ko-karol/" class="contact-social" target="_blank" rel="noopener" role="listitem">LinkedIn</a>
+            </div>
+          </div>
+
+          <div class="contact-right reveal">
+            <div class="contact-card">
+              <div class="card-fold"></div>
+              <div class="card-tape card-tape--red"></div>
+              <form class="contact-form" id="contact-form" novalidate>
+                <div class="form-group">
+                  <label for="form-name">Name</label>
+                  <input id="form-name" name="name" type="text" autocomplete="name"
+                         placeholder="Your name" required />
+                </div>
+                <div class="form-group">
+                  <label for="form-email">Email</label>
+                  <input id="form-email" name="email" type="email" autocomplete="email"
+                         placeholder="you@example.com" required />
+                </div>
+                <div class="form-group">
+                  <label for="form-message">Message</label>
+                  <textarea id="form-message" name="message" rows="4"
+                            placeholder="Tell me about your project…" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Send message</button>
+                <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+              </form>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ─── MODAL (case study) ───────────────────────────────── -->
+  <div class="modal-overlay" id="modal-overlay" role="dialog" aria-modal="true"
+       aria-labelledby="modal-title" hidden>
+    <article class="modal-sheet">
+      <button class="modal-close" id="modal-close" aria-label="Close case study">✕</button>
+      <div class="card-fold"></div>
+
+      <p class="modal-eyebrow" id="modal-eyebrow"></p>
+      <h2 class="modal-title" id="modal-title"></h2>
+      <p class="modal-desc" id="modal-desc"></p>
+
+      <div class="modal-metrics" id="modal-metrics"></div>
+
+      <h3 class="modal-section-title">The problem</h3>
+      <p class="modal-body" id="modal-problem"></p>
+
+      <h3 class="modal-section-title">What I built</h3>
+      <p class="modal-body" id="modal-solution"></p>
+
+      <h3 class="modal-section-title">Outcome</h3>
+      <p class="modal-body" id="modal-outcome"></p>
+
+      <footer class="modal-footer">
+        <div class="modal-tags" id="modal-tags"></div>
+        <a class="btn btn-primary" id="modal-link" href="#" target="_blank" rel="noopener">View live ↗</a>
+      </footer>
+    </article>
+  </div>
+</Layout>
