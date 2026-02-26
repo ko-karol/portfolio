@@ -207,19 +207,34 @@ function initContactForm() {
     btn.textContent = 'Sending…';
     status.textContent = '';
 
-    // Replace with Formspree in production:
-    // const res = await fetch('https://formspree.io/f/YOUR_ID', {
-    //   method: 'POST', body: new FormData(form),
-    //   headers: { Accept: 'application/json' }
-    // });
-    await new Promise((r) => setTimeout(r, 900));
+    try {
+      const res = await fetch('https://formspree.io/f/mbdawelb', {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { Accept: 'application/json' }
+      });
 
-    btn.disabled = false;
-    btn.textContent = 'Send message';
-    form.reset();
-    status.textContent = "Message sent — I'll get back to you soon.";
-    status.style.color = 'var(--green)';
-    setTimeout(() => { status.textContent = ''; }, 6000);
+      if (res.ok) {
+        form.reset();
+        status.textContent = "Message sent — I'll get back to you soon.";
+        status.style.color = 'var(--green)';
+      } else {
+        const data = await res.json();
+        if (Object.hasOwn(data, 'errors')) {
+          status.textContent = data.errors.map(err => err.message).join(', ');
+        } else {
+          status.textContent = "Oops! There was a problem submitting your form.";
+        }
+        status.style.color = 'var(--red)';
+      }
+    } catch (err) {
+      status.textContent = "Oops! There was a problem submitting your form.";
+      status.style.color = 'var(--red)';
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Send message';
+      setTimeout(() => { status.textContent = ''; }, 6000);
+    }
   });
 }
 
