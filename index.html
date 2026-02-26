@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Karol — Developer Portfolio</title>
+  <meta name="description" content="Software developer crafting clean, fast, thoughtful products." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ─── NAV ─────────────────────────────────────────────── -->
+  <nav class="nav">
+    <span class="nav-logo paper-tag">K.</span>
+    <ul class="nav-links">
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- ─── HERO ─────────────────────────────────────────────── -->
+  <section class="hero" id="hero">
+
+    <!-- Layered papercraft landscape -->
+    <div class="paper-world" aria-hidden="true">
+      <div class="layer layer-sky"></div>
+      <div class="layer layer-mountains"></div>
+      <div class="layer layer-hills-back"></div>
+      <div class="layer layer-hills-mid"></div>
+      <div class="layer layer-hills-front"></div>
+      <div class="layer layer-ground"></div>
+
+      <!-- Floating paper widgets -->
+      <div class="paper-widget widget-code js-tilt">
+        <span class="widget-label">const dev = true</span>
+      </div>
+      <div class="paper-widget widget-star js-tilt">
+        <span class="widget-icon">★</span>
+        <span class="widget-label">4.9k</span>
+      </div>
+      <div class="paper-widget widget-tag js-tilt">
+        <span class="widget-label">open&nbsp;source</span>
+      </div>
+    </div>
+
+    <!-- Hero copy -->
+    <div class="hero-copy">
+      <h1 class="hero-title">
+        <span class="line">Building things</span>
+        <span class="line accent">that matter.</span>
+      </h1>
+      <p class="hero-sub">
+        Software developer. I ship fast, readable code and obsess over the details that make products feel alive.
+      </p>
+      <a href="#projects" class="btn btn-primary paper-btn">See my work</a>
+    </div>
+
+  </section>
+
+  <!-- ─── PROJECTS ─────────────────────────────────────────── -->
+  <section class="section projects" id="projects">
+    <div class="container">
+      <h2 class="section-title">
+        <span class="title-tape">Projects</span>
+      </h2>
+
+      <div class="project-grid">
+
+        <article class="project-card js-tilt" data-tilt-max="8">
+          <div class="card-fold"></div>
+          <header class="card-header">
+            <span class="card-label">Web App</span>
+            <div class="card-dots"><span></span><span></span><span></span></div>
+          </header>
+          <h3 class="card-title">Project Alpha</h3>
+          <p class="card-desc">A blazing-fast task manager with offline sync. Built with vanilla JS and a service worker.</p>
+          <footer class="card-footer">
+            <div class="card-tags">
+              <span class="tag">JavaScript</span>
+              <span class="tag">PWA</span>
+            </div>
+            <a href="#" class="card-link" aria-label="View Project Alpha">↗</a>
+          </footer>
+        </article>
+
+        <article class="project-card js-tilt" data-tilt-max="8">
+          <div class="card-fold"></div>
+          <header class="card-header">
+            <span class="card-label">CLI Tool</span>
+            <div class="card-dots"><span></span><span></span><span></span></div>
+          </header>
+          <h3 class="card-title">PaperCLI</h3>
+          <p class="card-desc">A zero-dep command-line scaffold generator. 12k weekly installs on npm.</p>
+          <footer class="card-footer">
+            <div class="card-tags">
+              <span class="tag">Node.js</span>
+              <span class="tag">Open Source</span>
+            </div>
+            <a href="#" class="card-link" aria-label="View PaperCLI">↗</a>
+          </footer>
+        </article>
+
+        <article class="project-card js-tilt" data-tilt-max="8">
+          <div class="card-fold"></div>
+          <header class="card-header">
+            <span class="card-label">API</span>
+            <div class="card-dots"><span></span><span></span><span></span></div>
+          </header>
+          <h3 class="card-title">Foldline API</h3>
+          <p class="card-desc">RESTful + GraphQL API serving 1M+ requests/day. Sub-20ms p99 latency.</p>
+          <footer class="card-footer">
+            <div class="card-tags">
+              <span class="tag">Go</span>
+              <span class="tag">GraphQL</span>
+            </div>
+            <a href="#" class="card-link" aria-label="View Foldline API">↗</a>
+          </footer>
+        </article>
+
+        <article class="project-card js-tilt" data-tilt-max="8">
+          <div class="card-fold"></div>
+          <header class="card-header">
+            <span class="card-label">Design System</span>
+            <div class="card-dots"><span></span><span></span><span></span></div>
+          </header>
+          <h3 class="card-title">CraftUI</h3>
+          <p class="card-desc">Accessible component library with 60+ components and first-class TypeScript support.</p>
+          <footer class="card-footer">
+            <div class="card-tags">
+              <span class="tag">TypeScript</span>
+              <span class="tag">React</span>
+            </div>
+            <a href="#" class="card-link" aria-label="View CraftUI">↗</a>
+          </footer>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── ABOUT ─────────────────────────────────────────────── -->
+  <section class="section about" id="about">
+    <div class="container about-inner">
+
+      <div class="about-card js-tilt" data-tilt-max="5">
+        <div class="card-fold"></div>
+        <div class="about-photo-wrap">
+          <div class="about-photo" aria-label="Photo placeholder">K</div>
+        </div>
+        <div class="about-bio">
+          <h2 class="about-name">Hi, I'm Karol.</h2>
+          <p>Full-stack developer with a thing for performance, clean APIs, and UIs that feel physical. 5+ years shipping production software.</p>
+          <p>When I'm not coding I'm usually cycling, brewing espresso, or staring at CSS transitions for too long.</p>
+          <div class="about-skills">
+            <span class="skill-chip">TypeScript</span>
+            <span class="skill-chip">Go</span>
+            <span class="skill-chip">React</span>
+            <span class="skill-chip">Node.js</span>
+            <span class="skill-chip">Postgres</span>
+            <span class="skill-chip">CSS</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats strip -->
+      <div class="stats-strip">
+        <div class="stat-item paper-tag">
+          <span class="stat-num">5+</span>
+          <span class="stat-label">years exp.</span>
+        </div>
+        <div class="stat-item paper-tag">
+          <span class="stat-num">40+</span>
+          <span class="stat-label">projects shipped</span>
+        </div>
+        <div class="stat-item paper-tag">
+          <span class="stat-num">∞</span>
+          <span class="stat-label">espressos</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── CONTACT ──────────────────────────────────────────── -->
+  <section class="section contact" id="contact">
+    <div class="container contact-inner">
+      <div class="contact-paper js-tilt" data-tilt-max="4">
+        <div class="card-fold"></div>
+        <h2 class="contact-title">Let's build something.</h2>
+        <p class="contact-sub">Open to freelance, full-time, and interesting side projects.</p>
+        <a href="mailto:hello@karol.dev" class="btn btn-primary paper-btn">Say hello ✉</a>
+        <div class="contact-links">
+          <a href="https://github.com" target="_blank" rel="noopener" class="contact-icon-link">GitHub</a>
+          <span class="separator">·</span>
+          <a href="https://linkedin.com" target="_blank" rel="noopener" class="contact-icon-link">LinkedIn</a>
+          <span class="separator">·</span>
+          <a href="https://twitter.com" target="_blank" rel="noopener" class="contact-icon-link">Twitter</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ────────────────────────────────────────────── -->
+  <footer class="footer">
+    <span>© 2026 Karol — crafted with CSS 3D & care</span>
+  </footer>
+
+  <script src="main.js" defer></script>
+</body>
+</html>
