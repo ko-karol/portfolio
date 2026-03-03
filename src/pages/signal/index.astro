@@ -1,0 +1,45 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SignalPost from '../../components/SignalPost.astro';
+
+const posts = [
+  {
+    title: 'Yes, and...',
+    url: 'https://htmx.org/essays/yes-and/',
+    author: 'Carson Gross',
+    date: '2026-02-27',
+    commentary: `A thoughtful piece on the future of programming in the age of AI. Gross argues that while AI can generate code, the core skills of problem-solving, complexity management, and understanding the code you ship will become even more valuable. His take: "You have to write the code."`,
+    tags: ['AI', 'Software Development', 'Career'],
+  },
+  // Add new signal boosts here in the future
+];
+---
+
+<Layout title="Signal | Karol">
+  <main id="main" class="section">
+    <div class="container">
+      <header class="section-header">
+        <p class="section-eyebrow">Signal</p>
+        <h1 class="section-title">
+          Valuable <span class="title-highlight">Reads</span>
+        </h1>
+        <p class="section-sub">
+          A curated collection of articles, essays, and resources I've found insightful. New additions will appear here.
+        </p>
+      </header>
+
+      <div class="project-grid">
+        {posts.map(post => (
+          <SignalPost
+            title={post.title}
+            url={post.url}
+            author={post.author}
+            date={post.date}
+            commentary={post.commentary}
+            tags={post.tags}
+          />
+        ))}
+      </div>
+    </div>
+  </main>
+</Layout>

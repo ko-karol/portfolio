@@ -1,0 +1,63 @@
+---
+const { title, url, author, date, tags, commentary } = Astro.props;
+---
+<article class="project-card">
+  <div class="card-fold"></div>
+  
+  <header class="card-header">
+    <div class="card-label">{author}</div>
+    <div class="card-dots">
+      <span></span><span></span><span></span>
+    </div>
+  </header>
+  
+  <h3 class="card-title">{title}</h3>
+  
+  {commentary && (
+    <blockquote class="card-desc">
+      {commentary}
+    </blockquote>
+  )}
+
+  <div class="card-metrics">
+    <div class="metric">
+        <span class="metric-val"><time datetime={date}>{new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</time></span>
+        <span class="metric-label">Published</span>
+    </div>
+  </div>
+
+  <footer class="card-footer">
+    {tags && tags.length > 0 && (
+        <div class="card-tags">
+          {tags.map((tag: string) => <span class="tag">{tag}</span>)}
+        </div>
+    )}
+    <a href={url} target="_blank" rel="noopener noreferrer" class="card-cta">
+      Read Article →
+    </a>
+  </footer>
+</article>
+
+<style>
+  /* Use existing styles from papercraft.css */
+  .project-card {
+    /* The component will inherit styles from the global papercraft.css */
+    /* Add any specific overrides here if necessary */
+    display: flex;
+    flex-direction: column;
+  }
+  .card-desc {
+    flex-grow: 1;
+    margin-top: 0.5rem;
+    font-family: var(--font-serif);
+    font-style: italic;
+    color: var(--ink-700);
+    border-left: 3px solid var(--ink-100);
+    padding-left: var(--space-sm);
+    font-size: .9rem;
+    line-height: 1.6;
+  }
+  .card-cta {
+    margin-left: auto;
+  }
+</style>
