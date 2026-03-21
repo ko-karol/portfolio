@@ -1,0 +1,301 @@
+---
+import CardFold from '../components/ui/CardFold.astro';
+
+const skills = ['JavaScript', 'TypeScript', 'React', 'Astro', 'SQLite', 'HTML/CSS', 'NixOS', 'Docker', 'AI Workflows'];
+
+const capabilities = [
+  { title: 'Programming Quality', desc: 'Maintainable code backed by rigorous automated testing.' },
+  { title: 'Frontend Craftsmanship', desc: 'Deep understanding of CSS, plain JS, and the DOM.' },
+  { title: 'System Integration', desc: 'Connecting front-end and back-end, migrating legacy databases, integrating AI APIs.' },
+  { title: 'DevOps & Infrastructure', desc: 'NixOS-based VPS management, Docker containerization, declarative system configuration.' },
+];
+
+const stats = [
+  { num: '3', label: 'years freelance' },
+  { num: '120+', label: 'tests written' },
+  { num: '∞', label: 'AI prompts crafted' },
+  { num: '100', label: 'Lighthouse scores' },
+];
+---
+
+<section class="section about-section" id="about" aria-labelledby="about-heading">
+  <div class="container">
+    <div class="about-layout">
+      <div class="about-left reveal">
+        <header class="section-header">
+          <p class="section-eyebrow">About me</p>
+          <h2 class="section-title" id="about-heading">
+            Structuring <span class="title-highlight">clean</span> applications.
+          </h2>
+        </header>
+        <div class="about-bio">
+          <p>
+            In an era where AI tools can quickly generate boilerplate code, my focus is on what automation can't do on its own: structuring clean applications, defining clear data flows, and effectively orchestrating AI to accelerate development without sacrificing code quality.
+          </p>
+          <p>
+            A graduate of the Founders &amp; Coders full-stack apprenticeship, I recently transitioned from 3 years of freelance development where I delivered professional, high-quality web solutions for charitable organizations.
+          </p>
+          <blockquote class="pi-philosophy">
+            <strong>Pi Philosophy:</strong> Leverage AI coding agents for rapid prototyping and boilerplate generation while maintaining human oversight for architecture decisions, code review, and quality assurance.
+          </blockquote>
+          <ul class="capabilities-list">
+            {capabilities.map(cap => (
+              <li><strong>{cap.title}</strong> — {cap.desc}</li>
+            ))}
+          </ul>
+        </div>
+        <div class="about-skills" aria-label="Skills">
+          {skills.map(skill => <span class="skill-chip">{skill}</span>)}
+        </div>
+      </div>
+
+      <div class="about-right reveal">
+        <div class="about-photo-card">
+          <CardFold />
+          <div class="about-photo" aria-label="Karol">K</div>
+          <div class="about-photo-caption">
+            <span>Karol</span>
+            <span class="caption-role">Full-Stack Developer</span>
+          </div>
+        </div>
+
+        <div class="stat-grid">
+          {stats.map(stat => (
+            <div class="stat-card reveal">
+              <span class="stat-num">{stat.num}</span>
+              <span class="stat-label">{stat.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .section {
+    padding: var(--space-2xl) 0 calc(var(--space-2xl) + 4vw);
+    position: relative;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+  }
+
+  .section-header {
+    margin-bottom: 3.5rem;
+  }
+
+  .section-eyebrow {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-300);
+    margin-bottom: 0.75rem;
+  }
+
+  .section-title {
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+
+  .title-highlight {
+    position: relative;
+    display: inline-block;
+  }
+
+  .title-highlight::after {
+    content: '';
+    position: absolute;
+    left: -0.1em;
+    right: -0.1em;
+    bottom: 0.05em;
+    height: 0.35em;
+    background: var(--yellow);
+    z-index: -1;
+    transform: rotate(-0.5deg);
+  }
+
+  .about-section {
+    background: rgba(237, 232, 223, 0.88);
+    z-index: 6;
+    margin-top: -4vw;
+    padding-top: calc(var(--space-2xl) + 4vw);
+    padding-bottom: calc(var(--space-2xl) + 6vw);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 6vw), 0 100%);
+  }
+
+  .about-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .about-bio {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    margin: var(--space-lg) 0;
+  }
+
+  .about-bio p { font-size: 0.95rem; }
+
+  .pi-philosophy {
+    margin: var(--space-md) 0;
+    padding: var(--space-md);
+    background: var(--paper-tan);
+    border-left: 4px solid var(--yellow);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    font-style: italic;
+    color: var(--ink-700);
+  }
+
+  .pi-philosophy strong { font-style: normal; color: var(--ink-900); }
+
+  .capabilities-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding-left: 0;
+  }
+
+  .capabilities-list li {
+    font-size: 0.9rem;
+    color: var(--ink-700);
+    line-height: 1.6;
+    padding-left: 1rem;
+    border-left: 2.5px solid var(--paper-tan);
+  }
+
+  .capabilities-list li strong { color: var(--ink-900); }
+
+  .about-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .skill-chip {
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 0.28rem 0.7rem;
+    border: 2px solid var(--ink-900);
+    border-radius: var(--radius);
+    background: var(--paper-white);
+    box-shadow: 2px 2px 0 var(--ink-900);
+    transition:
+      transform var(--dur) var(--ease-spring),
+      box-shadow var(--dur) var(--ease-out),
+      background var(--dur-fast);
+    cursor: default;
+  }
+
+  .skill-chip:hover {
+    transform: translate(-1px,-1px);
+    box-shadow: 3px 3px 0 var(--ink-900);
+    background: var(--yellow);
+  }
+
+  .about-photo-card {
+    position: relative;
+    background: var(--paper-white);
+    border: 2.5px solid var(--ink-900);
+    border-radius: var(--radius);
+    padding: var(--space-lg);
+    box-shadow: var(--shadow-md);
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+  }
+
+  .about-photo {
+    flex-shrink: 0;
+    width: 88px;
+    height: 88px;
+    background: var(--red);
+    color: #fff;
+    font-size: 2.4rem;
+    font-weight: 700;
+    display: grid;
+    place-items: center;
+    border: 2.5px solid var(--ink-900);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    transform: rotate(-2deg);
+  }
+
+  .about-photo-caption {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .about-photo-caption span:first-child {
+    font-size: 1.15rem;
+    font-weight: 700;
+  }
+
+  .caption-role {
+    font-size: 0.8rem;
+    color: var(--ink-300);
+    font-weight: 600;
+  }
+
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-md);
+    margin-top: var(--space-lg);
+  }
+
+  .stat-card {
+    background: var(--paper-white);
+    border: 2.5px solid var(--ink-900);
+    border-radius: var(--radius);
+    padding: var(--space-md) var(--space-lg);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    transition:
+      transform var(--dur) var(--ease-spring),
+      box-shadow var(--dur) var(--ease-out);
+  }
+
+  .stat-card:hover { transform: rotate(-1deg) translate(-1px,-1px); }
+
+  .stat-num {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+
+  .stat-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-300);
+  }
+
+  @media (max-width: 900px) {
+    .about-layout {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .about-photo-card {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+</style>

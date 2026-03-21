@@ -1,0 +1,97 @@
+---
+---
+
+<div class="currently-strip" aria-label="Currently">
+  <div class="tape tape-left"></div>
+  <div class="tape tape-right"></div>
+  <div class="currently-content">
+    <span class="currently-label">Now</span>
+    <span class="currently-item">Reading <em>SICP</em></span>
+    <span class="currently-dot">·</span>
+    <span class="currently-item">Building a NixOS home server</span>
+    <span class="currently-dot">·</span>
+    <span class="currently-item">Learning systems design patterns</span>
+  </div>
+</div>
+
+<style>
+  .currently-strip {
+    position: relative;
+    background: var(--paper-cream);
+    border-top: 2px dashed var(--ink-100);
+    border-bottom: 2px dashed var(--ink-100);
+    padding: 1.25rem 0;
+    margin: 0;
+    z-index: 9;
+  }
+
+  .tape {
+    position: absolute;
+    width: 60px;
+    height: 24px;
+    top: -12px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  }
+
+  .tape::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 2px,
+      rgba(255,255,255,0.3) 2px,
+      rgba(255,255,255,0.3) 4px
+    );
+  }
+
+  .tape-left {
+    left: 10%;
+    background: rgba(240, 144, 144, 0.6);
+    transform: rotate(-3deg);
+  }
+
+  .tape-right {
+    right: 10%;
+    background: rgba(245, 216, 122, 0.6);
+    transform: rotate(2deg);
+  }
+
+  .currently-content {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem 1rem;
+    padding: 0 var(--space-lg);
+    font-size: 0.9rem;
+    color: var(--ink-700);
+  }
+
+  .currently-label {
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.75rem;
+    color: var(--ink-300);
+    padding: 0.2em 0.6em;
+    background: var(--paper-white);
+    border: 1px solid var(--ink-100);
+    border-radius: var(--radius-sm);
+  }
+
+  .currently-item { white-space: nowrap; }
+  .currently-item em { font-style: italic; color: var(--ink-900); }
+  .currently-dot { color: var(--ink-300); }
+
+  @media (max-width: 640px) {
+    .currently-content {
+      flex-direction: column;
+      gap: 0.5rem;
+      text-align: center;
+    }
+    .currently-dot { display: none; }
+    .tape { width: 40px; height: 18px; }
+  }
+</style>

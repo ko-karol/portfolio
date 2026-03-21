@@ -1,0 +1,61 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="site-footer" role="contentinfo">
+  <div class="container footer-inner">
+    <span class="footer-brand">Karol.</span>
+    <span class="footer-copy">© {currentYear} — crafted with CSS & care</span>
+    <a href="/#hero" class="footer-back" aria-label="Back to top">↑ Top</a>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--ink-900);
+    color: var(--paper-white);
+    padding: var(--space-md) 0;
+    border-top: 2.5px solid var(--ink-900);
+  }
+
+  .footer-inner {
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+  }
+
+  .footer-brand {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--paper-white);
+  }
+
+  .footer-copy {
+    font-size: 0.8rem;
+    color: var(--ink-300);
+    margin-left: auto;
+  }
+
+  .footer-back {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--paper-white);
+    border-bottom: 1.5px solid var(--ink-500);
+    padding-bottom: 1px;
+    transition: color var(--dur-fast), border-color var(--dur-fast);
+  }
+
+  .footer-back:hover {
+    color: var(--yellow);
+    border-color: var(--yellow);
+  }
+
+  @media (max-width: 640px) {
+    .footer-copy {
+      display: none;
+    }
+  }
+</style>

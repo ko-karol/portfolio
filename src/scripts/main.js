@@ -124,19 +124,19 @@ function initNavShadow() {
   }, { passive: true });
 }
 
-// ─── PROJECT DETAIL — GSAP inline split ───────────────────────
+// ─── PROJECT DETAIL — desktop inline / mobile modal ──────────
 /*
- * When a card is clicked, the projects section reshapes:
- *   - project-list compresses to a narrow card column (GSAP width)
- *   - project-detail expands inline from 0 to fill the remaining space
- *
- * No fixed positioning. No overlay. The section itself changes shape.
+ * Desktop: inline split panel (GSAP width animation)
+ * Mobile: centered modal overlay
  */
 function initProjectDetail() {
   const layout    = $('#project-layout');
   const listEl    = $('#project-list');
   const detailEl  = $('#project-detail');
   const backBtn   = $('#project-detail-back');
+  const modalEl   = $('#modal');
+  const backdropEl = $('#modal-backdrop');
+  const modalCloseBtn = $('#modal-close');
 
   if (!layout || !listEl || !detailEl) return;
 
@@ -145,25 +145,26 @@ function initProjectDetail() {
   const isMobile    = () => window.innerWidth <= 768;
 
   // ── Populate detail content ──────────────────────────────────
-  function populate(projectId) {
+  function populate(projectId, useModal = false) {
     const data = PROJECTS[projectId];
     if (!data) return;
 
-    $('#detail-eyebrow').textContent  = data.label;
-    $('#detail-title').textContent    = data.title;
-    $('#detail-desc').textContent     = data.desc;
-    $('#detail-problem').textContent  = data.problem;
-    $('#detail-solution').textContent = data.solution;
-    $('#detail-outcome').textContent  = data.outcome;
-    $('#detail-link').href            = data.link;
+    const prefix = useModal ? '#sheet-' : '#detail-';
+    $(prefix + 'eyebrow').textContent  = data.label;
+    $(prefix + 'title').textContent    = data.title;
+    $(prefix + 'desc').textContent     = data.desc;
+    $(prefix + 'problem').textContent  = data.problem;
+    $(prefix + 'solution').textContent = data.solution;
+    $(prefix + 'outcome').textContent  = data.outcome;
+    $(prefix + 'link').href            = data.link;
 
-    $('#detail-metrics').innerHTML = data.metrics
+    $(prefix + 'metrics').innerHTML = data.metrics
       .map(m => `<div class="metric">
         <span class="metric-val">${m.val}</span>
         <span class="metric-label">${m.label}</span>
       </div>`).join('');
 
-    $('#detail-tags').innerHTML = data.tags
+    $(prefix + 'tags').innerHTML = data.tags
       .map(t => `<span class="tag">${t}</span>`).join('');
   }
 
@@ -171,78 +172,54 @@ function initProjectDetail() {
   function openDetail(projectId) {
     if (!PROJECTS[projectId]) return;
 
-    const isSwitch = openProjectId !== null && openProjectId !== projectId;
     lastFocused = document.activeElement;
 
-    // Mark active card
     $$('.project-card', layout).forEach(c =>
       c.classList.toggle('is-active', c.dataset.project === projectId)
     );
 
-    // If just switching project while panel is open, update content only
-    if (isSwitch) {
-      populate(projectId);
-      openProjectId = projectId;
-      const inner = $('.project-detail-inner', detailEl);
-      gsap.fromTo(inner,
-        { opacity: 0, x: isMobile() ? 0 : 15 },
-        { opacity: 1, x: 0, duration: 0.3, ease: 'power2.out' }
-      );
-      return;
-    }
-
-    populate(projectId);
+    populate(projectId, isMobile());
     openProjectId = projectId;
+
+    if (isMobile()) {
+      openModal();
+    } else {
+      openInlinePanel();
+    }
+  }
+
+  function openModal() {
+    if (!modalEl || !backdropEl) return;
+
+    modalEl.setAttribute('aria-hidden', 'false');
+    backdropEl.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+
+    // Force reflow
+    void modalEl.offsetHeight;
+
+    modalEl.classList.add('is-open');
+    backdropEl.classList.add('is-open');
+  }
+
+  function openInlinePanel() {
     layout.classList.add('detail-open');
     detailEl.setAttribute('aria-hidden', 'false');
 
     const inner = $('.project-detail-inner', detailEl);
+    const totalWidth  = layout.offsetWidth;
+    const listTarget  = Math.min(320, totalWidth * 0.35);
+    const detailTarget = totalWidth - listTarget;
 
-    if (isMobile()) {
-      // Mobile: detail expands below cards with opacity + translate
-      gsap.set(detailEl, { opacity: 0, y: 24 });
-      gsap.to(detailEl, {
-        opacity: 1,
-        y: 0,
-        duration: 0.4,
-        ease: 'power3.out',
-        onComplete: () => {
-          detailEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
-      });
-    } else {
-      // Desktop: compress list, expand detail sideways
-      const totalWidth  = layout.offsetWidth;
-      const listTarget  = Math.min(320, totalWidth * 0.35);
-      const detailTarget = totalWidth - listTarget;
+    gsap.set(listEl, { width: listEl.offsetWidth });
+    gsap.set(detailEl, { width: 0, opacity: 0 });
+    gsap.set(inner, { x: 40, opacity: 0 });
 
-      // Freeze current list width before animating
-      gsap.set(listEl, { width: listEl.offsetWidth });
-      gsap.set(detailEl, { width: 0, opacity: 0 });
-      gsap.set(inner, { x: 40, opacity: 0 });
+    const tl = gsap.timeline({ onComplete: () => backBtn && backBtn.focus() });
 
-      const tl = gsap.timeline({
-        onComplete: () => backBtn && backBtn.focus()
-      });
-
-      tl.to(listEl, {
-          width: listTarget,
-          duration: 0.5,
-          ease: 'power3.inOut'
-        })
-        .to(detailEl, {
-          width: detailTarget,
-          opacity: 1,
-          duration: 0.5,
-          ease: 'power3.inOut'
-        }, '<')
-        .to(inner, {
-          x: 0,
-          opacity: 1,
-          duration: 0.38,
-          ease: 'power2.out'
-        }, '-=0.18');
-    }
+    tl.to(listEl, { width: listTarget, duration: 0.5, ease: 'power3.inOut' })
+      .to(detailEl, { width: detailTarget, opacity: 1, duration: 0.5, ease: 'power3.inOut' }, '<')
+      .to(inner, { x: 0, opacity: 1, duration: 0.38, ease: 'power2.out' }, '-=0.18');
   }
 
   // ── Close ────────────────────────────────────────────────────
@@ -250,45 +227,49 @@ function initProjectDetail() {
     if (!openProjectId) return;
 
     $$('.project-card', layout).forEach(c => c.classList.remove('is-active'));
-    detailEl.setAttribute('aria-hidden', 'true');
-
-    const inner = $('.project-detail-inner', detailEl);
 
     if (isMobile()) {
-      gsap.to(detailEl, {
-        opacity: 0,
-        y: 16,
-        duration: 0.3,
-        ease: 'power2.in',
-        onComplete: () => {
-          layout.classList.remove('detail-open');
-          gsap.set(detailEl, { clearProps: 'all' });
-          openProjectId = null;
-          if (lastFocused) lastFocused.focus();
-        }
-      });
+      closeModal();
     } else {
-      const tl = gsap.timeline({
-        onComplete: () => {
-          layout.classList.remove('detail-open');
-          // Clear all GSAP inline styles so flex layout reasserts naturally
-          gsap.set([listEl, detailEl, inner], { clearProps: 'all' });
-          openProjectId = null;
-          if (lastFocused) lastFocused.focus();
-        }
-      });
-
-      tl.to(inner, { x: 30, opacity: 0, duration: 0.22, ease: 'power2.in' })
-        .to(detailEl, { width: 0, opacity: 0, duration: 0.42, ease: 'power3.inOut' }, '-=0.05')
-        .to(listEl,   { width: layout.offsetWidth, duration: 0.42, ease: 'power3.inOut' }, '<');
+      closeInlinePanel();
     }
+  }
+
+  function closeModal() {
+    if (!modalEl || !backdropEl) return;
+
+    modalEl.classList.remove('is-open');
+    backdropEl.classList.remove('is-open');
+
+    setTimeout(() => {
+      modalEl.setAttribute('aria-hidden', 'true');
+      backdropEl.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      openProjectId = null;
+      if (lastFocused) lastFocused.focus();
+    }, 250);
+  }
+
+  function closeInlinePanel() {
+    const inner = $('.project-detail-inner', detailEl);
+
+    const tl = gsap.timeline({
+      onComplete: () => {
+        layout.classList.remove('detail-open');
+        gsap.set([listEl, detailEl, inner], { clearProps: 'all' });
+        openProjectId = null;
+        if (lastFocused) lastFocused.focus();
+      }
+    });
+
+    tl.to(inner, { x: 30, opacity: 0, duration: 0.22, ease: 'power2.in' })
+      .to(detailEl, { width: 0, opacity: 0, duration: 0.42, ease: 'power3.inOut' }, '-=0.05')
+      .to(listEl, { width: layout.offsetWidth, duration: 0.42, ease: 'power3.inOut' }, '<');
   }
 
   // ── Event listeners ───────────────────────────────────────────
   $$('.project-card', layout).forEach(card => {
-    // Skip client projects — they link directly to the live site
     if (card.classList.contains('client-project')) return;
-
     card.addEventListener('click', () => openDetail(card.dataset.project));
     card.addEventListener('keydown', e => {
       if (e.key === 'Enter' || e.key === ' ') {
@@ -299,21 +280,26 @@ function initProjectDetail() {
   });
 
   backBtn && backBtn.addEventListener('click', closeDetail);
+  modalCloseBtn && modalCloseBtn.addEventListener('click', closeDetail);
+  backdropEl && backdropEl.addEventListener('click', e => {
+    // Only close if clicking the backdrop itself, not the modal
+    if (e.target === backdropEl) closeDetail();
+  });
 
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && openProjectId) closeDetail();
   });
 
-  // Recalculate widths on resize if panel is open
+  // Recalculate widths on resize (desktop only)
   let resizeTimer;
   window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(() => {
       if (!openProjectId || isMobile()) return;
-      const totalWidth  = layout.offsetWidth;
-      const listTarget  = Math.min(320, totalWidth * 0.35);
+      const totalWidth = layout.offsetWidth;
+      const listTarget = Math.min(320, totalWidth * 0.35);
       const detailTarget = totalWidth - listTarget;
-      gsap.set(listEl,   { width: listTarget });
+      gsap.set(listEl, { width: listTarget });
       gsap.set(detailEl, { width: detailTarget });
     }, 150);
   }, { passive: true });

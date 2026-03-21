@@ -1,0 +1,86 @@
+{
+  "nextId": 11,
+  "todos": [
+    {
+      "id": 2,
+      "text": "Extract CSS tokens to styles/tokens.css",
+      "done": true,
+      "priority": "high",
+      "tag": "css",
+      "created": "2026-03-21",
+      "completed": "2026-03-21"
+    },
+    {
+      "id": 3,
+      "text": "Create global base/reset/utilities files",
+      "done": true,
+      "priority": "high",
+      "tag": "css",
+      "created": "2026-03-21",
+      "completed": "2026-03-21"
+    },
+    {
+      "id": 4,
+      "text": "Create scoped component files (Nav, Card, etc.)",
+      "done": true,
+      "priority": "high",
+      "tag": "css",
+      "created": "2026-03-21",
+      "completed": "2026-03-21"
+    },
+    {
+      "id": 5,
+      "text": "Update Layout.astro to import new styles",
+      "done": true,
+      "priority": "high",
+      "tag": "css",
+      "created": "2026-03-21",
+      "completed": "2026-03-21"
+    },
+    {
+      "id": 6,
+      "text": "Extract Hero section to sections/Hero.astro",
+      "done": true,
+      "priority": "high",
+      "tag": "refactor",
+      "created": "2026-03-21",
+      "completed": "2026-03-21"
+    },
+    {
+      "id": 7,
+      "text": "Extract Work/Projects section to sections/Work.astro",
+      "done": true,
+      "priority": "high",
+      "tag": "refactor",
+      "created": "2026-03-21",
+      "completed": "2026-03-21"
+    },
+    {
+      "id": 8,
+      "text": "Extract About section to sections/About.astro",
+      "done": true,
+      "priority": "high",
+      "tag": "refactor",
+      "created": "2026-03-21",
+      "completed": "2026-03-21"
+    },
+    {
+      "id": 9,
+      "text": "Extract Contact section to sections/Contact.astro",
+      "done": true,
+      "priority": "high",
+      "tag": "refactor",
+      "created": "2026-03-21",
+      "completed": "2026-03-21"
+    },
+    {
+      "id": 10,
+      "text": "Create shared UI components (Button, CardFold, etc.)",
+      "done": true,
+      "priority": "medium",
+      "tag": "refactor",
+      "created": "2026-03-21",
+      "completed": "2026-03-21"
+    }
+  ]
+}

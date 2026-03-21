@@ -1,0 +1,38 @@
+---
+interface Props {
+  color?: 'red' | 'yellow' | 'green' | 'blue' | 'purple';
+  position?: 'center' | 'left';
+}
+
+const { color = 'red', position = 'center' } = Astro.props;
+---
+
+<div class:list={['card-tape', `tape-${color}`, position]}></div>
+
+<style>
+  .card-tape {
+    position: absolute;
+    top: -6px;
+    width: 48px;
+    height: 14px;
+    border-radius: 1px;
+    opacity: 0.75;
+    z-index: 3;
+  }
+
+  .card-tape.center {
+    left: 50%;
+    translate: -50% 0;
+  }
+
+  .card-tape.left {
+    left: 1.5rem;
+    translate: none;
+  }
+
+  .tape-red    { background: #f09090; }
+  .tape-yellow { background: #f5d87a; }
+  .tape-green  { background: #8acc8a; }
+  .tape-blue   { background: #7aaad8; }
+  .tape-purple { background: #b8a8d8; }
+</style>
