@@ -3,14 +3,17 @@
  *
  * Responsibilities:
  *  1. Mark js-ready immediately so CSS reveals work
- *  2. Load scene.js dynamically after first paint (keeps initial HTML fast)
- *  3. Maintain shared `state` object that scene.js reads every frame
- *  4. Scroll reveal, active nav, mobile nav, modal, contact form
+ *  2. Load scene.js dynamically after first paint
+ *  3. Scroll reveal, active nav, mobile nav
+ *  4. Project detail — GSAP-powered inline split (no overlay, no fixed panel)
+ *  5. Contact form
  */
+
+import { gsap } from 'gsap';
 
 'use strict';
 
-// ─── SHARED STATE (written here, read by scene.js each frame) ──
+// ─── SHARED STATE ─────────────────────────────────────────────
 export const state = {
   scrollY: 0,
   mouseX: 0,
@@ -23,27 +26,27 @@ document.documentElement.classList.add('js-ready');
 // ─── PROJECT DATA ─────────────────────────────────────────────
 const PROJECTS = {
   repwise: {
-    label:    'Local-First Mobile App',
+    label:    'Personal Project',
     title:    'Repwise',
-    desc:     'A production-ready, local-first React Native strength training app. Built with an Expo SQLite database and a custom natural language parsing engine. Backed by a robust suite of 120+ passing Jest tests to ensure offline reliability.',
-    metrics:  [{ val: '120+', label: 'Jest tests' }, { val: '100%', label: 'Offline' }],
-    tags:     ['React Native', 'Expo', 'TypeScript', 'SQLite', 'Jest'],
-    problem:  'Fitness apps rely on cloud connections that drop in gym basements. They also force slow, clunky UI taps to enter workout data instead of just letting users type naturally.',
-    solution: 'Built a custom natural language parsing engine to quickly log workouts. A local-first architecture using Expo SQLite ensures instant interactions and complete offline functionality, validated by an extensive test suite.',
-    outcome:  'A lightning-fast, highly reliable app where users can log their strength training uninterrupted, regardless of internet connectivity.',
-    link: 'https://github.com/ko-karol/strength-app',
+    desc:     'React Native app for tracking strength training with natural language input.',
+    metrics:  [],
+    tags:     ['React Native', 'TypeScript', 'SQLite'],
+    problem:  'Logging workouts on phones is tedious — too many taps, too much waiting.',
+    solution: 'Built a simple parser that understands plain text like "bench 3x5 80kg" and converts it to structured data. SQLite keeps everything local and fast.',
+    outcome:  'Quick workout logging that works offline. Still in development.',
+    link:     'https://github.com/ko-karol/strength-app',
   },
   lifeofdeath: {
-    label:    'Interactive Web Tribute',
+    label:    'Experiment',
     title:    'The Life of Death',
-    desc:     'A responsive, interactive web tribute showcasing strong command of semantic HTML, modern CSS, pacing, and frontend visual storytelling. Designed to prove that technical code must serve the user experience.',
-    metrics:  [{ val: '100', label: 'Lighthouse' }, { val: '0', label: 'Dependencies' }],
-    tags:     ['HTML', 'CSS', 'JavaScript', 'UI/UX Design'],
-    problem:  'Most modern websites lose the art of pacing and visual storytelling, relying heavily on bulky JavaScript frameworks to do what native web technologies can already handle elegantly.',
-    solution: 'Engineered a tribute site using only semantic HTML, scoped CSS, and minimal plain JavaScript. Focused entirely on rhythm, smooth interactions, and responsive design without heavy libraries.',
-    outcome:  'A beautifully paced, blisteringly fast interactive experience that respects the user\'s device resources and attention.',
-    link: 'https://ko-karol.github.io/life-of-death-tribute/',
-  }
+    desc:     'Interactive web tribute for an animated short film. No frameworks.',
+    metrics:  [],
+    tags:     ['HTML', 'CSS', 'JavaScript'],
+    problem:  'Wanted to see how far I could push storytelling with just the basics.',
+    solution: 'Used semantic HTML for structure, CSS for rhythm and animations, and minimal JS for interactions. No build step, no dependencies.',
+    outcome:  'A lightweight, fast-loading tribute that respects the source material.',
+    link:     'https://ko-karol.github.io/life-of-death-tribute/',
+  },
 };
 
 // ─── UTILS ────────────────────────────────────────────────────
@@ -121,75 +124,199 @@ function initNavShadow() {
   }, { passive: true });
 }
 
-// ─── MODAL ────────────────────────────────────────────────────
-function initModal() {
-  const overlay  = $('#modal-overlay');
-  const closeBtn = $('#modal-close');
-  if (!overlay) return;
+// ─── PROJECT DETAIL — GSAP inline split ───────────────────────
+/*
+ * When a card is clicked, the projects section reshapes:
+ *   - project-list compresses to a narrow card column (GSAP width)
+ *   - project-detail expands inline from 0 to fill the remaining space
+ *
+ * No fixed positioning. No overlay. The section itself changes shape.
+ */
+function initProjectDetail() {
+  const layout    = $('#project-layout');
+  const listEl    = $('#project-list');
+  const detailEl  = $('#project-detail');
+  const backBtn   = $('#project-detail-back');
 
-  let lastFocused = null;
+  if (!layout || !listEl || !detailEl) return;
 
-  function openModal(projectId) {
+  let openProjectId = null;
+  let lastFocused   = null;
+  const isMobile    = () => window.innerWidth <= 768;
+
+  // ── Populate detail content ──────────────────────────────────
+  function populate(projectId) {
     const data = PROJECTS[projectId];
     if (!data) return;
 
-    $('#modal-eyebrow').textContent  = data.label;
-    $('#modal-title').textContent    = data.title;
-    $('#modal-desc').textContent     = data.desc;
-    $('#modal-problem').textContent  = data.problem;
-    $('#modal-solution').textContent = data.solution;
-    $('#modal-outcome').textContent  = data.outcome;
+    $('#detail-eyebrow').textContent  = data.label;
+    $('#detail-title').textContent    = data.title;
+    $('#detail-desc').textContent     = data.desc;
+    $('#detail-problem').textContent  = data.problem;
+    $('#detail-solution').textContent = data.solution;
+    $('#detail-outcome').textContent  = data.outcome;
+    $('#detail-link').href            = data.link;
 
-    $('#modal-metrics').innerHTML = data.metrics
-      .map((m) => `<div class="metric">
+    $('#detail-metrics').innerHTML = data.metrics
+      .map(m => `<div class="metric">
         <span class="metric-val">${m.val}</span>
         <span class="metric-label">${m.label}</span>
       </div>`).join('');
 
-    $('#modal-tags').innerHTML = data.tags
-      .map((t) => `<span class="tag">${t}</span>`).join('');
-
-    $('#modal-link').href = data.link;
-
-    const show = () => {
-      overlay.hidden = false;
-      lastFocused = document.activeElement;
-      setTimeout(() => closeBtn.focus(), 50);
-    };
-
-    if (document.startViewTransition) document.startViewTransition(show);
-    else show();
+    $('#detail-tags').innerHTML = data.tags
+      .map(t => `<span class="tag">${t}</span>`).join('');
   }
 
-  function closeModal() {
-    const hide = () => { overlay.hidden = true; if (lastFocused) lastFocused.focus(); };
-    if (document.startViewTransition) document.startViewTransition(hide);
-    else hide();
+  // ── Open ─────────────────────────────────────────────────────
+  function openDetail(projectId) {
+    if (!PROJECTS[projectId]) return;
+
+    const isSwitch = openProjectId !== null && openProjectId !== projectId;
+    lastFocused = document.activeElement;
+
+    // Mark active card
+    $$('.project-card', layout).forEach(c =>
+      c.classList.toggle('is-active', c.dataset.project === projectId)
+    );
+
+    // If just switching project while panel is open, update content only
+    if (isSwitch) {
+      populate(projectId);
+      openProjectId = projectId;
+      const inner = $('.project-detail-inner', detailEl);
+      gsap.fromTo(inner,
+        { opacity: 0, x: isMobile() ? 0 : 15 },
+        { opacity: 1, x: 0, duration: 0.3, ease: 'power2.out' }
+      );
+      return;
+    }
+
+    populate(projectId);
+    openProjectId = projectId;
+    layout.classList.add('detail-open');
+    detailEl.setAttribute('aria-hidden', 'false');
+
+    const inner = $('.project-detail-inner', detailEl);
+
+    if (isMobile()) {
+      // Mobile: detail expands below cards with opacity + translate
+      gsap.set(detailEl, { opacity: 0, y: 24 });
+      gsap.to(detailEl, {
+        opacity: 1,
+        y: 0,
+        duration: 0.4,
+        ease: 'power3.out',
+        onComplete: () => {
+          detailEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      });
+    } else {
+      // Desktop: compress list, expand detail sideways
+      const totalWidth  = layout.offsetWidth;
+      const listTarget  = Math.min(320, totalWidth * 0.35);
+      const detailTarget = totalWidth - listTarget;
+
+      // Freeze current list width before animating
+      gsap.set(listEl, { width: listEl.offsetWidth });
+      gsap.set(detailEl, { width: 0, opacity: 0 });
+      gsap.set(inner, { x: 40, opacity: 0 });
+
+      const tl = gsap.timeline({
+        onComplete: () => backBtn && backBtn.focus()
+      });
+
+      tl.to(listEl, {
+          width: listTarget,
+          duration: 0.5,
+          ease: 'power3.inOut'
+        })
+        .to(detailEl, {
+          width: detailTarget,
+          opacity: 1,
+          duration: 0.5,
+          ease: 'power3.inOut'
+        }, '<')
+        .to(inner, {
+          x: 0,
+          opacity: 1,
+          duration: 0.38,
+          ease: 'power2.out'
+        }, '-=0.18');
+    }
   }
 
-  $$('.project-card').forEach((card) => {
-    const handler = () => openModal(card.dataset.project);
-    card.addEventListener('click', handler);
-    card.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handler(); }
+  // ── Close ────────────────────────────────────────────────────
+  function closeDetail() {
+    if (!openProjectId) return;
+
+    $$('.project-card', layout).forEach(c => c.classList.remove('is-active'));
+    detailEl.setAttribute('aria-hidden', 'true');
+
+    const inner = $('.project-detail-inner', detailEl);
+
+    if (isMobile()) {
+      gsap.to(detailEl, {
+        opacity: 0,
+        y: 16,
+        duration: 0.3,
+        ease: 'power2.in',
+        onComplete: () => {
+          layout.classList.remove('detail-open');
+          gsap.set(detailEl, { clearProps: 'all' });
+          openProjectId = null;
+          if (lastFocused) lastFocused.focus();
+        }
+      });
+    } else {
+      const tl = gsap.timeline({
+        onComplete: () => {
+          layout.classList.remove('detail-open');
+          // Clear all GSAP inline styles so flex layout reasserts naturally
+          gsap.set([listEl, detailEl, inner], { clearProps: 'all' });
+          openProjectId = null;
+          if (lastFocused) lastFocused.focus();
+        }
+      });
+
+      tl.to(inner, { x: 30, opacity: 0, duration: 0.22, ease: 'power2.in' })
+        .to(detailEl, { width: 0, opacity: 0, duration: 0.42, ease: 'power3.inOut' }, '-=0.05')
+        .to(listEl,   { width: layout.offsetWidth, duration: 0.42, ease: 'power3.inOut' }, '<');
+    }
+  }
+
+  // ── Event listeners ───────────────────────────────────────────
+  $$('.project-card', layout).forEach(card => {
+    // Skip client projects — they link directly to the live site
+    if (card.classList.contains('client-project')) return;
+
+    card.addEventListener('click', () => openDetail(card.dataset.project));
+    card.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openDetail(card.dataset.project);
+      }
     });
   });
 
-  closeBtn.addEventListener('click', closeModal);
-  overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && !overlay.hidden) closeModal();
+  backBtn && backBtn.addEventListener('click', closeDetail);
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && openProjectId) closeDetail();
   });
 
-  // Focus trap
-  overlay.addEventListener('keydown', (e) => {
-    if (e.key !== 'Tab') return;
-    const focusable = $$('button,a,input,textarea,[tabindex]:not([tabindex="-1"])', overlay);
-    const first = focusable[0];
-    const last  = focusable[focusable.length - 1];
-    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-  });
+  // Recalculate widths on resize if panel is open
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      if (!openProjectId || isMobile()) return;
+      const totalWidth  = layout.offsetWidth;
+      const listTarget  = Math.min(320, totalWidth * 0.35);
+      const detailTarget = totalWidth - listTarget;
+      gsap.set(listEl,   { width: listTarget });
+      gsap.set(detailEl, { width: detailTarget });
+    }, 150);
+  }, { passive: true });
 }
 
 // ─── CONTACT FORM ─────────────────────────────────────────────
@@ -220,15 +347,13 @@ function initContactForm() {
         status.style.color = 'var(--green)';
       } else {
         const data = await res.json();
-        if (Object.hasOwn(data, 'errors')) {
-          status.textContent = data.errors.map(err => err.message).join(', ');
-        } else {
-          status.textContent = "Oops! There was a problem submitting your form.";
-        }
+        status.textContent = Object.hasOwn(data, 'errors')
+          ? data.errors.map(err => err.message).join(', ')
+          : 'Oops! There was a problem submitting your form.';
         status.style.color = 'var(--red)';
       }
-    } catch (err) {
-      status.textContent = "Oops! There was a problem submitting your form.";
+    } catch {
+      status.textContent = 'Oops! There was a problem submitting your form.';
       status.style.color = 'var(--red)';
     } finally {
       btn.disabled = false;
@@ -243,15 +368,10 @@ function initThree() {
   const canvas = $('#bg-canvas');
   if (!canvas) return;
 
-  // Bail early if WebGL unavailable — CSS body bg shows instead
   const probe = document.createElement('canvas');
   const hasWebGL = !!(probe.getContext('webgl2') || probe.getContext('webgl'));
-  if (!hasWebGL) {
-    document.body.classList.add('no-webgl');
-    return;
-  }
+  if (!hasWebGL) { document.body.classList.add('no-webgl'); return; }
 
-  // Double-rAF: wait for browser to paint the HTML before loading Three.js
   requestAnimationFrame(() => {
     requestAnimationFrame(async () => {
       try {
@@ -275,7 +395,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initActiveNav();
   initMobileNav();
   initNavShadow();
-  initModal();
+  initProjectDetail();
   initContactForm();
   initThree();
 });
