@@ -1,21 +1,7 @@
 ---
 import CardFold from '../components/ui/CardFold.astro';
 
-const skills = ['JavaScript', 'TypeScript', 'React', 'Astro', 'SQLite', 'HTML/CSS', 'NixOS', 'Docker', 'AI Workflows'];
-
-const capabilities = [
-  { title: 'Programming Quality', desc: 'Maintainable code backed by rigorous automated testing.' },
-  { title: 'Frontend Craftsmanship', desc: 'Deep understanding of CSS, plain JS, and the DOM.' },
-  { title: 'System Integration', desc: 'Connecting front-end and back-end, migrating legacy databases, integrating AI APIs.' },
-  { title: 'DevOps & Infrastructure', desc: 'NixOS-based VPS management, Docker containerization, declarative system configuration.' },
-];
-
-const stats = [
-  { num: '3', label: 'years freelance' },
-  { num: '120+', label: 'tests written' },
-  { num: '∞', label: 'AI prompts crafted' },
-  { num: '100', label: 'Lighthouse scores' },
-];
+const skills = ['JavaScript', 'TypeScript', 'React', 'Astro', 'SQLite', 'NixOS', 'Docker'];
 ---
 
 <section class="section about-section" id="about" aria-labelledby="about-heading">
@@ -23,26 +9,17 @@ const stats = [
     <div class="about-layout">
       <div class="about-left reveal">
         <header class="section-header">
-          <p class="section-eyebrow">About me</p>
           <h2 class="section-title" id="about-heading">
-            Structuring <span class="title-highlight">clean</span> applications.
+            Full-stack <span class="title-highlight">developer</span>.
           </h2>
         </header>
         <div class="about-bio">
           <p>
-            In an era where AI tools can quickly generate boilerplate code, my focus is on what automation can't do on its own: structuring clean applications, defining clear data flows, and effectively orchestrating AI to accelerate development without sacrificing code quality.
+            I build clean, resilient web applications. Founders &amp; Coders graduate, formerly freelance for charitable organizations.
           </p>
-          <p>
-            A graduate of the Founders &amp; Coders full-stack apprenticeship, I recently transitioned from 3 years of freelance development where I delivered professional, high-quality web solutions for charitable organizations.
+          <p class="pi-note">
+            I work with AI coding agents (Pi) for rapid prototyping and boilerplate generation—always with human oversight for architecture decisions, code review, and quality assurance.
           </p>
-          <blockquote class="pi-philosophy">
-            <strong>Pi Philosophy:</strong> Leverage AI coding agents for rapid prototyping and boilerplate generation while maintaining human oversight for architecture decisions, code review, and quality assurance.
-          </blockquote>
-          <ul class="capabilities-list">
-            {capabilities.map(cap => (
-              <li><strong>{cap.title}</strong> — {cap.desc}</li>
-            ))}
-          </ul>
         </div>
         <div class="about-skills" aria-label="Skills">
           {skills.map(skill => <span class="skill-chip">{skill}</span>)}
@@ -55,17 +32,8 @@ const stats = [
           <div class="about-photo" aria-label="Karol">K</div>
           <div class="about-photo-caption">
             <span>Karol</span>
-            <span class="caption-role">Full-Stack Developer</span>
+            <span class="caption-role">Available for work</span>
           </div>
-        </div>
-
-        <div class="stat-grid">
-          {stats.map(stat => (
-            <div class="stat-card reveal">
-              <span class="stat-num">{stat.num}</span>
-              <span class="stat-label">{stat.label}</span>
-            </div>
-          ))}
         </div>
       </div>
     </div>
@@ -123,10 +91,7 @@ const stats = [
   .about-section {
     background: rgba(237, 232, 223, 0.88);
     z-index: 6;
-    margin-top: -4vw;
-    padding-top: calc(var(--space-2xl) + 4vw);
-    padding-bottom: calc(var(--space-2xl) + 6vw);
-    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 6vw), 0 100%);
+    padding: var(--space-2xl) 0;
   }
 
   .about-layout {
@@ -143,37 +108,19 @@ const stats = [
     margin: var(--space-lg) 0;
   }
 
-  .about-bio p { font-size: 0.95rem; }
-
-  .pi-philosophy {
-    margin: var(--space-md) 0;
-    padding: var(--space-md);
-    background: var(--paper-tan);
-    border-left: 4px solid var(--yellow);
-    border-radius: 0 var(--radius) var(--radius) 0;
-    font-style: italic;
+  .about-bio p {
+    font-size: 1rem;
+    line-height: 1.7;
     color: var(--ink-700);
   }
 
-  .pi-philosophy strong { font-style: normal; color: var(--ink-900); }
-
-  .capabilities-list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    padding-left: 0;
-  }
-
-  .capabilities-list li {
+  .pi-note {
     font-size: 0.9rem;
-    color: var(--ink-700);
-    line-height: 1.6;
-    padding-left: 1rem;
-    border-left: 2.5px solid var(--paper-tan);
+    padding: 0.75rem 1rem;
+    background: var(--paper-white);
+    border-left: 3px solid var(--yellow);
+    color: var(--ink-600);
   }
-
-  .capabilities-list li strong { color: var(--ink-900); }
 
   .about-skills {
     display: flex;
@@ -245,44 +192,6 @@ const stats = [
     font-size: 0.8rem;
     color: var(--ink-300);
     font-weight: 600;
-  }
-
-  .stat-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-md);
-    margin-top: var(--space-lg);
-  }
-
-  .stat-card {
-    background: var(--paper-white);
-    border: 2.5px solid var(--ink-900);
-    border-radius: var(--radius);
-    padding: var(--space-md) var(--space-lg);
-    box-shadow: var(--shadow-sm);
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
-    transition:
-      transform var(--dur) var(--ease-spring),
-      box-shadow var(--dur) var(--ease-out);
-  }
-
-  .stat-card:hover { transform: rotate(-1deg) translate(-1px,-1px); }
-
-  .stat-num {
-    font-size: 2rem;
-    font-weight: 700;
-    line-height: 1;
-    letter-spacing: -0.03em;
-  }
-
-  .stat-label {
-    font-size: 0.72rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--ink-300);
   }
 
   @media (max-width: 900px) {

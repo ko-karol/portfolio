@@ -65,18 +65,15 @@ const personalProjects = [
 <section class="section work-section" id="work" aria-labelledby="work-heading">
   <div class="container">
     <header class="section-header reveal">
-      <p class="section-eyebrow">Selected work</p>
       <h2 class="section-title" id="work-heading">
         Things I've <span class="title-highlight">built</span>.
       </h2>
-      <p class="section-sub">Client sites, personal projects, experiments.</p>
     </header>
 
     <div class="project-layout" id="project-layout">
       <div class="project-list" id="project-list">
         <h3 class="project-group-heading reveal">Client Work</h3>
         {clientProjects.map(p => <ProjectCard {...p} />)}
-
         <h3 class="project-group-heading reveal">Personal Projects</h3>
         {personalProjects.map(p => <ProjectCard {...p} />)}
       </div>
@@ -150,15 +147,6 @@ const personalProjects = [
     margin-bottom: 3.5rem;
   }
 
-  .section-eyebrow {
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--ink-300);
-    margin-bottom: 0.75rem;
-  }
-
   .section-title {
     font-size: clamp(2rem, 4.5vw, 3rem);
     letter-spacing: -0.03em;
@@ -191,9 +179,7 @@ const personalProjects = [
 
   .work-section {
     z-index: 8;
-    margin-top: -6vw;
-    padding-top: calc(var(--space-2xl) + 6vw);
-    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 4vw), 0 100%);
+    padding: var(--space-2xl) 0;
   }
 
   .project-layout {
@@ -218,17 +204,15 @@ const personalProjects = [
 
   .project-group-heading {
     flex: 1 1 100%;
-    font-size: 0.9rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--ink-400);
-    margin: 0.5rem 0 0.25rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid var(--ink-100);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ink-600);
+    margin: 1.5rem 0 0.5rem;
   }
 
-  .project-group-heading:first-child { margin-top: 0; }
+  .project-group-heading:first-child {
+    margin-top: 0;
+  }
 
   .project-detail {
     width: 0;
