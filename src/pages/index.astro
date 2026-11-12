@@ -7,13 +7,13 @@ import ProjectList from '../components/ProjectList.astro';
   description="Full-stack developer working with TypeScript, React and Node.js. Available for freelance and full-time work."
 >
   <div class="home">
-      <section class="intro">
+      <section class="intro panel">
         <h1>Full-Stack Developer</h1>
         <p class="lead">TypeScript, React, Node.js. Available for freelance and full-time work.</p>
         <p class="cta"><a href="#work">See projects</a> <a href="#contact">Get in touch</a></p>
       </section>
 
-      <section class="about">
+      <section class="about panel">
         <h2>About</h2>
         <p>I build web applications. Founders &amp; Coders graduate, three years freelancing for charitable organisations. Based in the UK, working remotely.</p>
         <p>I use AI coding agents for prototyping and boilerplate, with human review of architecture and code.</p>
@@ -25,7 +25,7 @@ import ProjectList from '../components/ProjectList.astro';
         </dl>
       </section>
 
-    <section id="contact">
+    <section id="contact" class="panel">
         <div class="contact-head">
           <h2>Contact</h2>
           <p><a href="mailto:karol@ko-karol.com">karol@ko-karol.com</a></p>
@@ -50,7 +50,7 @@ import ProjectList from '../components/ProjectList.astro';
 
     <section id="work" class="work">
       <h2 class="work-title">Work</h2>
-      <ProjectList eager compact />
+      <ProjectList eager />
     </section>
   </div>
 </Layout>

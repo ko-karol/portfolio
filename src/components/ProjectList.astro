@@ -5,124 +5,100 @@ import projectsData from '../data/projects.json';
 
 interface Props {
   eager?: boolean;
-  groups?: boolean;
-  compact?: boolean;
+  heading?: 'h2' | 'h3';
 }
 
-const { eager = false, groups = false, compact = false } = Astro.props;
+const { eager = false, heading: Heading = 'h3' } = Astro.props;
 const order = projectsData.map((p) => p.id);
 const all = (await getCollection('projects')).sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
 
-// Screenshots live in src/assets/projects/<id>.jpg; projects without one get a text tile in the preview.
+// Screenshots live in src/assets/projects/<id>.jpg; projects without one get a type-only tile.
 const shots = import.meta.glob<{ default: ImageMetadata }>('../assets/projects/*.jpg', { eager: true });
 const shotFor = (id: string) => shots[`../assets/projects/${id}.jpg`]?.default;
-
-const sections = groups
-  ? [
-      { label: 'Client work', items: all.filter((p) => p.data.kind === 'client') },
-      { label: 'Personal projects', items: all.filter((p) => p.data.kind === 'personal') },
-    ]
-  : [{ label: '', items: all }];
-
-// Row template of the desktop list column (groups mode): heading, group label, rows, group label, rows.
-const rows = `auto ${sections.map((s) => `auto repeat(${s.items.length}, minmax(0, 1fr))`).join(' ')}`;
+const kinds = { client: 'Client work', personal: 'Personal project' };
 ---
 
-<div class:list={['index', { compact, groups }]} style={groups ? `--rows:${rows}` : undefined}>
-  <slot />
-  {sections.map(({ label, items }) => (
-    <>
-      {label && <h2 class="group">{label}</h2>}
-      <ol class="rows">
-        {items.map(({ id, data }) => {
-          const shot = shotFor(id);
-          const first = all[0].id === id;
-          return (
-            <li class="row">
-              {shot ? (
-                <a class="pv shot" href={data.url} tabindex="-1" aria-hidden="true">
-                  <Image src={shot} alt="" width={1280} widths={[480, 720, 1024, 1280, 1600]} sizes="(min-width: 64rem) 70vw, (min-width: 40rem) 50vw, 100vw" loading={eager && first ? 'eager' : 'lazy'} fetchpriority={eager && first ? 'high' : undefined} decoding={eager && first ? 'sync' : 'async'} style={data.focus ? `object-position: ${data.focus}` : undefined} />
-                </a>
-              ) : (
-                <div class="pv shot noshot" aria-hidden="true">{data.title}</div>
-              )}
-              <h3 class="title"><a href={data.url}>{data.title}</a></h3>
-              <div class="pv cap">
-                <p class="desc">{data.description}</p>
-                <ul class="tags">
-                  {data.tags.map((t) => <li>{t}</li>)}
-                </ul>
-              </div>
-            </li>
-          );
-        })}
-      </ol>
-    </>
-  ))}
-</div>
+<ul class="tiles">
+  {all.map(({ id, data }, i) => {
+    const shot = shotFor(id);
+    const first = i === 0;
+    return (
+      <li class:list={['tile', { noshot: !shot }]}>
+        <div class="cap">
+          <Heading class="title"><a href={data.url}>{data.title}</a></Heading>
+          <ul class="tags">
+            {data.tags.map((t) => <li>{t}</li>)}
+          </ul>
+        </div>
+        <div class="media">
+          <p class="kind">{kinds[data.kind]}</p>
+          {shot ? (
+            <Image src={shot} alt="" width={1280} widths={[480, 720, 1024, 1280, 1600]} sizes="(min-width: 64rem) 40vw, (min-width: 40rem) 50vw, 100vw" loading={eager && first ? 'eager' : 'lazy'} fetchpriority={eager && first ? 'high' : undefined} decoding={eager && first ? 'sync' : 'async'} style={data.focus ? `object-position: ${data.focus}` : undefined} />
+          ) : (
+            <span class="notile" aria-hidden="true">{data.title}</span>
+          )}
+          <p class="desc">{data.description}</p>
+        </div>
+      </li>
+    );
+  })}
+</ul>
 
 <style>
-  .index { counter-reset: row; display: grid; grid-template-columns: minmax(0, 1fr); gap: 2.5rem 1.5rem; }
-  .index > :global(h1), .group { grid-column: 1 / -1; }
-  .group { margin: 0.5rem 0 -1rem; font-size: 1.25rem; font-weight: 600; color: var(--muted); letter-spacing: -0.01em; }
-  .rows { display: contents; list-style: none; margin: 0; padding: 0; }
+  .tiles { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--gap); }
+  .tile { position: relative; display: flex; flex-direction: column; min-width: 0; min-height: 0; overflow: hidden; border-radius: var(--radius); background: var(--tile); }
+  .media { display: contents; }
+  .media img, .notile { order: 1; }
+  .cap { order: 2; background: var(--ink); color: var(--on-ink); padding: 0.85rem 1.1rem 1rem; }
+  .media img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; object-position: top; }
+  .notile { display: grid; place-items: center; aspect-ratio: 16 / 9; padding: 1.5rem; background: var(--lime); color: var(--on-accent); font-size: clamp(2rem, 6vw, 3.5rem); font-weight: 800; letter-spacing: -0.04em; text-align: center; line-height: 1; }
+  .desc { order: 3; margin: 0; padding: 1rem 1.1rem 1.1rem; background: var(--tile); color: var(--fg); flex: 1; }
 
-  /* Phone / tablet: image, then title, then caption. */
-  .row { display: flex; flex-direction: column; min-width: 0; }
-  .shot { order: -1; display: block; position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 2px; background: var(--surface); }
-  .shot img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; }
-  .noshot { display: none; }
-  .title { counter-increment: row; margin: 1rem 0 0; font-size: 1.5rem; line-height: 1.2; font-weight: 650; letter-spacing: -0.02em; }
-  .title a { color: var(--fg); text-decoration: none; }
-  .title a::after { content: ' \2197'; color: var(--accent); }
-  .title a:hover { color: var(--accent); }
-  .cap { margin-top: 0.5rem; }
-  .desc { margin: 0 0 0.75rem; color: var(--muted); max-width: 40rem; }
-  .cap .tags { color: var(--fg); }
+  .title { margin: 0; font-size: 1.25rem; line-height: 1.2; font-weight: 750; letter-spacing: -0.025em; }
+  .title a { color: inherit; text-decoration: none; }
+  .title a::after { content: ''; position: absolute; inset: 0; z-index: 3; }
+  .title a:focus-visible { outline: none; }
+  .tile:has(a:focus-visible) { outline: 3px solid var(--fg); outline-offset: 2px; }
+  .kind { position: absolute; z-index: 2; top: 0.6rem; left: 0.6rem; margin: 0; padding: 0.15rem 0.65rem; border-radius: 99px; background: var(--ink); color: var(--on-ink); font-size: 0.875rem; font-weight: 600; line-height: 1.5; }
+  .tags { display: flex; flex-wrap: wrap; gap: 0 0.6rem; margin: 0.3rem 0 0; padding: 0; list-style: none; font-size: 0.9375rem; color: var(--on-ink-muted); }
+  .tags li + li::before { content: '/'; margin-right: 0.6rem; color: var(--ink-line); }
 
   @media (min-width: 40rem) {
-    .index { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3rem 2rem; }
+    .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
 
-  /* Desktop: one large preview, list or filmstrip beside/below it. Hover or focus picks the preview, first by default. */
+  /* Desktop bento: the tile is a fixed cell; screenshot fills it, caption sits on a solid strip,
+     description covers the screenshot on hover/focus (always in the DOM for assistive tech). */
   @media (min-width: 64rem) and (min-height: 34rem) {
-    .index { height: 100%; min-height: 0; grid-template-columns: minmax(0, 1fr) clamp(18rem, 22vw, 26rem); grid-template-rows: var(--rows); gap: 0 clamp(2rem, 3.5vw, 4rem); }
-    .row { display: contents; }
-    .index > :global(h1), .group { grid-column: 2; }
-    .group { margin: 0; align-self: end; padding-bottom: 0.4rem; font-size: 1rem; }
-    .pv { grid-column: 1; grid-row: 1 / -1; visibility: hidden; opacity: 0; }
-    .shot { order: 0; aspect-ratio: auto; min-height: 0; }
-    .shot img { position: absolute; inset: 0; }
-    .noshot { display: grid; place-items: center; padding: 2rem; font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 700; letter-spacing: -0.03em; color: var(--muted); text-align: center; }
-    .cap { position: relative; z-index: 1; align-self: end; margin: 0; padding: 1.25rem 1.5rem; background: rgb(8 8 9 / 0.86); color: #f3f2ef; }
-    .cap .desc { color: #d6d6da; max-width: 46rem; margin-bottom: 0.5rem; }
-    .cap .tags { color: #f3f2ef; }
-    .row:is(:hover, :focus-within) .pv,
-    .rows:first-of-type .row:first-child .pv { visibility: visible; opacity: 1; }
-    .index:has(.row:is(:hover, :focus-within)) .rows:first-of-type .row:first-child:not(:hover, :focus-within) .pv { visibility: hidden; opacity: 0; }
-
-    .title { grid-column: 2; position: relative; display: flex; align-items: center; margin: 0; border-top: 1px solid var(--line); font-size: clamp(1.25rem, 1.7vw, 1.6rem); }
-    .title::before { content: counter(row, decimal-leading-zero) / ''; width: 2.5rem; flex: none; font-size: 0.9rem; font-weight: 500; letter-spacing: 0; color: var(--muted); font-variant-numeric: tabular-nums; }
-    .title a { flex: 1; }
-    .title a::after { position: absolute; inset: 0; text-align: right; padding-right: 0.25rem; line-height: 1; display: flex; align-items: center; justify-content: flex-end; opacity: 0; }
-    .title a:focus-visible { outline: none; }
-    .title:has(a:focus-visible) { outline: 2px solid var(--accent); outline-offset: -2px; }
-    .row:is(:hover, :focus-within) .title { border-top-color: var(--accent); }
-    .row:is(:hover, :focus-within) .title a::after { opacity: 1; }
-    .row:is(:hover, :focus-within) .title::before { color: var(--accent); }
-    .index:not(:has(.row:is(:hover, :focus-within))) .rows:first-of-type .row:first-child .title { border-top-color: var(--accent); }
-    .index:not(:has(.row:is(:hover, :focus-within))) .rows:first-of-type .row:first-child .title::before { color: var(--accent); }
-
-    /* Home: filmstrip of titles under the preview. */
-    .compact { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: minmax(0, 1fr) auto auto; gap: 0 1.5rem; }
-    .compact .pv { grid-column: 1 / -1; grid-row: 1; }
-    .compact .title { grid-column: auto; padding: 0.7rem 0; font-size: clamp(1.05rem, 1.25vw, 1.25rem); }
-    .compact .row:nth-child(-n + 3) .title { margin-top: 1rem; }
-    .compact .title::before { width: 2rem; }
-    .compact .title a::after { display: none; }
+    .tiles { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); height: 100%; min-height: 0; }
+    .tile:nth-child(1) { grid-column: 1 / 5; }
+    .tile:nth-child(2) { grid-column: 5 / 8; }
+    .tile:nth-child(3) { grid-column: 8 / 11; }
+    .tile:nth-child(4) { grid-column: 1 / 4; }
+    .tile:nth-child(5) { grid-column: 4 / 8; }
+    .tile:nth-child(6) { grid-column: 8 / 11; }
+    .media img, .notile { position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; }
+    .cap { padding: 0.6rem 1rem 0.7rem; }
+    .title { font-size: clamp(1.125rem, 1.35vw, 1.5rem); }
+    .tags { margin-top: 0.15rem; }
+    @media (max-width: 80rem) {
+      .tags { gap: 0 0.75rem; font-size: 0.875rem; }
+      .tags li + li::before { display: none; }
+    }
+    /* The description covers the whole tile; the title stays readable at the bottom of it. */
+    .media { display: block; order: 1; flex: 1; min-height: 0; }
+    .desc { order: 0; }
+    .media img, .notile { z-index: 0; }
+    .desc { position: absolute; inset: 0; z-index: 1; overflow: auto; padding: 1rem 1.1rem 4.75rem; font-size: 1rem; line-height: 1.45; opacity: 0; }
+    .cap { position: relative; z-index: 2; }
+    .tile:is(:hover, :focus-within) .desc { opacity: 1; }
+    .tile:is(:hover, :focus-within) .cap { background: transparent; color: var(--fg); }
+    .tile:is(:hover, :focus-within) .tags, .tile:is(:hover, :focus-within) .kind { opacity: 0; }
+    .tile:is(:hover, :focus-within) .title { text-decoration: underline; text-decoration-color: var(--orange); text-decoration-thickness: 3px; text-underline-offset: 0.2em; }
   }
-
   @media (min-width: 64rem) and (min-height: 34rem) and (prefers-reduced-motion: no-preference) {
-    .pv { transition: opacity 0.18s ease-out, visibility 0.18s; }
+    .desc { transition: opacity 0.15s ease-out; }
+    .media img { transition: transform 0.4s ease-out; }
+    .tile:is(:hover, :focus-within) .media img { transform: scale(1.03); }
   }
 </style>
