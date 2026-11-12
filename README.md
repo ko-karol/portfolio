@@ -20,11 +20,11 @@ Requires Node 22.12 or newer. Run from the project root.
 public/            static assets (favicons, robots.txt)
 src/
 ├── assets/projects/  project screenshots, named <project id>.jpg
-├── components/       ProjectList (project cards)
+├── components/       ProjectList (project index + preview)
 ├── data/             projects.json, reads.json (content collection sources)
 ├── layouts/          base HTML layout, nav, footer
 ├── pages/            index, projects, signal, 404
-├── scripts/          fit-grid (no-scroll layout), contact form submit, GSAP reveals
+├── scripts/          contact form submit, GSAP reveals
 ├── styles/           global.css
 └── content.config.ts collection schemas
 docs/archive.md       archived notes and data from earlier iterations
@@ -33,6 +33,6 @@ AGENTS.md             design and content rules for contributors
 
 ## Content
 
-- Add a project: append an entry to `src/data/projects.json` and, optionally, drop a 16:9 screenshot at `src/assets/projects/<id>.jpg`. Without one the card renders without an image.
+- Add a project: append an entry to `src/data/projects.json` and, optionally, drop a 16:9 screenshot at `src/assets/projects/<id>.jpg`. Without one the row renders without a preview image.
 - Add a read: append an entry to `src/data/reads.json`.
 
