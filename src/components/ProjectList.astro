@@ -34,18 +34,21 @@ const shotFor = (id: string) => shots[`../assets/projects/${id}.jpg`]?.default;
 </div>
 
 <style>
-  .posts { display: grid; grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr)); gap: 1.5rem; align-items: start; margin-top: 1rem; }
+  .posts { display: grid; grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr)); gap: 1.5rem; margin-top: 1rem; }
   article {
     position: relative;
     border: 1px solid color-mix(in srgb, var(--muted) 50%, transparent);
     border-radius: 0.5rem;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
   }
   article:hover { border-color: var(--link); }
   article:focus-within { outline: 2px solid var(--link); outline-offset: 2px; }
 
-  img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; object-position: top; }
-  .body { padding: 1rem; }
+  img { flex: none; display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; object-position: top; }
+  .body { padding: 1rem; flex: 1; display: flex; flex-direction: column; }
+  .tags { margin-top: auto; }
   h3 { margin: 0 0 0.4rem; font-size: 1.15rem; }
   h3 a { text-decoration: none; }
   h3 a:hover { text-decoration: underline; }

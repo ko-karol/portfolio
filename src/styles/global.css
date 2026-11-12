@@ -65,3 +65,6 @@ html { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
 }
+
+.lead { font-size: 1.25rem; margin-bottom: 0.75rem; }
+.cta { display: flex; gap: 1.25rem; }
