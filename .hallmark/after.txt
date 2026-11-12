@@ -1,0 +1,13 @@
+render tier: 4 hero screenshots in /home/karol/projects/portfolio/.hallmark/shots (1280x800, 1440x900, 1920x1080 and 375x812 first screens)
+http://127.0.0.1:4321
+  FAIL 40 :1 [1280px] contrast 2.51:1 against the pixels behind < 4.5:1 on span.currently-label "NOW" | fix: Raise the contrast to threshold
+  FAIL 40 :1 [1280px] contrast 2.51:1 against the pixels behind < 4.5:1 on span.caption-role "Available for work"
+  FAIL 40 :1 [1280px] contrast 2.30:1 against the pixels behind < 4.5:1 on span.card-label "CLIENT SITE"
+  FAIL 40 :1 [1280px] contrast 2.20:1 against the pixels behind < 4.5:1 on h3.detail-section-title "CONTEXT"
+  FAIL 40 :1 [1280px] computed contrast 3.46:1 < 4.5:1 on a.btn.btn-primary "View project ↗"
+  FAIL 40 :1 [1280px] contrast 3.46:1 against the pixels behind < 4.5:1 on span "karol@ko-karol.com"
+  FAIL 40 :1 [1280px] contrast 3.46:1 against the pixels behind < 4.5:1 on button.btn.btn-primary "Send message"
+src/sections/Hero.astro
+  REFLEX 38iii :83 accented word inside a heading (.hero-name) | fix: Set the whole head one way: a line break, a second line at a second size, or the whole head in the accent. Guard: the theme names the coloured word as its signature and it appears once on the page, in the hero
+  WARN 23 :150 accent background on viewport-scale rule ".hero-primary:active" | fix: Accent stays <= 5% of a viewport; large fills belong to paper/field tokens or a declared posture in the stamp
+sloplint: 7 FAIL, 1 REFLEX, 1 WARN across 1 file(s) and 1 URL(s) (hero stage).
