@@ -84,7 +84,11 @@ const shotFor = (id: string) => shots[`../assets/projects/${id}.jpg`]?.default;
   /* In fit mode a text-only card fills its cell instead of leaving dead space below it. */
   :global(html.fit) article:not(:has(img)) { align-self: stretch; }
   :global(html.fit) article:not(:has(img)) .body { flex: 1; justify-content: center; }
-  :global(html.fit) article:not(:has(img)) .body h3 { font-size: 1.15rem; }
-  :global(html.fit) article:not(:has(img)) .body p { font-size: 0.95rem; }
+  @media (min-width: 90rem) {
+    :global(html.fit) article:not(:has(img)) .body { padding: 1rem 1.25rem; }
+    :global(html.fit) article:not(:has(img)) .body h3 { font-size: 1.4rem; margin-bottom: 0.4rem; }
+    :global(html.fit) article:not(:has(img)) .body p { font-size: 1.05rem; line-height: 1.5; margin-bottom: 0.75rem; }
+    :global(html.fit) article:not(:has(img)) .tags { margin-top: 0; }
+  }
   :global(html.fit) img { flex: 1 1 0; min-height: 5rem; aspect-ratio: auto; height: auto; }
 </style>

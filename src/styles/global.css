@@ -211,3 +211,7 @@ html.fit :is(.work, .split > section) { display: flex; flex-direction: column; m
   header { margin-bottom: 0.5rem; }
   footer { margin-top: 0.4rem; }
 }
+
+/* Large screens: scale everything (all sizes are rem) so the UI doesn't feel tiny. */
+@media (min-width: 100rem) and (min-height: 60rem) { html { font-size: 125%; } }
+@media (min-width: 137.5rem) and (min-height: 80rem) { html { font-size: 166.67%; } }

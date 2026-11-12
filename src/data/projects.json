@@ -9,7 +9,8 @@
       "WordPress",
       "PHP",
       "CSS"
-    ]
+    ],
+    "focus": "80% 45%"
   },
   {
     "id": "guild-of-psychotherapists",
@@ -21,7 +22,8 @@
       "WordPress",
       "Migration",
       "Custom Search"
-    ]
+    ],
+    "focus": "30% top"
   },
   {
     "id": "claire-lynch-consulting",
