@@ -7,13 +7,17 @@
   --fg: #f4f2ee;
   --muted: #b0b0b8;
   --line: #34343a;
-  --link: #ff9a63;
+  --link: #9fabff;
+  --blue: #2a37ff;
+  --on-blue: #ffffff;
+  --paper: #f4f1e8;
+  --on-paper: #101012;
   /* the two accents are solid fills with dark text in both themes */
-  --orange: #ff6a2e;
-  --lime: #d6f55b;
+    --lime: #d6f55b;
   --on-accent: #120d08;
   /* caption strips over screenshots */
   --ink: #0d0d10;
+  --tile-rule: #34343c;
   --on-ink: #f4f2ee;
   --on-ink-muted: #b4b4bc;
   --ink-line: #54545c;
@@ -24,12 +28,13 @@
 
 @media (prefers-color-scheme: light) {
   :root {
-    --bg: #e4e2db;
-    --tile: #f6f4ef;
+    --bg: #dedbd0;
+    --tile: #f4f1e8;
     --fg: #111110;
     --muted: #55555a;
     --line: #cbc8bf;
-    --link: #a83c07;
+    --link: #2230d8;
+    --tile-rule: #0d0d10;
   }
 }
 
@@ -52,7 +57,7 @@ body {
 }
 
 h1, h2, h3 { margin: 0; line-height: 1.05; letter-spacing: -0.035em; }
-h1 { font-size: clamp(2.75rem, 11vw, 4.5rem); font-weight: 800; letter-spacing: -0.05em; }
+h1 { font-size: clamp(2.75rem, 11vw, 4.5rem); font-weight: 900; letter-spacing: -0.055em; text-transform: uppercase; line-height: 0.92; }
 h2 { font-size: 1.375rem; font-weight: 750; }
 p { margin: 0 0 1rem; }
 ul { list-style: none; padding: 0; }
@@ -66,11 +71,11 @@ a { color: var(--link); text-underline-offset: 0.2em; }
 header, footer { padding-inline: calc(var(--pad) + 0.25rem); }
 header { display: flex; align-items: center; justify-content: space-between; min-height: 3.5rem; }
 .name { font-size: 1.375rem; font-weight: 800; letter-spacing: -0.04em; color: var(--fg); text-decoration: none; }
-.name::after { content: ''; display: inline-block; width: 0.45em; height: 0.45em; margin-left: 0.15em; border-radius: 50%; background: var(--orange); }
+.name::after { content: ''; display: inline-block; width: 0.45em; height: 0.45em; margin-left: 0.15em; border-radius: 50%; background: var(--lime); }
 nav { display: flex; gap: 0.25rem; }
 nav a { padding: 0.4rem 0.9rem; color: var(--fg); text-decoration: none; font-weight: 600; border-radius: 99px; }
-nav a:hover { background: var(--tile); }
-nav a[aria-current='page'] { background: var(--orange); color: var(--on-accent); }
+nav a:hover { background: var(--tile); color: var(--on-paper); }
+nav a[aria-current='page'] { background: var(--blue); color: var(--on-blue); }
 
 main { flex: 1; padding: 0 var(--pad) var(--pad); }
 footer { display: flex; align-items: center; min-height: 2.75rem; color: var(--muted); font-size: 0.9375rem; }
@@ -81,12 +86,13 @@ footer a:hover { color: var(--link); }
 
 /* Tiles */
 .panel { background: var(--tile); border-radius: var(--radius); padding: 1.5rem; min-width: 0; }
-.intro { background: var(--orange); color: var(--on-accent); display: flex; flex-direction: column; justify-content: flex-end; }
+.intro { background: var(--blue); color: var(--on-blue); display: flex; flex-direction: column; justify-content: flex-end; }
 .intro a { color: inherit; }
 .lead { font-size: 1.25rem; line-height: 1.4; font-weight: 500; max-width: 30rem; margin: 1.25rem 0 1.5rem; }
 .cta { display: flex; flex-wrap: wrap; gap: 0.75rem 1.5rem; align-items: center; margin: 0; font-weight: 700; }
-.cta a:first-child { padding: 0.7rem 1.3rem; background: var(--on-accent); color: #fff; text-decoration: none; border-radius: 99px; }
-.cta a:first-child:hover { background: #2b2118; }
+.cta a:first-child { padding: 0.65rem 1.3rem; background: var(--lime); color: var(--on-accent); text-decoration: none; border-radius: 0.5rem; border: 2px solid var(--on-accent); text-transform: uppercase; letter-spacing: 0.04em; font-size: 0.9375rem; font-weight: 800; }
+.cta a:first-child:hover { background: #fff; }
+.intro :focus-visible { outline-color: #fff; }
 
 /* Home */
 .work-title { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; margin: 0; }
@@ -96,9 +102,12 @@ footer a:hover { color: var(--link); }
 .home .about { order: 3; }
 .home #contact { order: 4; }
 .about h2, #contact h2 { margin-bottom: 0.9rem; }
+.about { background: var(--paper); color: var(--on-paper); border: 3px solid var(--on-paper); }
+.about h2, #contact h2 { text-transform: uppercase; letter-spacing: 0.04em; font-size: 1rem; font-weight: 900; }
+.about a { color: #2230d8; }
 .about p { max-width: 36rem; }
-dl { display: grid; grid-template-columns: max-content 1fr; gap: 0.35rem 1.25rem; margin: 1.25rem 0 0; padding-top: 1rem; border-top: 1px solid var(--line); }
-dt { color: var(--muted); }
+dl { --line: #bdb9ac; --muted: #55555a; display: grid; grid-template-columns: max-content 1fr; gap: 0.35rem 1.25rem; margin: 1.25rem 0 0; padding-top: 1rem; border-top: 1px solid var(--line); }
+dt { color: var(--muted); text-transform: uppercase; font-size: 0.8125rem; letter-spacing: 0.06em; font-weight: 700; padding-top: 0.15em; }
 dd { margin: 0; }
 
 /* Contact tile + form */
@@ -107,26 +116,27 @@ dd { margin: 0; }
 .contact-head p { margin: 0 0 1.25rem; font-weight: 600; }
 form { display: grid; gap: 0.9rem; max-width: 36rem; }
 .field { display: grid; gap: 0.25rem; min-width: 0; }
-label { font-size: 0.9375rem; font-weight: 600; }
+label { font-size: 0.8125rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; }
 input, textarea, button { font: inherit; padding: 0.65rem 0.85rem; border-radius: 0.5rem; }
+#contact :focus-visible { outline-color: var(--on-accent); }
 input, textarea { width: 100%; color: #111; background: #fbfde9; border: 2px solid var(--on-accent); }
 textarea { resize: vertical; }
-button { cursor: pointer; min-height: 3rem; padding-inline: 1.5rem; border: 0; background: var(--on-accent); color: #fff; font-weight: 700; }
-button:hover { background: #2b2118; }
+button { cursor: pointer; min-height: 3rem; padding-inline: 1.5rem; border: 2px solid var(--on-accent); background: var(--blue); color: var(--on-blue); font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; }
+button:hover { background: var(--on-accent); }
 button[disabled] { cursor: wait; opacity: 0.7; }
 .status { margin: 0; font-weight: 600; }
 
 /* Projects page */
 .projects { display: grid; gap: var(--gap); }
-.projects h1 { background: var(--orange); color: var(--on-accent); border-radius: var(--radius); padding: 1.5rem; display: flex; align-items: flex-end; min-height: 10rem; font-size: clamp(3.5rem, 18vw, 6rem); }
+.projects h1 { background: var(--blue); color: var(--on-blue); border-radius: var(--radius); padding: 1.5rem; display: flex; align-items: flex-end; min-height: 10rem; font-size: clamp(3.5rem, 18vw, 6rem); }
 
 /* Signal */
-.signal-head { background: var(--orange); color: var(--on-accent); border-radius: var(--radius); padding: clamp(1.5rem, 4vw, 3rem); margin-bottom: var(--gap); }
+.signal-head { background: var(--blue); color: var(--on-blue); border-radius: var(--radius); padding: clamp(1.5rem, 4vw, 3rem); margin-bottom: var(--gap); }
 .signal-head p { margin: 1.25rem 0 0; font-size: 1.25rem; font-weight: 500; max-width: 36rem; }
 .reads { display: grid; gap: var(--gap); }
 .read { display: grid; gap: 0.75rem 2.5rem; padding: clamp(1.25rem, 3vw, 2rem); background: var(--tile); border-radius: var(--radius); }
 .read h2 { font-size: clamp(1.6rem, 3vw, 2.25rem); }
-.read h2 a { color: var(--fg); text-decoration-color: var(--orange); text-decoration-thickness: 3px; }
+.read h2 a { color: var(--fg); text-decoration-color: var(--blue); text-decoration-thickness: 3px; }
 .read h2 a:hover { color: var(--link); }
 .read h2 + .meta { margin-top: 0.4rem; }
 .read .meta { margin: 0; color: var(--muted); }
@@ -159,7 +169,7 @@ main > h1 { margin: 0 0 1rem; padding-top: 2rem; }
   main > .signal, main > h1, main > p { flex: none; }
 
   .home {
-    --left: clamp(19rem, 27vw, 32rem);
+    --left: clamp(19rem, 29vw, 34rem);
     grid-template-columns: var(--left) minmax(0, 1fr);
     grid-template-rows: auto minmax(0, 1fr) auto;
     grid-template-areas: 'intro work' 'about work' 'about contact';
@@ -170,7 +180,7 @@ main > h1 { margin: 0 0 1rem; padding-top: 2rem; }
   .home .work { grid-area: work; display: flex; flex-direction: column; }
   .home #contact { grid-area: contact; }
   .home .intro { padding: 1.75rem; }
-  .home h1 { font-size: clamp(3rem, 4.4vw, 5.5rem); }
+  .home h1 { font-size: clamp(3rem, 4.6vw, 6rem); }
   .lead { margin: 1rem 0 1.25rem; font-size: 1.1875rem; }
   .home .work > .tiles { flex: 1; }
   .about h2 { margin-bottom: 0.6rem; }
@@ -189,16 +199,17 @@ main > h1 { margin: 0 0 1rem; padding-top: 2rem; }
   .home #contact button { min-height: 2.9rem; }
 
   .projects {
+    --left: clamp(19rem, 29vw, 34rem);
     height: 100%;
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto minmax(0, 1fr);
+    grid-template-columns: var(--left) minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
   }
-  .projects h1 { padding: 0.9rem 1.75rem 1.1rem; font-size: clamp(3.5rem, 6.4vw, 8rem); line-height: 0.9; align-items: flex-end; min-height: 0; }
+  .projects h1 { padding: 1.5rem 1.25rem; font-size: clamp(2.5rem, 4.6vw, 6rem); line-height: 0.9; align-items: flex-end; min-height: 0; overflow: hidden; overflow-wrap: anywhere; }
   .projects > .tiles { min-height: 0; }
 }
 
 @media (min-width: 64rem) and (min-height: 34rem) and (max-height: 52rem) {
-  .home { --left: clamp(22rem, 34vw, 36rem); }
+  .home, .projects { --left: clamp(21rem, 30vw, 36rem); }
   header { min-height: 3rem; }
   footer { min-height: 2.25rem; }
   .home .intro, .home .about { padding: 1.1rem 1.25rem; }
@@ -208,6 +219,7 @@ main > h1 { margin: 0 0 1rem; padding-top: 2rem; }
   .about p { margin-bottom: 0.5rem; }
   dl { margin-top: 0.4rem; padding-top: 0.5rem; gap: 0.1rem 1rem; }
   .home #contact { padding-block: 0.75rem 0.85rem; }
+  .home .about { padding: 0.9rem 1.1rem; line-height: 1.45; }
 }
 
 /* Large screens: scale rem so the UI doesn't feel tiny. */
