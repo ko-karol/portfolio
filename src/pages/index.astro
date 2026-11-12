@@ -25,6 +25,36 @@ import Layout from '../layouts/Layout.astro';
       <label for="message">Message</label>
       <textarea id="message" name="message" rows="6" required></textarea>
       <button type="submit">Send message</button>
+      <p class="status" role="status"></p>
     </form>
   </section>
 </Layout>
+
+
+<script>
+  // Enhancement: submit via fetch. Without JS the form posts normally.
+  const form = document.querySelector<HTMLFormElement>('form[action^="https://formspree.io"]');
+  const status = form?.querySelector<HTMLElement>('.status');
+  const button = form?.querySelector<HTMLButtonElement>('button');
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!status || !button) return;
+    button.disabled = true;
+    status.textContent = '';
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { Accept: 'application/json' },
+      });
+      if (!res.ok) throw new Error(String(res.status));
+      form.reset();
+      status.textContent = "Message sent — I'll get back to you soon.";
+    } catch {
+      status.textContent = 'Oops! There was a problem submitting your form.';
+    } finally {
+      button.disabled = false;
+    }
+  });
+</script>

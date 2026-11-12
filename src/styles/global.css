@@ -1,27 +1,66 @@
+:root {
+  color-scheme: light dark;
+  --fg: #111;
+  --bg: #fff;
+  --muted: #555;
+  --link: #0645ad;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fg: #eee;
+    --bg: #111;
+    --muted: #aaa;
+    --link: #8ab4f8;
+  }
+}
+
 body {
   font-family: system-ui, sans-serif;
   line-height: 1.5;
   max-width: 40rem;
   margin: 0 auto;
   padding: 1rem;
-  color: #111;
-  background: #fff;
+  color: var(--fg);
+  background: var(--bg);
+}
+
+a { color: var(--link); }
+:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+
+.skip {
+  position: absolute;
+  left: -999px;
+}
+.skip:focus {
+  left: 1rem;
+  top: 1rem;
+  background: var(--bg);
+  padding: 0.25rem 0.5rem;
 }
 
 header { margin-bottom: 2rem; }
 .name { font-weight: bold; font-size: 1.5rem; text-decoration: none; color: inherit; }
-nav { margin-top: 0.5rem; }
-nav a { margin-right: 1rem; }
+nav { margin-top: 0.5rem; display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; }
+nav a[aria-current="page"] { color: inherit; font-weight: bold; text-decoration: none; }
 
 section { margin-top: 2.5rem; }
 
 ul { list-style: none; padding: 0; }
 li { margin-bottom: 1.5rem; }
 li p { margin: 0.25rem 0; }
-.tags { color: #555; font-size: 0.9rem; }
+blockquote { margin: 0.5rem 0; padding-left: 1rem; border-left: 3px solid var(--muted); }
+.tags { color: var(--muted); font-size: 0.9rem; }
 
 form { display: grid; gap: 0.5rem; max-width: 28rem; }
 input, textarea, button { font: inherit; padding: 0.5rem; }
-button { justify-self: start; cursor: pointer; }
+button { justify-self: start; cursor: pointer; min-height: 2.75rem; }
+button[disabled] { cursor: wait; }
+.status { margin: 0; }
 
-footer { margin-top: 3rem; color: #555; }
+footer { margin-top: 3rem; color: var(--muted); }
+
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
