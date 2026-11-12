@@ -20,7 +20,7 @@ Requires Node 22.12 or newer. Run from the project root.
 public/            static assets (favicons, robots.txt)
 src/
 ├── assets/projects/  project screenshots, named <project id>.jpg
-├── components/       ProjectList (project index + preview)
+├── components/       ProjectList (large preview + title list/filmstrip)
 ├── data/             projects.json, reads.json (content collection sources)
 ├── layouts/          base HTML layout, nav, footer
 ├── pages/            index, projects, signal, 404
@@ -33,6 +33,6 @@ AGENTS.md             design and content rules for contributors
 
 ## Content
 
-- Add a project: append an entry to `src/data/projects.json` and, optionally, drop a 16:9 screenshot at `src/assets/projects/<id>.jpg`. Without one the row renders without a preview image.
+- Add a project: append an entry to `src/data/projects.json` and, optionally, drop a 16:9 screenshot at `src/assets/projects/<id>.jpg`. Without one the project renders a text tile instead of a preview image.
 - Add a read: append an entry to `src/data/reads.json`.
 

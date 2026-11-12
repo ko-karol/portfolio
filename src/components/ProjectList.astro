@@ -4,21 +4,18 @@ import { Image } from 'astro:assets';
 import projectsData from '../data/projects.json';
 
 interface Props {
-  kind?: 'client' | 'personal';
-  ids?: string[];
   eager?: boolean;
   groups?: boolean;
   compact?: boolean;
 }
 
-const { kind, ids, eager = false, groups = false, compact = false } = Astro.props;
+const { eager = false, groups = false, compact = false } = Astro.props;
 const order = projectsData.map((p) => p.id);
-const all = (await getCollection('projects', ({ id, data }) => (ids ? ids.includes(id) : kind ? data.kind === kind : true))).sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
+const all = (await getCollection('projects')).sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
 
-// Screenshots live in src/assets/projects/<id>.jpg; projects without one render without an image.
+// Screenshots live in src/assets/projects/<id>.jpg; projects without one get a text tile in the preview.
 const shots = import.meta.glob<{ default: ImageMetadata }>('../assets/projects/*.jpg', { eager: true });
 const shotFor = (id: string) => shots[`../assets/projects/${id}.jpg`]?.default;
-const host = (url: string) => new URL(url).host;
 
 const sections = groups
   ? [
@@ -27,165 +24,105 @@ const sections = groups
     ]
   : [{ label: '', items: all }];
 
-// Preview panels are shown by CSS alone: the hovered/focused row wins, otherwise the first project.
-const first = all[0]?.id;
-const rules = all
-  .map(({ id }) => `.index:has(#r-${id}:is(:hover,:focus-within)) #p-${id}{opacity:1;visibility:visible}`)
-  .join('');
-const fallback = first ? `.index:not(:has(.row:is(:hover,:focus-within))) #p-${first}{opacity:1;visibility:visible}` : '';
+// Row template of the desktop list column (groups mode): heading, group label, rows, group label, rows.
+const rows = `auto ${sections.map((s) => `auto repeat(${s.items.length}, minmax(0, 1fr))`).join(' ')}`;
 ---
 
-<div class:list={['index', { compact }]}>
-  <div class="list">
-    {sections.map(({ label, items }) => (
-      <>
-        {label && <h2 class="group">{label}</h2>}
-        <ol class="rows">
-          {items.map(({ id, data }) => {
-            const shot = shotFor(id);
-            return (
-              <li class="row" id={`r-${id}`}>
-                <h3 class="title"><a href={data.url}>{data.title}</a></h3>
+<div class:list={['index', { compact, groups }]} style={groups ? `--rows:${rows}` : undefined}>
+  <slot />
+  {sections.map(({ label, items }) => (
+    <>
+      {label && <h2 class="group">{label}</h2>}
+      <ol class="rows">
+        {items.map(({ id, data }) => {
+          const shot = shotFor(id);
+          const first = all[0].id === id;
+          return (
+            <li class="row">
+              {shot ? (
+                <a class="pv shot" href={data.url} tabindex="-1" aria-hidden="true">
+                  <Image src={shot} alt="" width={1280} widths={[480, 720, 1024, 1280, 1600]} sizes="(min-width: 64rem) 70vw, (min-width: 40rem) 50vw, 100vw" loading={eager && first ? 'eager' : 'lazy'} fetchpriority={eager && first ? 'high' : undefined} decoding={eager && first ? 'sync' : 'async'} style={data.focus ? `object-position: ${data.focus}` : undefined} />
+                </a>
+              ) : (
+                <div class="pv shot noshot" aria-hidden="true">{data.title}</div>
+              )}
+              <h3 class="title"><a href={data.url}>{data.title}</a></h3>
+              <div class="pv cap">
+                <p class="desc">{data.description}</p>
                 <ul class="tags">
                   {data.tags.map((t) => <li>{t}</li>)}
                 </ul>
-                <p class="desc">{data.description}</p>
-                {shot && <Image class="inline-shot" src={shot} alt="" width={640} widths={[320, 480, 640]} sizes="calc(100vw - 2rem)" loading="lazy" decoding="async" style={data.focus ? `object-position: ${data.focus}` : undefined} />}
-              </li>
-            );
-          })}
-        </ol>
-      </>
-    ))}
-  </div>
-  <div class="preview" aria-hidden="true">
-    {all.map(({ id, data }, index) => {
-      const shot = shotFor(id);
-      const eagerShot = eager && index === 0;
-      return (
-        <figure class="panel" id={`p-${id}`}>
-          {shot ? (
-            <Image src={shot} alt="" width={960} widths={[480, 720, 960, 1280]} sizes="(min-width: 64rem) 50vw, 1px" loading={eagerShot ? 'eager' : 'lazy'} fetchpriority={eagerShot ? 'high' : undefined} decoding={eagerShot ? 'sync' : 'async'} style={data.focus ? `object-position: ${data.focus}` : undefined} />
-          ) : (
-            <div class="noshot">no screenshot</div>
-          )}
-          <dl class="spec">
-            <dt>name</dt><dd>{data.title}</dd>
-            <dt>type</dt><dd>{data.kind === 'client' ? 'client site' : 'personal project'}</dd>
-            <dt>stack</dt><dd>{data.tags.join(', ')}</dd>
-            {compact && <><dt>about</dt><dd>{data.description}</dd></>}
-            <dt>url</dt><dd>{data.url}</dd>
-          </dl>
-        </figure>
-      );
-    })}
-  </div>
+              </div>
+            </li>
+          );
+        })}
+      </ol>
+    </>
+  ))}
 </div>
-<style is:inline set:html={rules + fallback}></style>
 
 <style>
-  .index { display: grid; grid-template-columns: minmax(0, 1fr); min-height: 0; }
-  .list { min-width: 0; min-height: 0; container-type: inline-size; }
-  .rows { list-style: none; margin: 0; padding: 0; counter-reset: row; }
-  .group { margin: 0; padding: 0.5rem 1rem; font-size: 0.8rem; font-weight: 600; color: var(--muted); border-bottom: 1px solid var(--line); background: var(--surface); }
-  .rows + .group { border-top: 1px solid var(--line); }
+  .index { counter-reset: row; display: grid; grid-template-columns: minmax(0, 1fr); gap: 2.5rem 1.5rem; }
+  .index > :global(h1), .group { grid-column: 1 / -1; }
+  .group { margin: 0.5rem 0 -1rem; font-size: 1.25rem; font-weight: 600; color: var(--muted); letter-spacing: -0.01em; }
+  .rows { display: contents; list-style: none; margin: 0; padding: 0; }
 
-  .row {
-    counter-increment: row;
-    position: relative;
-    display: grid;
-    grid-template-columns: 2.25rem minmax(0, 1fr);
-    column-gap: 0.25rem;
-    margin: 0;
-    padding: 0.75rem 1rem;
-    border-bottom: 1px solid var(--line);
-  }
-  .row:last-child { border-bottom: 0; }
-  .row::before {
-    content: counter(row, decimal-leading-zero);
-    grid-row: 1 / span 3;
-    font-family: var(--mono);
-    font-size: 0.8rem;
-    line-height: 1.9;
-    color: var(--muted);
-  }
-  .row > * { grid-column: 2; min-width: 0; }
-  .row:is(:hover, :focus-within) { background: var(--surface); box-shadow: inset 3px 0 0 var(--link); }
-  .row:is(:hover, :focus-within)::before { color: var(--link); }
-
-  .title { margin: 0; font-family: var(--mono); font-size: 1rem; line-height: 1.5; font-weight: 700; }
+  /* Phone / tablet: image, then title, then caption. */
+  .row { display: flex; flex-direction: column; min-width: 0; }
+  .shot { order: -1; display: block; position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 2px; background: var(--surface); }
+  .shot img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  .noshot { display: none; }
+  .title { counter-increment: row; margin: 1rem 0 0; font-size: 1.5rem; line-height: 1.2; font-weight: 650; letter-spacing: -0.02em; }
   .title a { color: var(--fg); text-decoration: none; }
-  .title a::after { content: ''; position: absolute; inset: 0; }
-  .title a::before { content: '\2197'; float: right; color: var(--link); margin-left: 0.5rem; }
-  .title a:hover { color: var(--link); }
-  .title a:focus-visible { outline: none; }
-  .row:has(a:focus-visible) { outline: 2px solid var(--link); outline-offset: -2px; }
+  .title a::after { content: ' \2197'; color: var(--accent); }
+  .title a:hover { color: var(--accent); }
+  .cap { margin-top: 0.5rem; }
+  .desc { margin: 0 0 0.75rem; color: var(--muted); max-width: 40rem; }
+  .cap .tags { color: var(--fg); }
 
-  .tags { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 0 0.25rem; font-family: var(--mono); font-size: 0.78rem; line-height: 1.6; color: var(--link); }
-  .tags li { margin: 0; padding: 0; border: 0; border-radius: 0; font-size: inherit; color: inherit; }
-  .tags li + li::before { content: '/'; margin-right: 0.25rem; color: var(--muted); }
-  .desc { margin: 0.2rem 0 0; font-size: 0.9rem; line-height: 1.45; }
-
-  .row > .inline-shot { grid-column: 2 / -1; grid-row: 4; max-width: 32rem; }
-  .inline-shot { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; margin-top: 0.6rem; border: 1px solid var(--line); }
-  .preview { display: none; }
-
-  /* Medium container: title and stack share a line, description below. */
-  @container (min-width: 26rem) {
-    .row { grid-template-columns: 2.25rem minmax(0, 1fr) auto; }
-    .row > .title { grid-column: 2; grid-row: 1; }
-    .row > .tags { grid-column: 3; grid-row: 1; align-self: center; margin-left: 1rem; flex-wrap: nowrap; }
-    .row > .desc { grid-column: 2 / -1; grid-row: 2; }
-    .row::before { grid-row: 1; }
-    .title a::before { display: none; }
-  }
-  /* Wide container: a real table, one column per field. */
-  @container (min-width: 44rem) {
-    .row { grid-template-columns: 2.25rem minmax(8rem, 12rem) minmax(6rem, 9rem) minmax(0, 1fr); column-gap: 0.75rem; align-items: start; }
-    .row > .title, .row > .tags, .row > .desc { grid-row: 1; margin: 0; }
-    .row > .title { grid-column: 2; }
-    .row > .tags { grid-column: 3; display: block; margin: 0; font-size: 0.75rem; align-self: start; line-height: 1.7; }
-    .row > .desc { grid-column: 4; font-size: 0.85rem; }
-    .row::before { line-height: 1.7; }
-    .tags li { display: block; }
-    .tags li + li::before { content: none; }
+  @media (min-width: 40rem) {
+    .index { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3rem 2rem; }
   }
 
+  /* Desktop: one large preview, list or filmstrip beside/below it. Hover or focus picks the preview, first by default. */
   @media (min-width: 64rem) and (min-height: 34rem) {
-    .index { grid-template-columns: minmax(0, 11fr) minmax(0, 10fr); gap: 1px; background: var(--line); height: 100%; }
-    .list { background: var(--bg); display: flex; flex-direction: column; }
-    .rows { display: flex; flex-direction: column; flex: 1 1 auto; }
-    .row { flex: 1 1 auto; align-content: center; }
-    .inline-shot { display: none; }
-    .preview { container-type: inline-size; display: grid; grid-template: minmax(0, 1fr) / minmax(0, 1fr); background: var(--bg); min-height: 0; }
-    .panel { grid-area: 1 / 1; margin: 0; display: flex; flex-direction: column; min-height: 0; opacity: 0; visibility: hidden; }
-    .panel img { display: block; flex: 1 1 0; width: 100%; min-height: calc(100cqw * 9 / 16); max-height: calc(100cqw * 3 / 4); object-fit: cover; object-position: top; border-bottom: 1px solid var(--line); }
-    .spec { flex: 1; margin: 0; padding: 0.75rem 1rem; display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 0.2rem 1rem; align-content: start; font-family: var(--mono); font-size: 0.8rem; color: var(--fg); }
-    .spec dt { color: var(--muted); }
-    .spec dd { margin: 0; overflow-wrap: anywhere; }
-    .noshot { flex: none; min-height: calc(100cqw * 9 / 16); display: grid; place-items: center; font-family: var(--mono); color: var(--muted); background: var(--surface); }
-    figcaption { display: none; flex: none; display: flex; justify-content: space-between; gap: 1rem; padding: 0.5rem 1rem; border-top: 1px solid var(--line); font-family: var(--mono); font-size: 0.8rem; color: var(--muted); }
-    figcaption span:first-child { color: var(--fg); }
+    .index { height: 100%; min-height: 0; grid-template-columns: minmax(0, 1fr) clamp(18rem, 22vw, 26rem); grid-template-rows: var(--rows); gap: 0 clamp(2rem, 3.5vw, 4rem); }
+    .row { display: contents; }
+    .index > :global(h1), .group { grid-column: 2; }
+    .group { margin: 0; align-self: end; padding-bottom: 0.4rem; font-size: 1rem; }
+    .pv { grid-column: 1; grid-row: 1 / -1; visibility: hidden; opacity: 0; }
+    .shot { order: 0; aspect-ratio: auto; min-height: 0; }
+    .shot img { position: absolute; inset: 0; }
+    .noshot { display: grid; place-items: center; padding: 2rem; font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 700; letter-spacing: -0.03em; color: var(--muted); text-align: center; }
+    .cap { position: relative; z-index: 1; align-self: end; margin: 0; padding: 1.25rem 1.5rem; background: rgb(8 8 9 / 0.86); color: #f3f2ef; }
+    .cap .desc { color: #d6d6da; max-width: 46rem; margin-bottom: 0.5rem; }
+    .cap .tags { color: #f3f2ef; }
+    .row:is(:hover, :focus-within) .pv,
+    .rows:first-of-type .row:first-child .pv { visibility: visible; opacity: 1; }
+    .index:has(.row:is(:hover, :focus-within)) .rows:first-of-type .row:first-child:not(:hover, :focus-within) .pv { visibility: hidden; opacity: 0; }
+
+    .title { grid-column: 2; position: relative; display: flex; align-items: center; margin: 0; border-top: 1px solid var(--line); font-size: clamp(1.25rem, 1.7vw, 1.6rem); }
+    .title::before { content: counter(row, decimal-leading-zero) / ''; width: 2.5rem; flex: none; font-size: 0.9rem; font-weight: 500; letter-spacing: 0; color: var(--muted); font-variant-numeric: tabular-nums; }
+    .title a { flex: 1; }
+    .title a::after { position: absolute; inset: 0; text-align: right; padding-right: 0.25rem; line-height: 1; display: flex; align-items: center; justify-content: flex-end; opacity: 0; }
+    .title a:focus-visible { outline: none; }
+    .title:has(a:focus-visible) { outline: 2px solid var(--accent); outline-offset: -2px; }
+    .row:is(:hover, :focus-within) .title { border-top-color: var(--accent); }
+    .row:is(:hover, :focus-within) .title a::after { opacity: 1; }
+    .row:is(:hover, :focus-within) .title::before { color: var(--accent); }
+    .index:not(:has(.row:is(:hover, :focus-within))) .rows:first-of-type .row:first-child .title { border-top-color: var(--accent); }
+    .index:not(:has(.row:is(:hover, :focus-within))) .rows:first-of-type .row:first-child .title::before { color: var(--accent); }
+
+    /* Home: filmstrip of titles under the preview. */
+    .compact { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: minmax(0, 1fr) auto auto; gap: 0 1.5rem; }
+    .compact .pv { grid-column: 1 / -1; grid-row: 1; }
+    .compact .title { grid-column: auto; padding: 0.7rem 0; font-size: clamp(1.05rem, 1.25vw, 1.25rem); }
+    .compact .row:nth-child(-n + 3) .title { margin-top: 1rem; }
+    .compact .title::before { width: 2rem; }
+    .compact .title a::after { display: none; }
   }
-  @media (min-width: 64rem) and (min-height: 34rem) {
-    /* Compact (home): rows show name + stack only; the description is read out of the preview and kept for assistive tech. */
-    .compact { grid-template-columns: minmax(0, 9fr) minmax(0, 11fr); }
-    .compact .row { grid-template-columns: 2.25rem minmax(0, 1fr); padding-block: 0.5rem; }
-    .compact .row > .title { grid-column: 2; grid-row: 1; }
-    .compact .row > .tags { grid-column: 2; grid-row: 2; margin: 0; align-self: auto; flex-wrap: wrap; }
-    .compact .row::before { grid-row: 1; }
-    .compact .row > .desc { position: absolute; width: 1px; height: 1px; margin: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-    .compact .row > .title a::before { display: block; }
-  }
-  @media (min-width: 64rem) and (min-height: 34rem) and (max-height: 50rem) {
-    .list { overflow-y: auto; }
-    .row { padding: 0.4rem 1rem; }
-    .title { font-size: 0.92rem; line-height: 1.4; }
-    .desc, .row > .desc { font-size: 0.8rem; line-height: 1.35; margin-top: 0.1rem; }
-    .tags { font-size: 0.72rem; }
-    .group { padding: 0.3rem 1rem; }
-  }
+
   @media (min-width: 64rem) and (min-height: 34rem) and (prefers-reduced-motion: no-preference) {
-    .panel { transition: opacity 0.12s linear; }
+    .pv { transition: opacity 0.18s ease-out, visibility 0.18s; }
   }
 </style>
