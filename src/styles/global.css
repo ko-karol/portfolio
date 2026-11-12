@@ -3,7 +3,7 @@
   --fg: #111;
   --bg: #fff;
   --muted: #555;
-  --link: #0645ad;
+  --link: #0b6e80;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -11,7 +11,7 @@
     --fg: #eee;
     --bg: #111;
     --muted: #aaa;
-    --link: #8ab4f8;
+    --link: #5fd3e6;
   }
 }
 
