@@ -12,7 +12,7 @@ function init() {
   mm.add('(prefers-reduced-motion: no-preference)', () => {
     gsap.from('main > h1', { opacity: 0, y: 12, duration: 0.5, ease: 'power2.out' });
 
-    gsap.utils.toArray<HTMLElement>('main section, main li').forEach((el) => {
+    gsap.utils.toArray<HTMLElement>('main section, main article, main > ul > li').forEach((el) => {
       gsap.from(el, {
         opacity: 0,
         y: 20,

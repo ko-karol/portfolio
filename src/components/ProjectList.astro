@@ -19,17 +19,14 @@ const shotFor = (id: string) => shots[`../assets/projects/${id}.jpg`]?.default;
     const shot = shotFor(id);
     return (
       <article>
-        {shot && (
-          <a class="shot" href={data.url} tabindex="-1" aria-hidden="true">
-            <Image src={shot} alt="" width={800} loading="lazy" />
-          </a>
-        )}
-        <header>
-          <a href={data.url}>{data.title}</a>
-          <span>{data.kind}</span>
-        </header>
-        <p>{data.description}</p>
-        <footer>{data.tags.map((t) => `[${t}]`).join(' ')}</footer>
+        {shot && <Image src={shot} alt="" width={800} loading="lazy" />}
+        <div class="body">
+          <h3><a href={data.url}>{data.title}</a></h3>
+          <p>{data.description}</p>
+          <ul class="tags">
+            {data.tags.map((t) => <li>{t}</li>)}
+          </ul>
+        </div>
       </article>
     );
   })}
@@ -37,12 +34,25 @@ const shotFor = (id: string) => shots[`../assets/projects/${id}.jpg`]?.default;
 
 <style>
   .posts { display: grid; gap: 1.5rem; margin-top: 1rem; }
-  article { border: 1px solid var(--muted); overflow: hidden; }
-  .shot { display: block; border-bottom: 1px solid var(--muted); }
+  article {
+    position: relative;
+    border: 1px solid color-mix(in srgb, var(--muted) 50%, transparent);
+    border-radius: 0.5rem;
+    overflow: hidden;
+  }
+  article:hover { border-color: var(--link); }
+  article:focus-within { outline: 2px solid var(--link); outline-offset: 2px; }
+
   img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; object-position: top; }
-  header { display: flex; justify-content: space-between; gap: 1rem; padding: 0.4rem 0.75rem; border-bottom: 1px solid var(--muted); background: color-mix(in srgb, var(--muted) 15%, transparent); }
-  header a { font-weight: bold; }
-  header span, footer { color: var(--muted); font-size: 0.85rem; }
-  p { margin: 0; padding: 0.75rem; }
-  footer { padding: 0 0.75rem 0.6rem; }
+  .body { padding: 1rem; }
+  h3 { margin: 0 0 0.4rem; font-size: 1.15rem; }
+  h3 a { text-decoration: none; }
+  h3 a:hover { text-decoration: underline; }
+  h3 a:focus-visible { outline: none; }
+  /* Stretched link: the whole card is clickable. */
+  h3 a::after { content: ''; position: absolute; inset: 0; }
+  p { margin: 0 0 0.75rem; }
+
+  .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0; padding: 0; list-style: none; }
+  .tags li { margin: 0; border: 1px solid color-mix(in srgb, var(--muted) 60%, transparent); border-radius: 999px; padding: 0 0.6rem; font-size: 0.8rem; color: var(--muted); }
 </style>
