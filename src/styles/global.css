@@ -42,10 +42,24 @@ a { color: var(--link); text-underline-offset: 0.2em; }
   padding: 0.25rem 0.5rem;
 }
 
-header { margin-bottom: 3rem; }
+header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.25rem 1.5rem;
+  margin-bottom: 3rem;
+}
 .name { font-weight: bold; font-size: 1.5rem; text-decoration: none; color: inherit; }
-nav { margin-top: 0.5rem; display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; }
-nav a[aria-current="page"] { color: inherit; font-weight: bold; text-decoration: none; }
+nav { display: flex; gap: 0.25rem 0.25rem; }
+nav a {
+  color: var(--fg);
+  text-decoration: none;
+  padding: 0.6rem 0.75rem;
+  border-bottom: 2px solid transparent;
+}
+nav a:hover { border-bottom-color: var(--muted); }
+nav a[aria-current="page"] { font-weight: bold; border-bottom-color: var(--link); }
 
 section { margin-top: 3.5rem; }
 

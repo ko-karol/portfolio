@@ -45,7 +45,7 @@ const current = (href: string) => (href === path ? 'page' : undefined);
     <a class="skip" href="#main">Skip to content</a>
     <header>
       <a href="/" class="name">Karol</a>
-      <nav>
+      <nav aria-label="Main">
         <a href="/" aria-current={current('/')}>Home</a>
         <a href="/projects" aria-current={current('/projects')}>Projects</a>
         <a href="/signal" aria-current={current('/signal')}>Signal</a>
