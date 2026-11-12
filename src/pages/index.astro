@@ -33,12 +33,13 @@ import Layout from '../layouts/Layout.astro';
 
 <script>
   // Enhancement: submit via fetch. Without JS the form posts normally.
-  const form = document.querySelector<HTMLFormElement>('form[action^="https://formspree.io"]');
-  const status = form?.querySelector<HTMLElement>('.status');
-  const button = form?.querySelector<HTMLButtonElement>('button');
-
-  form?.addEventListener('submit', async (event) => {
+  // Delegated on document so it survives view-transition page swaps.
+  document.addEventListener('submit', async (event) => {
+    const form = event.target;
+    if (!(form instanceof HTMLFormElement) || !form.action.startsWith('https://formspree.io')) return;
     event.preventDefault();
+    const status = form.querySelector<HTMLElement>('.status');
+    const button = form.querySelector<HTMLButtonElement>('button');
     if (!status || !button) return;
     button.disabled = true;
     status.textContent = '';
