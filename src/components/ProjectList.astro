@@ -3,11 +3,12 @@ import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
 
 interface Props {
-  kind: 'client' | 'personal';
+  kind?: 'client' | 'personal';
+  ids?: string[];
 }
 
-const { kind } = Astro.props;
-const projects = await getCollection('projects', ({ data }) => data.kind === kind);
+const { kind, ids } = Astro.props;
+const projects = await getCollection('projects', ({ id, data }) => (ids ? ids.includes(id) : data.kind === kind));
 
 // Screenshots live in src/assets/projects/<id>.jpg; projects without one render without an image.
 const shots = import.meta.glob<{ default: ImageMetadata }>('../assets/projects/*.jpg', { eager: true });
@@ -33,7 +34,7 @@ const shotFor = (id: string) => shots[`../assets/projects/${id}.jpg`]?.default;
 </div>
 
 <style>
-  .posts { display: grid; gap: 1.5rem; margin-top: 1rem; }
+  .posts { display: grid; grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr)); gap: 1.5rem; align-items: start; margin-top: 1rem; }
   article {
     position: relative;
     border: 1px solid color-mix(in srgb, var(--muted) 50%, transparent);

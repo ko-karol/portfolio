@@ -1,10 +1,17 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import ProjectList from '../components/ProjectList.astro';
 ---
 
 <Layout title="Karol | Full-Stack Developer">
   <h1>Full-Stack Developer</h1>
   <p>TypeScript, React, Node.js. Available for freelance and full-time work.</p>
+
+  <section>
+    <h2>Recent work</h2>
+    <ProjectList ids={['toast-collective', 'rehabit-uk']} />
+    <p><a href="/projects">All projects</a></p>
+  </section>
 
   <section>
     <h2>About</h2>

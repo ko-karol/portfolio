@@ -18,7 +18,7 @@
 body {
   font-family: system-ui, sans-serif;
   line-height: 1.5;
-  max-width: 40rem;
+  max-width: 46rem;
   margin: 0 auto;
   padding: 1rem;
   color: var(--fg);
@@ -59,6 +59,7 @@ button[disabled] { cursor: wait; }
 .status { margin: 0; }
 
 footer { margin-top: 3rem; color: var(--muted); }
+footer p { display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; }
 
 html { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) {
