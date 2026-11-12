@@ -10,6 +10,8 @@ const projects = defineCollection({
     url: z.url(),
     description: z.string(),
     tags: z.array(z.string()),
+    // CSS object-position for the screenshot when a card crops it (default: top center).
+    focus: z.string().optional(),
   }),
 });
 

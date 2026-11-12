@@ -75,7 +75,12 @@ blockquote { margin: 0.5rem 0; padding-left: 1rem; border-left: 3px solid var(--
 .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0; padding: 0; list-style: none; }
 .tags li { margin: 0; border: 1px solid color-mix(in srgb, var(--muted) 60%, transparent); border-radius: 999px; padding: 0 0.5rem; font-size: 0.75rem; line-height: 1.5; color: var(--muted); }
 
-.read { margin-top: 2rem; }
+.reads { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 24rem), 1fr)); gap: 1rem; margin-top: 1rem; align-items: start; }
+.read {
+  padding: 1rem 1.1rem;
+  border: 1px solid color-mix(in srgb, var(--muted) 50%, transparent);
+  border-radius: 0.5rem;
+}
 .read h2 { font-size: 1.25rem; margin: 0 0 0.25rem; }
 .read h2 a { text-decoration: none; }
 .read h2 a:hover { text-decoration: underline; }
@@ -161,6 +166,14 @@ dd { margin: 0; }
   .home input, .home textarea, .home button { padding: 0.4rem 0.6rem; }
   .home button { min-height: 2.25rem; }
   .home textarea { resize: none; }
+}
+
+/* Narrow desktop (e.g. 1024px tablets): smaller card text so the grid still fits. */
+@media (min-width: 64rem) and (max-width: 75rem) {
+  html.fit .body { padding: 0.45rem 0.6rem 0.55rem; }
+  html.fit .body :is(p, h3) { font-size: 0.8rem; line-height: 1.3; }
+  html.fit .body h3 { font-size: 0.9rem; }
+  html.fit .body .tags li { font-size: 0.68rem; }
 }
 
 /* Short laptop screens: tighten the side column so everything fits without scrolling. */

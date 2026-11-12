@@ -13,6 +13,7 @@ const reads = (await getCollection('reads')).sort(
   <h1>Valuable Reads</h1>
   <p>A curated collection of articles, essays, and resources I've found insightful. New additions will appear here.</p>
 
+  <div class="reads">
   {reads.map(({ data }) => (
     <article class="read">
       <h2><a href={data.url}>{data.title}</a></h2>
@@ -23,4 +24,5 @@ const reads = (await getCollection('reads')).sort(
       </ul>
     </article>
   ))}
+  </div>
 </Layout>

@@ -1,8 +1,74 @@
 [
-  {"id":"toast-collective","title":"Toast Collective","kind":"client","url":"https://toastcollective.co.uk","description":"Film production website for nonprofits. Custom WordPress theme with portfolio gallery and testimonial carousel.","tags":["WordPress","PHP","CSS"]},
-  {"id":"guild-of-psychotherapists","title":"Guild of Psychotherapists","kind":"client","url":"https://guildofpsychotherapists.org.uk","description":"Membership site with therapist search, member portal, and training course management. Migrated from SilverStripe to WordPress.","tags":["WordPress","Migration","Custom Search"]},
-  {"id":"claire-lynch-consulting","title":"Claire Lynch Consulting","kind":"client","url":"https://clairelynchconsulting.com","description":"Business and human rights advisory site. Responsive landing pages with service breakdowns and contact flows.","tags":["WordPress","Responsive"]},
-  {"id":"rehabit-uk","title":"Rehabit UK","kind":"client","url":"https://rehabit.uk","description":"Addiction counseling charity site. Streamlined referral form UX and volunteer application system.","tags":["WordPress","Forms","UX"]},
-  {"id":"repwise","title":"Repwise","kind":"personal","url":"https://github.com/ko-karol/strength-app","description":"React Native app for tracking strength training. Parses plain text like \"bench 3x5 80kg\" into structured data. SQLite keeps everything local, so it works offline. Still in development.","tags":["React Native","TypeScript","SQLite"]},
-  {"id":"life-of-death","title":"The Life of Death","kind":"personal","url":"https://karol-legacy.github.io/life-of-death-tribute/","description":"Interactive web tribute for an animated short film. Semantic HTML, CSS animations, minimal JS. No build step, no dependencies.","tags":["HTML","CSS","JavaScript"]}
+  {
+    "id": "toast-collective",
+    "title": "Toast Collective",
+    "kind": "client",
+    "url": "https://toastcollective.co.uk",
+    "description": "Film production website for nonprofits. Custom WordPress theme with portfolio gallery and testimonial carousel.",
+    "tags": [
+      "WordPress",
+      "PHP",
+      "CSS"
+    ]
+  },
+  {
+    "id": "guild-of-psychotherapists",
+    "title": "Guild of Psychotherapists",
+    "kind": "client",
+    "url": "https://guildofpsychotherapists.org.uk",
+    "description": "Membership site with therapist search, member portal, and training course management. Migrated from SilverStripe to WordPress.",
+    "tags": [
+      "WordPress",
+      "Migration",
+      "Custom Search"
+    ]
+  },
+  {
+    "id": "claire-lynch-consulting",
+    "title": "Claire Lynch Consulting",
+    "kind": "client",
+    "url": "https://clairelynchconsulting.com",
+    "description": "Business and human rights advisory site. Responsive landing pages with service breakdowns and contact flows.",
+    "tags": [
+      "WordPress",
+      "Responsive"
+    ]
+  },
+  {
+    "id": "rehabit-uk",
+    "title": "Rehabit UK",
+    "kind": "client",
+    "url": "https://rehabit.uk",
+    "description": "Addiction counseling charity site. Streamlined referral form UX and volunteer application system.",
+    "tags": [
+      "WordPress",
+      "Forms",
+      "UX"
+    ],
+    "focus": "15% top"
+  },
+  {
+    "id": "repwise",
+    "title": "Repwise",
+    "kind": "personal",
+    "url": "https://github.com/ko-karol/strength-app",
+    "description": "React Native app for tracking strength training. Parses plain text like \"bench 3x5 80kg\" into structured data. SQLite keeps everything local, so it works offline. Still in development.",
+    "tags": [
+      "React Native",
+      "TypeScript",
+      "SQLite"
+    ]
+  },
+  {
+    "id": "life-of-death",
+    "title": "The Life of Death",
+    "kind": "personal",
+    "url": "https://karol-legacy.github.io/life-of-death-tribute/",
+    "description": "Interactive web tribute for an animated short film. Semantic HTML, CSS animations, minimal JS. No build step, no dependencies.",
+    "tags": [
+      "HTML",
+      "CSS",
+      "JavaScript"
+    ]
+  }
 ]
