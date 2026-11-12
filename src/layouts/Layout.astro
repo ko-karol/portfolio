@@ -34,6 +34,11 @@ const current = (href: string) => (href === path ? 'page' : undefined);
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={shareUrl} />
     <meta name="twitter:card" content="summary_large_image" />
+    <script is:inline data-astro-rerun>
+      // Hide reveal targets before first paint so GSAP can fade them in without a flash.
+      // Only set when JS runs and motion is allowed; animations.ts removes it on failure.
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('reveal');
+    </script>
     <ClientRouter />
   </head>
   <body>

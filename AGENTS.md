@@ -24,7 +24,7 @@ Multi-page, plain HTML in Astro:
 - **No eyebrow headings** ("About me", "Selected work", etc.)
 - **No diagonal clip-paths** or overlapping sections
 - **Progressive enhancement**: everything works without JS. JS only adds the fetch-based contact form submit and GSAP scroll reveals.
-- **Reduced motion**: GSAP is loaded on demand and skipped entirely under `prefers-reduced-motion: reduce`.
+- **Reduced motion / no JS**: an inline script adds `.reveal` to `<html>` only when JS runs and motion is allowed; CSS hides reveal targets only under that class. GSAP is loaded on demand and never downloaded under `prefers-reduced-motion: reduce`. If GSAP fails to load, `.reveal` is removed.
 - **Light and dark** via `prefers-color-scheme`, using the CSS variables in `src/styles/global.css`.
 - Separate client vs personal projects visually but without uppercase labels.
 
