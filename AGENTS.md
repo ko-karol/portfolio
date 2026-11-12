@@ -7,7 +7,7 @@ Personal portfolio website for Karol — Full-Stack Developer specializing in Ja
 Multi-page, plain HTML in Astro:
 
 ```
-/          Home: photo + intro + CTA, recent work (2 cards), About, Contact form
+/          Home: photo + intro + CTA, featured work (2 cards), About, Contact form
 /projects  Client work + Personal projects (cards)
 /signal    "Valuable Reads": curated articles with commentary
 /404       Not found
