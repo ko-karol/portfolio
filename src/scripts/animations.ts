@@ -21,7 +21,7 @@ async function init() {
 
     const ctx = gsap.context(() => {
       gsap.fromTo(
-        'main > h1',
+        'main h1',
         { opacity: 0, y: 12 },
         { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out', clearProps: 'transform' },
       );
@@ -55,3 +55,5 @@ document.addEventListener('astro:before-swap', () => {
   cleanup?.();
   cleanup = undefined;
 });
+
+export {};

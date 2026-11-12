@@ -23,6 +23,8 @@ Multi-page, plain HTML in Astro:
 - **Plain and basic**: semantic HTML first, minimal styling, no decorative frills. The only flourishes: one teal accent (`--link`), a short accent rule above each page h1, a filled primary CTA, and card hover lift (disabled under reduced motion).
 - **No eyebrow headings** ("About me", "Selected work", etc.)
 - **No diagonal clip-paths** or overlapping sections
+- **Fit to screen**: on desktop-sized viewports (>= 64rem wide, >= 34rem tall) pages fill the viewport so nothing needs scrolling. `html.fit` is set by an inline script in `Layout.astro`; `src/scripts/fit-grid.ts` picks each project grid's column count so cards stay near 16:9, and the screenshot flexes to absorb leftover height. Smaller screens and no-JS keep the normal scrolling layout.
+- **Contact form stays visible** inline on the home page. Never hide it behind a modal, popover or toggle.
 - **Progressive enhancement**: everything works without JS. JS only adds the fetch-based contact form submit and GSAP scroll reveals.
 - **Reduced motion / no JS**: an inline script adds `.reveal` to `<html>` only when JS runs and motion is allowed; CSS hides reveal targets only under that class. GSAP is loaded on demand and never downloaded under `prefers-reduced-motion: reduce`. If GSAP fails to load, `.reveal` is removed.
 - **Light and dark** via `prefers-color-scheme`, using the CSS variables in `src/styles/global.css`.

@@ -9,7 +9,7 @@ interface Props {
 }
 
 const { kind, ids, eager = false } = Astro.props;
-const projects = await getCollection('projects', ({ id, data }) => (ids ? ids.includes(id) : data.kind === kind));
+const projects = await getCollection('projects', ({ id, data }) => (ids ? ids.includes(id) : kind ? data.kind === kind : true));
 
 // Screenshots live in src/assets/projects/<id>.jpg; projects without one render without an image.
 const shots = import.meta.glob<{ default: ImageMetadata }>('../assets/projects/*.jpg', { eager: true });
@@ -35,7 +35,7 @@ const shotFor = (id: string) => shots[`../assets/projects/${id}.jpg`]?.default;
 </div>
 
 <style>
-  .posts { display: grid; grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr)); gap: 1.5rem; margin-top: 1rem; }
+  .posts { display: grid; grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr)); gap: 1rem; margin-top: 0.75rem; }
   article {
     position: relative;
     border: 1px solid color-mix(in srgb, var(--muted) 50%, transparent);
@@ -43,8 +43,12 @@ const shotFor = (id: string) => shots[`../assets/projects/${id}.jpg`]?.default;
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    min-width: 0;
+    min-height: 0;
   }
   article:hover { border-color: var(--link); }
+  /* A project without a screenshot only takes the height its text needs. */
+  article:not(:has(img)) { align-self: start; }
   @media (prefers-reduced-motion: no-preference) {
     article { transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; }
     article:hover { transform: translateY(-3px); box-shadow: 0 8px 24px color-mix(in srgb, var(--fg) 12%, transparent); }
@@ -54,14 +58,23 @@ const shotFor = (id: string) => shots[`../assets/projects/${id}.jpg`]?.default;
   article:has(a:focus-visible) { outline: 2px solid var(--link); outline-offset: 2px; }
 
   img { flex: none; display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; object-position: top; }
-  .body { padding: 1rem; flex: 1; display: flex; flex-direction: column; }
+  .body { padding: 0.55rem 0.75rem 0.7rem; flex: none; display: flex; flex-direction: column; }
   .tags { margin-top: auto; }
-  h3 { margin: 0 0 0.4rem; font-size: 1.15rem; }
+  h3 { margin: 0 0 0.2rem; font-size: 1rem; line-height: 1.25; }
   h3 a { text-decoration: none; }
   h3 a:hover { text-decoration: underline; }
   h3 a:focus-visible { outline: none; }
   /* Stretched link: the whole card is clickable. */
   h3 a::after { content: ''; position: absolute; inset: 0; }
-  p { margin: 0 0 0.75rem; }
+  p { margin: 0 0 0.5rem; font-size: 0.85rem; line-height: 1.35; }
 
+  /* Fit mode (set by fit-grid.ts): the grid has a definite height; column count comes from JS
+     and the screenshot absorbs whatever height the text leaves. */
+  :global(html.fit) .posts {
+    flex: 1;
+    min-height: var(--min-h, 0);
+    grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));
+    grid-auto-rows: minmax(0, 1fr);
+  }
+  :global(html.fit) img { flex: 1 1 0; min-height: 5rem; aspect-ratio: auto; height: auto; }
 </style>

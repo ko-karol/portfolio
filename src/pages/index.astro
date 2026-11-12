@@ -6,70 +6,53 @@ import ProjectList from '../components/ProjectList.astro';
 <Layout title="Karol | Full-Stack Developer"
   description="Full-stack developer working with TypeScript, React and Node.js. Available for freelance and full-time work."
 >
-  <h1>Full-Stack Developer</h1>
-  <p class="lead">TypeScript, React, Node.js. Available for freelance and full-time work.</p>
-  <p class="cta"><a href="/projects">See projects</a> <a href="#contact">Get in touch</a></p>
+  <div class="home">
+    <div class="side">
+      <section class="intro">
+        <h1>Full-Stack Developer</h1>
+        <p class="lead">TypeScript, React, Node.js. Available for freelance and full-time work.</p>
+        <p class="cta"><a href="#work">See projects</a> <a href="#contact">Get in touch</a></p>
+      </section>
 
-  <section>
-    <h2>Work</h2>
-    <ProjectList ids={['toast-collective', 'rehabit-uk']} eager />
-    <p><a href="/projects">All projects</a></p>
-  </section>
+      <section>
+        <h2>About</h2>
+        <p>I build web applications. Founders &amp; Coders graduate, three years freelancing for charitable organisations. Based in the UK, working remotely.</p>
+        <p>I use AI coding agents for prototyping and boilerplate, with human review of architecture and code.</p>
+        <dl>
+          <dt>Skills</dt>
+          <dd>JavaScript, TypeScript, React, Astro, SQLite, NixOS, Docker</dd>
+          <dt>Now</dt>
+          <dd>Reading SICP, building a NixOS home server, learning systems design patterns.</dd>
+        </dl>
+      </section>
 
-  <section>
-    <h2>About</h2>
-    <p>I build web applications. Founders &amp; Coders graduate, three years freelancing for charitable organisations. Based in the UK, working remotely.</p>
-    <p>I use AI coding agents for prototyping and boilerplate, with human review of architecture and code.</p>
-    <dl>
-      <dt>Skills</dt>
-      <dd>JavaScript, TypeScript, React, Astro, SQLite, NixOS, Docker</dd>
-      <dt>Now</dt>
-      <dd>Reading SICP, building a NixOS home server, learning systems design patterns.</dd>
-    </dl>
-  </section>
+      <section id="contact">
+        <div class="contact-head">
+          <h2>Contact</h2>
+          <p><a href="mailto:karol@ko-karol.com">karol@ko-karol.com</a></p>
+        </div>
+        <form action="https://formspree.io/f/mbdawelb" method="POST">
+          <div class="field">
+            <label for="name">Name</label>
+            <input id="name" name="name" type="text" required />
+          </div>
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" required />
+          </div>
+          <div class="field wide">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="2" required></textarea>
+          </div>
+          <button type="submit">Send message</button>
+          <p class="status" role="status"></p>
+        </form>
+      </section>
+    </div>
 
-  <section id="contact">
-    <h2>Contact</h2>
-    <p>Email: <a href="mailto:karol@ko-karol.com">karol@ko-karol.com</a></p>
-    <form action="https://formspree.io/f/mbdawelb" method="POST">
-      <label for="name">Name</label>
-      <input id="name" name="name" type="text" required />
-      <label for="email">Email</label>
-      <input id="email" name="email" type="email" required />
-      <label for="message">Message</label>
-      <textarea id="message" name="message" rows="6" required></textarea>
-      <button type="submit">Send message</button>
-      <p class="status" role="status"></p>
-    </form>
-  </section>
+    <section id="work" class="work">
+      <h2>Work</h2>
+      <ProjectList eager />
+    </section>
+  </div>
 </Layout>
-
-
-<script>
-  // Enhancement: submit via fetch. Without JS the form posts normally.
-  // Delegated on document so it survives view-transition page swaps.
-  document.addEventListener('submit', async (event) => {
-    const form = event.target;
-    if (!(form instanceof HTMLFormElement) || !form.action.startsWith('https://formspree.io')) return;
-    event.preventDefault();
-    const status = form.querySelector<HTMLElement>('.status');
-    const button = form.querySelector<HTMLButtonElement>('button');
-    if (!status || !button) return;
-    button.disabled = true;
-    status.textContent = '';
-    try {
-      const res = await fetch(form.action, {
-        method: 'POST',
-        body: new FormData(form),
-        headers: { Accept: 'application/json' },
-      });
-      if (!res.ok) throw new Error(String(res.status));
-      form.reset();
-      status.textContent = "Message sent — I'll get back to you soon.";
-    } catch {
-      status.textContent = 'Oops! There was a problem submitting your form.';
-    } finally {
-      button.disabled = false;
-    }
-  });
-</script>

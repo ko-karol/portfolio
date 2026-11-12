@@ -8,13 +8,15 @@ import ProjectList from '../components/ProjectList.astro';
 >
   <h1>Projects</h1>
 
-  <section>
-    <h2>Client work</h2>
-    <ProjectList kind="client" />
-  </section>
+  <div class="split">
+    <section>
+      <h2>Client work</h2>
+      <ProjectList kind="client" />
+    </section>
 
-  <section>
-    <h2>Personal projects</h2>
-    <ProjectList kind="personal" />
-  </section>
+    <section>
+      <h2>Personal projects</h2>
+      <ProjectList kind="personal" />
+    </section>
+  </div>
 </Layout>

@@ -24,7 +24,7 @@ src/
 ├── data/             projects.json, reads.json (content collection sources)
 ├── layouts/          base HTML layout, nav, footer
 ├── pages/            index, projects, signal, 404
-├── scripts/          GSAP scroll reveals
+├── scripts/          fit-grid (no-scroll layout), contact form submit, GSAP reveals
 ├── styles/           global.css
 └── content.config.ts collection schemas
 docs/archive.md       archived notes and data from earlier iterations
