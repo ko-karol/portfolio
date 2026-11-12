@@ -12,7 +12,19 @@ const mq = matchMedia(FIT_QUERY);
 let frame = 0;
 
 function bodyHeight(cards: HTMLElement[]): number {
-  return Math.max(...cards.map((card) => card.querySelector<HTMLElement>('.body')?.offsetHeight ?? 0));
+  // Text-only cards have no screenshot to size, so only cards with one set the text height.
+  const withImage = cards.filter((card) => card.querySelector('img'));
+  return Math.max(0, ...(withImage.length ? withImage : cards).map((card) => card.querySelector<HTMLElement>('.body')?.offsetHeight ?? 0));
+}
+
+// Rows holding only text-only cards take their content height; screenshot rows share the rest.
+function sizeRows(grid: HTMLElement, cards: HTMLElement[], cols: number) {
+  const rows: string[] = [];
+  for (let i = 0; i < cards.length; i += cols) {
+    const textOnly = cards.slice(i, i + cols).every((card) => !card.querySelector('img'));
+    rows.push(textOnly ? 'auto' : 'minmax(0, 1fr)');
+  }
+  if (rows.includes('auto')) grid.style.setProperty('--rows', rows.join(' '));
 }
 
 function fitGrid(grid: HTMLElement) {
@@ -21,6 +33,7 @@ function fitGrid(grid: HTMLElement) {
   if (!n) return;
 
   grid.style.removeProperty('--min-h');
+  grid.style.removeProperty('--rows');
   const gap = parseFloat(getComputedStyle(grid).columnGap) || 0;
   const W = grid.clientWidth;
   const H = grid.clientHeight;
@@ -35,12 +48,15 @@ function fitGrid(grid: HTMLElement) {
     const width = (W - (cols - 1) * gap) / cols;
     if (image > roomiest.image) roomiest = { cols, image };
     if (image < MIN_IMAGE) continue;
-    const score = -Math.abs(Math.log(width / image / TARGET_RATIO));
+    // Rows must fill: every missing cell in the last row costs far more than any aspect mismatch.
+    const empty = rows * cols - n;
+    const score = -Math.abs(Math.log(width / image / TARGET_RATIO)) - (empty / cols) * 10;
     if (score > best.score) best = { cols, score };
   }
 
   if (best.score > -Infinity) {
     grid.style.setProperty('--cols', String(best.cols));
+    sizeRows(grid, cards, best.cols);
     return;
   }
   // Nothing fits: use the roomiest layout and let the grid grow so the page scrolls.
@@ -54,6 +70,7 @@ function apply() {
   document.querySelectorAll<HTMLElement>('.posts').forEach((grid) => {
     grid.style.removeProperty('--cols');
     grid.style.removeProperty('--min-h');
+    grid.style.removeProperty('--rows');
     if (mq.matches) fitGrid(grid);
     // Reveal only now: before this the grid is hidden (CSS) so the column change causes no layout jump.
     grid.dataset.fit = '';

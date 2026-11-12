@@ -75,10 +75,16 @@ const shotFor = (id: string) => shots[`../assets/projects/${id}.jpg`]?.default;
     min-height: var(--min-h, 0);
     grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));
     grid-auto-rows: minmax(0, 1fr);
+    grid-template-rows: var(--rows, none);
   }
   /* Hidden until fit-grid.ts has chosen the columns, so cards never visibly reflow. The animation
      is a safety net: if the script never runs, the grid appears after 1.5s anyway. */
   :global(html.fit) .posts:not([data-fit]) { visibility: hidden; animation: show-grid 0s 1.5s forwards; }
   @keyframes show-grid { to { visibility: visible; } }
+  /* In fit mode a text-only card fills its cell instead of leaving dead space below it. */
+  :global(html.fit) article:not(:has(img)) { align-self: stretch; }
+  :global(html.fit) article:not(:has(img)) .body { flex: 1; justify-content: center; }
+  :global(html.fit) article:not(:has(img)) .body h3 { font-size: 1.15rem; }
+  :global(html.fit) article:not(:has(img)) .body p { font-size: 0.95rem; }
   :global(html.fit) img { flex: 1 1 0; min-height: 5rem; aspect-ratio: auto; height: auto; }
 </style>
