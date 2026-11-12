@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import ProjectList from '../components/ProjectList.astro';
 ---
 
 <Layout title="Projects | Karol">
@@ -7,43 +8,11 @@ import Layout from '../layouts/Layout.astro';
 
   <section>
     <h2>Client work</h2>
-    <ul>
-      <li>
-        <a href="https://toastcollective.co.uk">Toast Collective</a>
-        <p>Film production website for nonprofits. Custom WordPress theme with portfolio gallery and testimonial carousel.</p>
-        <p class="tags">WordPress, PHP, CSS</p>
-      </li>
-      <li>
-        <a href="https://guildofpsychotherapists.org.uk">Guild of Psychotherapists</a>
-        <p>Membership site with therapist search, member portal, and training course management. Migrated from SilverStripe to WordPress.</p>
-        <p class="tags">WordPress, Migration, Custom Search</p>
-      </li>
-      <li>
-        <a href="https://clairelynchconsulting.com">Claire Lynch Consulting</a>
-        <p>Business and human rights advisory site. Responsive landing pages with service breakdowns and contact flows.</p>
-        <p class="tags">WordPress, Responsive</p>
-      </li>
-      <li>
-        <a href="https://rehabit.uk">Rehabit UK</a>
-        <p>Addiction counseling charity site. Streamlined referral form UX and volunteer application system.</p>
-        <p class="tags">WordPress, Forms, UX</p>
-      </li>
-    </ul>
+    <ProjectList kind="client" />
   </section>
 
   <section>
     <h2>Personal projects</h2>
-    <ul>
-      <li>
-        <a href="https://github.com/ko-karol/strength-app">Repwise</a>
-        <p>React Native app for tracking strength training. Parses plain text like "bench 3x5 80kg" into structured data. SQLite keeps everything local, so it works offline. Still in development.</p>
-        <p class="tags">React Native, TypeScript, SQLite</p>
-      </li>
-      <li>
-        <a href="https://ko-karol.github.io/life-of-death-tribute/">The Life of Death</a>
-        <p>Interactive web tribute for an animated short film. Semantic HTML, CSS animations, minimal JS. No build step, no dependencies.</p>
-        <p class="tags">HTML, CSS, JavaScript</p>
-      </li>
-    </ul>
+    <ProjectList kind="personal" />
   </section>
 </Layout>

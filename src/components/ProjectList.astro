@@ -1,0 +1,20 @@
+---
+import { getCollection } from 'astro:content';
+
+interface Props {
+  kind: 'client' | 'personal';
+}
+
+const { kind } = Astro.props;
+const projects = await getCollection('projects', ({ data }) => data.kind === kind);
+---
+
+<ul>
+  {projects.map(({ data }) => (
+    <li>
+      <a href={data.url}>{data.title}</a>
+      <p>{data.description}</p>
+      <p class="tags">{data.tags.join(', ')}</p>
+    </li>
+  ))}
+</ul>
