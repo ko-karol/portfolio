@@ -55,6 +55,8 @@ function apply() {
     grid.style.removeProperty('--cols');
     grid.style.removeProperty('--min-h');
     if (mq.matches) fitGrid(grid);
+    // Reveal only now: before this the grid is hidden (CSS) so the column change causes no layout jump.
+    grid.dataset.fit = '';
   });
 }
 
