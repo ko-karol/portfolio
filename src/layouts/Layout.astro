@@ -29,15 +29,17 @@ const current = (href: string) => (href === path ? 'page' : undefined);
         <a href="/" aria-current={current('/')}>Home</a>
         <a href="/projects" aria-current={current('/projects')}>Projects</a>
         <a href="/signal" aria-current={current('/signal')}>Signal</a>
-        <a href="https://github.com/ko-karol">GitHub</a>
-        <a href="https://www.linkedin.com/in/ko-karol/">LinkedIn</a>
       </nav>
     </header>
     <main id="main">
       <slot />
     </main>
     <footer>
-      <p>ko-karol</p>
+      <p>
+        ko-karol ·
+        <a href="https://github.com/ko-karol">GitHub</a> ·
+        <a href="https://www.linkedin.com/in/ko-karol/">LinkedIn</a>
+      </p>
     </footer>
   </body>
 </html>
