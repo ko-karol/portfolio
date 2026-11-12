@@ -13,14 +13,14 @@ const reads = (await getCollection('reads')).sort(
   <h1>Valuable Reads</h1>
   <p>A curated collection of articles, essays, and resources I've found insightful. New additions will appear here.</p>
 
-  <ul>
-    {reads.map(({ data }) => (
-      <li>
-        <a href={data.url}>{data.title}</a>
-        <p>{data.author}, <time datetime={data.date.toISOString()}>{data.date.toISOString().slice(0, 10)}</time></p>
-        <blockquote>{data.commentary}</blockquote>
-        <p class="tags">{data.tags.join(', ')}</p>
-      </li>
-    ))}
-  </ul>
+  {reads.map(({ data }) => (
+    <article class="read">
+      <h2><a href={data.url}>{data.title}</a></h2>
+      <p class="meta">{data.author}, <time datetime={data.date.toISOString()}>{data.date.toISOString().slice(0, 10)}</time></p>
+      <blockquote>{data.commentary}</blockquote>
+      <ul class="tags">
+        {data.tags.map((t) => <li>{t}</li>)}
+      </ul>
+    </article>
+  ))}
 </Layout>
