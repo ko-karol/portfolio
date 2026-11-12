@@ -16,7 +16,7 @@ Requires Node 22.12 or newer. Run from the project root.
 ## Structure
 
 ```text
-public/            static assets (favicons)
+public/            static assets (favicons, robots.txt)
 src/
 ├── assets/projects/  project screenshots, named <project id>.jpg
 ├── components/       ProjectList (project cards)

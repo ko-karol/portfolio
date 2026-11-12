@@ -30,7 +30,7 @@ Multi-page, plain HTML in Astro:
 
 ## Tech Stack
 
-- Astro 7 (content collections, `astro:assets`, `<ClientRouter />` view transitions, hover prefetch)
+- Astro 7 with @astrojs/sitemap (content collections, `astro:assets`, `<ClientRouter />` view transitions, hover prefetch)
 - Single global stylesheet (`src/styles/global.css`) plus scoped styles in `ProjectList.astro`
 - GSAP + ScrollTrigger, dynamically imported (`src/scripts/animations.ts`)
 - Formspree for the contact form (progressive: plain POST without JS)
