@@ -1,6 +1,6 @@
 # Portfolio
 
-Personal portfolio for Karol, a full-stack developer. Single-page site built with Astro 7, Tailwind CSS 4, vanilla JS and GSAP.
+Personal portfolio for Karol, a full-stack developer. Plain multi-page Astro 7 site (Home, Projects, Signal) with view transitions, GSAP scroll reveals and a Formspree contact form. Works without JavaScript.
 
 ## Commands
 
@@ -18,14 +18,21 @@ Requires Node 22.12 or newer. Run from the project root.
 ```text
 public/            static assets (favicons)
 src/
-├── components/    shared Astro components (e.g. Footer)
-├── layouts/       base HTML layout
-├── pages/         routes (index.astro composes the sections)
-├── scripts/       client-side behaviour and GSAP animation
-├── sections/      page sections (Hero, Work, About, Contact, ...)
-└── styles/        global CSS and design tokens
-docs/archive.md    archived notes and data from earlier iterations
-AGENTS.md          design and content rules for contributors
+├── assets/projects/  project screenshots, named <project id>.jpg
+├── components/       ProjectList (project cards)
+├── data/             projects.json, reads.json (content collection sources)
+├── layouts/          base HTML layout, nav, footer
+├── pages/            index, projects, signal, 404
+├── scripts/          GSAP scroll reveals
+├── styles/           global.css
+└── content.config.ts collection schemas
+docs/archive.md       archived notes and data from earlier iterations
+AGENTS.md             design and content rules for contributors
 ```
 
-See `AGENTS.md` before changing design or copy, and `docs/archive.md` for preserved project data.
+## Content
+
+- Add a project: append an entry to `src/data/projects.json` and, optionally, drop a 16:9 screenshot at `src/assets/projects/<id>.jpg`. Without one the card renders without an image.
+- Add a read: append an entry to `src/data/reads.json`.
+
+Note: `AGENTS.md` describes an earlier single-page design (hero, marquee, five sections). The current site is a simpler multi-page layout.
