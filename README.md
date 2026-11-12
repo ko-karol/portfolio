@@ -35,4 +35,3 @@ AGENTS.md             design and content rules for contributors
 - Add a project: append an entry to `src/data/projects.json` and, optionally, drop a 16:9 screenshot at `src/assets/projects/<id>.jpg`. Without one the card renders without an image.
 - Add a read: append an entry to `src/data/reads.json`.
 
-Note: `AGENTS.md` describes an earlier single-page design (hero, marquee, five sections). The current site is a simpler multi-page layout.

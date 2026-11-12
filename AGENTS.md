@@ -4,34 +4,39 @@ Personal portfolio website for Karol — Full-Stack Developer specializing in Ja
 
 ## Site Structure
 
+Multi-page, plain HTML in Astro:
+
 ```
-Hero → Currently → About → Work → Contact
+/          Home: intro + CTA, recent work (2 cards), About, Contact form
+/projects  Client work + Personal projects (cards)
+/signal    "Valuable Reads": curated articles with commentary
+/404       Not found
 ```
 
-- **Hero**: Name, headline, CTA
-- **Currently**: Availability/marquee strip
-- **About**: Short bio + Pi workflow note + skills, photo card
-- **Work**: Client projects + Personal projects (no eyebrow labels on headings)
-- **Contact**: Email CTA + form
+- Nav: Home, Projects, Signal only. External links (GitHub, LinkedIn) live in the footer, never the nav.
+- Content comes from `src/data/projects.json` and `src/data/reads.json` (content collections, schemas in `src/content.config.ts`).
+- Project screenshots: `src/assets/projects/<project id>.jpg`, 16:9. A project without one renders without an image.
 
 ## Design Principles
 
+- **Plain and basic**: semantic HTML first, minimal styling, no decorative frills.
 - **No eyebrow headings** ("About me", "Selected work", etc.)
 - **No diagonal clip-paths** or overlapping sections
-- **Clean spacing** using design tokens (`var(--space-2xl)`) not calc()
-- **Minimal sections**: 5 total, no timeline/journey block
-- **Mobile bottom sheet** for project details (desktop uses inline panel)
+- **Progressive enhancement**: everything works without JS. JS only adds the fetch-based contact form submit and GSAP scroll reveals.
+- **Reduced motion**: GSAP is loaded on demand and skipped entirely under `prefers-reduced-motion: reduce`.
+- **Light and dark** via `prefers-color-scheme`, using the CSS variables in `src/styles/global.css`.
+- Separate client vs personal projects visually but without uppercase labels.
 
 ## Tech Stack
 
-- Astro + vanilla JS
-- Scoped CSS in components
-- GSAP for scroll animations
-- SVG icons
+- Astro 7 (content collections, `astro:assets`, `<ClientRouter />` view transitions, hover prefetch)
+- Single global stylesheet (`src/styles/global.css`) plus scoped styles in `ProjectList.astro`
+- GSAP + ScrollTrigger, dynamically imported (`src/scripts/animations.ts`)
+- Formspree for the contact form (progressive: plain POST without JS)
 
 ## Content Guidelines
 
 - Keep About section tight: 1-2 paragraphs max, no stat grids
 - Mention Pi/AI workflows as a note, not a manifesto
-- Separate client vs personal projects visually but without uppercase labels
 - No unverified metrics (don't claim test counts, lead numbers, etc.)
+- No marketing copy; descriptions state facts from `docs/archive.md`
