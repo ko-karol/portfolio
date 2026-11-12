@@ -96,3 +96,11 @@ html { scroll-behavior: smooth; }
 
 /* Set by an inline script in Layout.astro; never present without JS. */
 .reveal :is(main > h1, main section, main article, main > ul > li) { opacity: 0; }
+
+dl { display: grid; grid-template-columns: max-content 1fr; gap: 0.25rem 1rem; margin: 1rem 0 0; }
+dt { font-weight: bold; }
+dd { margin: 0; }
+@media (max-width: 30rem) {
+  dl { grid-template-columns: 1fr; gap: 0; }
+  dd { margin-bottom: 0.5rem; }
+}
