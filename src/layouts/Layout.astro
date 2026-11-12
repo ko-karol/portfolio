@@ -39,15 +39,13 @@ const current = (href: string) => (href === path ? 'page' : undefined);
       // Hide reveal targets before first paint so GSAP can fade them in without a flash.
       // Only set when JS runs and motion is allowed; animations.ts removes it on failure.
       if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('reveal');
-      // Fit mode (fill the viewport, no scrolling) on roomy screens; see scripts/fit-grid.ts.
-      if (matchMedia('(min-width: 64rem) and (min-height: 34rem)').matches) document.documentElement.classList.add('fit');
     </script>
     <ClientRouter />
   </head>
   <body>
     <a class="skip" href="#main">Skip to content</a>
     <header>
-      <a href="/" class="name">Karol</a>
+      <a href="/" class="name">karol<span aria-hidden="true">_</span></a>
       <nav aria-label="Main">
         <a href="/" aria-current={current('/')}>Home</a>
         <a href="/projects" aria-current={current('/projects')}>Projects</a>
@@ -69,6 +67,5 @@ const current = (href: string) => (href === path ? 'page' : undefined);
 
 <script>
   import '../scripts/animations';
-  import '../scripts/fit-grid';
   import '../scripts/contact';
 </script>

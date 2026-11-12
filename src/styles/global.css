@@ -1,217 +1,209 @@
 :root {
   color-scheme: light dark;
-  --fg: #111;
-  --bg: #fff;
-  --muted: #555;
-  --link: #0b6e80;
+  --mono: ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+  --bg: #0b0c0d;
+  --surface: #1b1e1c;
+  --fg: #ececea;
+  --muted: #a1a5a0;
+  --line: #3b3f3c;
+  --link: #5eea8f;
+  --on-link: #06120a;
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
   :root {
-    --fg: #eee;
-    --bg: #111;
-    --muted: #aaa;
-    --link: #5fd3e6;
+    --bg: #f7f7f3;
+    --surface: #ecece6;
+    --fg: #121311;
+    --muted: #4f534e;
+    --line: #8d918a;
+    --link: #0a6b2d;
+    --on-link: #ffffff;
   }
 }
 
+* { border-radius: 0; }
+
 body {
   font-family: system-ui, sans-serif;
+  font-size: 1rem;
   line-height: 1.5;
   max-width: 120rem;
   box-sizing: border-box;
   min-height: 100dvh;
   margin: 0 auto;
-  padding: 0.75rem clamp(1rem, 3vw, 2.5rem) 0.75rem;
+  padding: 0 clamp(0.75rem, 2vw, 1.5rem);
   display: flex;
   flex-direction: column;
   color: var(--fg);
   background: var(--bg);
 }
 
-h1 { font-size: clamp(2rem, 6vw, 2.75rem); line-height: 1.15; letter-spacing: -0.02em; margin: 0 0 0.75rem; }
-h2 { font-size: 1.5rem; letter-spacing: -0.01em; margin: 0 0 0.75rem; }
+h1, h2, h3 { font-family: var(--mono); line-height: 1.2; margin: 0; }
+h1 { font-size: clamp(1.9rem, 5vw, 2.6rem); letter-spacing: -0.03em; margin-bottom: 0.75rem; }
+h1::before { content: ''; display: block; width: 2.5rem; height: 4px; margin-bottom: 0.75rem; background: var(--link); }
+h2 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+h2::before { content: '## '; color: var(--link); }
 
 a { color: var(--link); text-underline-offset: 0.2em; }
 :focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
 
-.skip {
-  position: absolute;
-  left: -999px;
-}
-.skip:focus {
-  left: 1rem;
-  top: 1rem;
-  background: var(--bg);
-  padding: 0.25rem 0.5rem;
-}
+.skip { position: absolute; left: -999px; }
+.skip:focus { left: 1rem; top: 1rem; z-index: 10; background: var(--bg); padding: 0.25rem 0.5rem; }
 
-header {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.25rem 1rem;
-  margin-bottom: 1rem;
-}
-header nav { margin-left: auto; }
-.name { font-weight: bold; font-size: 1.5rem; text-decoration: none; color: inherit; }
-nav { display: flex; gap: 0.25rem 0.25rem; }
-nav a {
-  color: var(--fg);
-  text-decoration: none;
-  padding: 0.5rem 0.75rem;
-  border-bottom: 2px solid transparent;
-}
-nav a:hover { border-bottom-color: var(--muted); }
-nav a[aria-current="page"] { border-bottom-color: var(--link); }
+/* Frame: header / main / footer are stacked cells of one ruled sheet. */
+header, main, footer { border: 1px solid var(--line); }
+header { display: flex; align-items: stretch; justify-content: space-between; margin-top: 0.75rem; border-bottom: 0; }
+.name { font-family: var(--mono); font-weight: 700; font-size: 1.1rem; display: flex; align-items: center; padding: 0 1rem; color: var(--fg); text-decoration: none; }
+.name span { color: var(--link); }
+nav { display: flex; }
+nav a { display: flex; align-items: center; min-height: 2.75rem; padding: 0 1.1rem; border-left: 1px solid var(--line); color: var(--fg); font-family: var(--mono); text-decoration: none; }
+nav a:hover { background: var(--surface); color: var(--link); }
+nav a[aria-current='page'] { background: var(--link); color: var(--on-link); font-weight: 700; }
+nav a:focus-visible { outline-offset: -4px; }
 
-section { margin-top: 2rem; }
+main { flex: 1; min-height: 0; display: flex; flex-direction: column; border-bottom: 0; }
+main > * { flex: none; }
+footer { margin-bottom: 0.75rem; padding: 0 1rem; min-height: 2.25rem; display: flex; align-items: center; color: var(--muted); font-family: var(--mono); font-size: 0.85rem; }
+footer p { display: flex; flex-wrap: wrap; gap: 0 1.25rem; margin: 0; width: 100%; }
+footer span { margin-right: auto; }
 
+p { margin: 0 0 0.75rem; }
 ul { list-style: none; padding: 0; }
-li { margin-bottom: 1.5rem; }
-li p { margin: 0.25rem 0; }
-blockquote { margin: 0.5rem 0; padding-left: 1rem; border-left: 3px solid var(--muted); }
-.tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0; padding: 0; list-style: none; }
-.tags li { margin: 0; border: 1px solid color-mix(in srgb, var(--muted) 60%, transparent); border-radius: 999px; padding: 0 0.5rem; font-size: 0.75rem; line-height: 1.5; color: var(--muted); }
+.tags { display: flex; flex-wrap: wrap; gap: 0 0.25rem; margin: 0; padding: 0; list-style: none; font-family: var(--mono); font-size: 0.78rem; color: var(--link); }
+.tags li { margin: 0; }
+.tags li + li::before { content: '/'; margin-right: 0.25rem; color: var(--muted); }
 
-.reads { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 24rem), 1fr)); gap: 1rem; margin-top: 1rem; align-items: start; }
-.read {
-  padding: 1rem 1.1rem;
-  border: 1px solid color-mix(in srgb, var(--muted) 50%, transparent);
-  border-radius: 0.5rem;
-}
-.read h2 { font-size: 1.25rem; margin: 0 0 0.25rem; }
-.read h2 a { text-decoration: none; }
-.read h2 a:hover { text-decoration: underline; }
-.read .meta { margin: 0 0 0.5rem; color: var(--muted); font-size: 0.9rem; }
-.read blockquote { margin: 0 0 0.75rem; }
+/* Ruled grids: 1px gaps over a line-coloured background draw the borders. */
+.home, .split { display: grid; gap: 1px; background: var(--line); }
+.signal { display: grid; align-content: start; }
+.home > *, .split > *, .signal > * { background: var(--bg); min-width: 0; min-height: 0; }
+.home > section { padding: 1rem; }
+.split > h1 { padding: 1rem; margin: 0; }
+.split > h1::before { display: none; }
+.split > h1 { font-size: 1.1rem; letter-spacing: 0; }
+.split > h1::after { content: ''; }
+.split > section { padding: 0; }
 
-form { display: grid; gap: 0.5rem; max-width: 28rem; }
-.field { display: grid; gap: 0.25rem; min-width: 0; }
-label { font-weight: 600; }
-input, textarea { width: 100%; box-sizing: border-box; }
-input, textarea, button { font: inherit; padding: 0.6rem 0.75rem; border-radius: 0.5rem; }
-input, textarea {
-  color: inherit;
-  background: var(--bg);
-  border: 1px solid color-mix(in srgb, var(--muted) 70%, transparent);
-}
-button {
-  justify-self: start;
-  cursor: pointer;
-  min-height: 2.75rem;
-  border: 1px solid var(--link);
-  background: var(--link);
-  color: var(--bg);
-  font-weight: 600;
-}
-button:hover { filter: brightness(1.1); }
-button[disabled] { cursor: wait; opacity: 0.7; }
-.status { margin: 0; }
-
-main { flex: 1; }
-footer { margin-top: 1rem; color: var(--muted); font-size: 0.9rem; }
-footer p { display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; margin: 0; }
-
-html { scroll-behavior: smooth; }
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-}
-
-.lead { font-size: 1.3rem; line-height: 1.45; color: var(--muted); max-width: 32rem; margin: 0 0 1rem; }
-.cta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.5rem; margin-top: 1.25rem; }
-.cta a:first-child {
-  display: inline-block;
-  padding: 0.6rem 1.1rem;
-  border-radius: 0.5rem;
-  background: var(--link);
-  color: var(--bg);
-  font-weight: 600;
-  text-decoration: none;
-}
-.cta a:first-child:hover { filter: brightness(1.1); }
-
-dl { display: grid; grid-template-columns: max-content 1fr; gap: 0.25rem 1rem; margin: 1rem 0 0; }
-dt { font-weight: bold; }
+/* Home */
+.lead { font-size: 1.2rem; line-height: 1.45; max-width: 34rem; margin: 0 0 1rem; }
+.cta { display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; align-items: center; margin: 0; font-family: var(--mono); }
+.cta a:first-child { display: inline-block; padding: 0.55rem 1rem; background: var(--link); color: var(--on-link); font-weight: 700; text-decoration: none; border: 1px solid var(--link); }
+.cta a:first-child:hover { background: var(--bg); color: var(--link); }
+dl { display: grid; grid-template-columns: max-content 1fr; gap: 0.35rem 1rem; margin: 0.75rem 0 0; font-size: 0.95rem; }
+dt { font-family: var(--mono); color: var(--link); }
 dd { margin: 0; }
-@media (max-width: 30rem) {
-  dl { grid-template-columns: 1fr; gap: 0; }
-  dd { margin-bottom: 0.5rem; }
-}
+.about p:nth-of-type(2) { margin-bottom: 0; }
 
+/* Form */
+form { display: grid; gap: 0.6rem; }
+.field { display: grid; gap: 0.2rem; min-width: 0; }
+label { font-family: var(--mono); font-size: 0.85rem; color: var(--muted); }
+input, textarea, button { font: inherit; padding: 0.55rem 0.7rem; border-radius: 0; }
+input, textarea { width: 100%; box-sizing: border-box; color: inherit; background: var(--surface); border: 1px solid var(--muted); }
+input:focus-visible, textarea:focus-visible { outline: 2px solid var(--link); outline-offset: 0; border-color: var(--link); }
+textarea { resize: vertical; }
+button { cursor: pointer; min-height: 2.75rem; border: 1px solid var(--link); background: var(--link); color: var(--on-link); font-family: var(--mono); font-weight: 700; }
+button:hover { background: var(--bg); color: var(--link); }
+button[disabled] { cursor: wait; opacity: 0.7; }
+.status { margin: 0; font-size: 0.9rem; }
 .contact-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0 1rem; }
-.contact-head p { margin: 0 0 0.5rem; }
+.contact-head p { margin: 0 0 0.5rem; font-family: var(--mono); font-size: 0.9rem; }
 
-/* Layout: side column + project grid on home, client | personal on projects. */
-.home, .split { display: grid; gap: 1.5rem 2.5rem; }
-.home section:first-child, .split > section:first-child { margin-top: 0; }
-.side > section + section { margin-top: 1.5rem; }
-.work h2, .split h2 { margin-bottom: 0; }
-
-/* Small screens: projects come right after the intro, before About and Contact. */
-@media (max-width: 63.999rem) {
-  .home .side { display: contents; }
-  .home section { margin-top: 0; }
-  .home .intro { order: 1; }
-  .home .work { order: 2; }
-  .home .side > section:nth-child(2) { order: 3; }
-  .home #contact { order: 4; }
+@media (max-width: 30rem) {
+  .name { padding: 0 0.75rem; font-size: 1rem; }
+  nav a { padding: 0 0.7rem; font-size: 0.9rem; }
 }
 
-@media (min-width: 64rem) {
-  .home { grid-template-columns: minmax(18rem, 21rem) minmax(0, 1fr); }
-  .split { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); }
-  .home .work, .split > section { margin-top: 0; }
-  .home h1 { font-size: clamp(1.5rem, 2.4vw, 2.1rem); }
-  .home .lead { font-size: 1.1rem; margin-bottom: 0.5rem; }
-  .home .cta { margin-top: 0.75rem; }
-  .home h2 { font-size: 1.25rem; margin-bottom: 0.4rem; }
-  .home p, .home dl { font-size: 0.88rem; line-height: 1.4; }
-  .home dl { margin-top: 0.5rem; }
-  .home .side > section + section { margin-top: 0.9rem; }
-  .home form { max-width: none; grid-template-columns: 1fr 1fr; gap: 0.4rem 0.6rem; }
-  .home form .status { grid-column: auto; align-self: center; font-size: 0.8rem; }
-  .home form .wide { grid-column: 1 / -1; }
-  .home input, .home textarea, .home button { padding: 0.4rem 0.6rem; }
-  .home button { min-height: 2.25rem; }
-  .home textarea { resize: none; }
+/* Mobile / tablet: single column, projects right after the intro. */
+.home { grid-template-columns: minmax(0, 1fr); }
+.home .intro { order: 1; }
+.home .work { order: 2; padding: 0; }
+.home .about { order: 3; }
+.home #contact { order: 4; }
+.home .work > h2 { padding: 0.75rem 1rem 0.6rem; margin: 0; border-bottom: 1px solid var(--line); }
+form { max-width: 32rem; }
+
+/* Signal */
+.signal-head { padding: 1rem; }
+.signal-head p { margin: 0; max-width: 40rem; }
+.signal-head h1 { margin-bottom: 0.5rem; }
+.signal-head { border-bottom: 1px solid var(--line); }
+.reads { display: grid; align-content: start; }
+.read + .read { border-top: 1px solid var(--line); }
+.read { display: grid; gap: 0.5rem 1.5rem; padding: 1rem; grid-template-columns: minmax(0, 1fr); }
+.read h2 { font-size: 1.3rem; margin: 0 0 0.25rem; }
+.read h2::before { content: none; }
+.read h2 a { color: var(--fg); text-decoration-color: var(--link); text-decoration-thickness: 2px; }
+.read h2 a:hover { color: var(--link); }
+.read .meta { margin: 0; font-family: var(--mono); font-size: 0.85rem; color: var(--muted); }
+.read blockquote { margin: 0.5rem 0 0; padding-left: 1rem; border-left: 2px solid var(--link); max-width: 46rem; }
+@media (min-width: 48rem) {
+  .read { grid-template-columns: 8rem minmax(0, 1fr) 14rem; }
+  .read .tags { display: block; }
 }
 
-/* Narrow desktop (e.g. 1024px tablets): smaller card text so the grid still fits. */
-@media (min-width: 64rem) and (max-width: 75rem) {
-  html.fit .body { padding: 0.45rem 0.6rem 0.55rem; }
-  html.fit .body :is(p, h3) { font-size: 0.8rem; line-height: 1.3; }
-  html.fit .body h3 { font-size: 0.9rem; }
-  html.fit .body .tags li { font-size: 0.68rem; }
+main h1 { margin-top: 0; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+/* 404 */
+main > h1, main > p { padding-inline: 1rem; flex: none; }
+main > h1 { padding-top: 1rem; }
+
+/* Tablet and up: projects shown as a list beside a preview. */
+@media (min-width: 48rem) {
+  .home .about { padding-block: 1rem; }
+  #contact form { max-width: none; }
 }
 
-/* Short laptop screens: tighten the side column so everything fits without scrolling. */
-@media (min-width: 64rem) and (max-height: 56rem) {
-  main h1::before { height: 3px; margin-bottom: 0.3rem; }
-  .home h1 { font-size: clamp(1.4rem, 2vw, 1.8rem); margin-bottom: 0.4rem; }
-  .home .lead { font-size: 1rem; margin-bottom: 0.3rem; }
-  .home .cta { margin-top: 0.4rem; }
-  .home h2 { font-size: 1.1rem; margin-bottom: 0.25rem; }
-  .home p, .home dl { font-size: 0.84rem; line-height: 1.35; }
-  .home .side > section + section { margin-top: 0.6rem; }
-  .home label { font-size: 0.8rem; }
-  .home form { gap: 0.25rem 0.5rem; }
-  .home input, .home textarea { padding: 0.3rem 0.5rem; }
-  .home button { min-height: 2rem; padding: 0.25rem 0.8rem; }
-  .contact-head p { margin-bottom: 0.25rem; }
+/* Desktop: the sheet fills the viewport; no page scroll. */
+@media (min-width: 64rem) and (min-height: 34rem) {
+  body { height: 100dvh; min-height: 0; }
+  .home {
+    grid-template-columns: minmax(21rem, 25rem) minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    grid-template-areas: 'intro work' 'about work' 'contact contact';
+  }
+  .home .intro { grid-area: intro; }
+  .home .about { grid-area: about; overflow: auto; }
+  .home .work { grid-area: work; display: flex; flex-direction: column; }
+  .home .work > .index { flex: 1; min-height: 0; }
+  .home #contact { grid-area: contact; display: grid; grid-template-columns: 14rem minmax(0, 1fr); gap: 0 1.5rem; padding: 0.75rem 1rem; }
+  .home #contact .contact-head { display: block; }
+  .home #contact .contact-head h2 { margin-bottom: 0.25rem; }
+  .home #contact .contact-head p { margin: 0; }
+  .home #contact form { grid-template-columns: 1fr 1fr 2fr auto; align-items: end; gap: 0 0.6rem; max-width: none; }
+  .home #contact .status { grid-column: 1 / -1; }
+  .home #contact .status:empty { display: none; }
+  .home #contact textarea { resize: none; height: 2.75rem; padding-block: 0.55rem; line-height: 1.3; }
+  .home .intro h1 { font-size: clamp(1.7rem, 2.6vw, 2.3rem); }
+  .home .lead { font-size: 1.05rem; }
+  .home .about p, .home dl { font-size: 0.9rem; line-height: 1.45; }
+
+  .split { grid-template-rows: auto minmax(0, 1fr); }
+  .split > h1 { padding-block: 0.7rem; }
+  .split > section { display: flex; flex-direction: column; }
+  .split > section > .index { flex: 1; min-height: 0; }
+  main > * { flex: 1; min-height: 0; }
+  .signal { align-content: start; }
 }
 
-/* Fit mode: the page fills the viewport instead of scrolling (set by fit-grid.ts). */
-html.fit main { min-height: 0; display: flex; flex-direction: column; }
-html.fit :is(.home, .split) { flex: 1; min-height: 0; }
-html.fit :is(.work, .split > section) { display: flex; flex-direction: column; min-height: 0; }
-
-@media (min-width: 64rem) and (max-height: 46rem) {
-  header { margin-bottom: 0.5rem; }
-  footer { margin-top: 0.4rem; }
+/* Short laptop screens. */
+@media (min-width: 64rem) and (min-height: 34rem) and (max-height: 50rem) {
+  header { margin-top: 0.4rem; }
+  footer { margin-bottom: 0.4rem; min-height: 2rem; }
+  nav a { min-height: 2.4rem; }
+  .home > section { padding: 0.75rem 1rem; }
+  .home .intro h1 { margin-bottom: 0.4rem; }
+  .home .intro h1::before { margin-bottom: 0.5rem; height: 3px; }
+  .home .lead { margin-bottom: 0.6rem; }
+  .home h2 { margin-bottom: 0.3rem; }
+  .home .about p, .home dl { font-size: 0.85rem; line-height: 1.4; margin-bottom: 0.5rem; }
+  .home dl { margin-top: 0.4rem; }
+  .home #contact { padding: 0.5rem 1rem; }
 }
 
-/* Large screens: scale everything (all sizes are rem) so the UI doesn't feel tiny. */
+/* Large screens: scale rem so the UI doesn't feel tiny. */
 @media (min-width: 100rem) and (min-height: 60rem) { html { font-size: 125%; } }
 @media (min-width: 137.5rem) and (min-height: 80rem) { html { font-size: 166.67%; } }

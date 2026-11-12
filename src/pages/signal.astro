@@ -10,19 +10,25 @@ const reads = (await getCollection('reads')).sort(
 <Layout title="Signal | Karol"
   description="Articles and essays Karol has found valuable, with short commentary."
 >
-  <h1>Valuable Reads</h1>
-  <p>A curated collection of articles, essays, and resources I've found insightful.</p>
-
+  <div class="signal">
+    <div class="signal-head">
+      <h1>Valuable Reads</h1>
+      <p>A curated collection of articles, essays, and resources I've found insightful.</p>
+    </div>
   <div class="reads">
   {reads.map(({ data }) => (
     <article class="read">
-      <h2><a href={data.url}>{data.title}</a></h2>
-      <p class="meta">{data.author}, <time datetime={data.date.toISOString()}>{data.date.toISOString().slice(0, 10)}</time></p>
-      <blockquote>{data.commentary}</blockquote>
+      <p class="meta"><time datetime={data.date.toISOString()}>{data.date.toISOString().slice(0, 10)}</time></p>
+      <div class="read-body">
+        <h2><a href={data.url}>{data.title}</a></h2>
+        <p class="meta">{data.author}</p>
+        <blockquote>{data.commentary}</blockquote>
+      </div>
       <ul class="tags">
         {data.tags.map((t) => <li>{t}</li>)}
       </ul>
     </article>
   ))}
+  </div>
   </div>
 </Layout>

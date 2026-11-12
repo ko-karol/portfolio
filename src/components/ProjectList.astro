@@ -1,106 +1,191 @@
 ---
 import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
+import projectsData from '../data/projects.json';
 
 interface Props {
   kind?: 'client' | 'personal';
   ids?: string[];
   eager?: boolean;
+  groups?: boolean;
+  compact?: boolean;
 }
 
-const { kind, ids, eager = false } = Astro.props;
-const projects = await getCollection('projects', ({ id, data }) => (ids ? ids.includes(id) : kind ? data.kind === kind : true));
+const { kind, ids, eager = false, groups = false, compact = false } = Astro.props;
+const order = projectsData.map((p) => p.id);
+const all = (await getCollection('projects', ({ id, data }) => (ids ? ids.includes(id) : kind ? data.kind === kind : true))).sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
 
 // Screenshots live in src/assets/projects/<id>.jpg; projects without one render without an image.
 const shots = import.meta.glob<{ default: ImageMetadata }>('../assets/projects/*.jpg', { eager: true });
 const shotFor = (id: string) => shots[`../assets/projects/${id}.jpg`]?.default;
+const host = (url: string) => new URL(url).host;
+
+const sections = groups
+  ? [
+      { label: 'Client work', items: all.filter((p) => p.data.kind === 'client') },
+      { label: 'Personal projects', items: all.filter((p) => p.data.kind === 'personal') },
+    ]
+  : [{ label: '', items: all }];
+
+// Preview panels are shown by CSS alone: the hovered/focused row wins, otherwise the first project.
+const first = all[0]?.id;
+const rules = all
+  .map(({ id }) => `.index:has(#r-${id}:is(:hover,:focus-within)) #p-${id}{opacity:1;visibility:visible}`)
+  .join('');
+const fallback = first ? `.index:not(:has(.row:is(:hover,:focus-within))) #p-${first}{opacity:1;visibility:visible}` : '';
 ---
 
-<div class="posts">
-  {projects.map(({ id, data }, index) => {
-    const shot = shotFor(id);
-    const first = eager && index === 0;
-    return (
-      <article>
-        {shot && <Image src={shot} alt="" width={800} widths={[320, 480, 640, 800]} sizes="(min-width: 64rem) 34vw, calc(100vw - 2rem)" loading={first ? 'eager' : 'lazy'} fetchpriority={first ? 'high' : undefined} decoding={first ? 'sync' : 'async'} style={data.focus ? `object-position: ${data.focus}` : undefined} />}
-        <div class="body">
-          <h3><a href={data.url}>{data.title}</a></h3>
-          <p>{data.description}</p>
-          <ul class="tags">
-            {data.tags.map((t) => <li>{t}</li>)}
-          </ul>
-        </div>
-      </article>
-    );
-  })}
+<div class:list={['index', { compact }]}>
+  <div class="list">
+    {sections.map(({ label, items }) => (
+      <>
+        {label && <h2 class="group">{label}</h2>}
+        <ol class="rows">
+          {items.map(({ id, data }) => {
+            const shot = shotFor(id);
+            return (
+              <li class="row" id={`r-${id}`}>
+                <h3 class="title"><a href={data.url}>{data.title}</a></h3>
+                <ul class="tags">
+                  {data.tags.map((t) => <li>{t}</li>)}
+                </ul>
+                <p class="desc">{data.description}</p>
+                {shot && <Image class="inline-shot" src={shot} alt="" width={640} widths={[320, 480, 640]} sizes="calc(100vw - 2rem)" loading="lazy" decoding="async" style={data.focus ? `object-position: ${data.focus}` : undefined} />}
+              </li>
+            );
+          })}
+        </ol>
+      </>
+    ))}
+  </div>
+  <div class="preview" aria-hidden="true">
+    {all.map(({ id, data }, index) => {
+      const shot = shotFor(id);
+      const eagerShot = eager && index === 0;
+      return (
+        <figure class="panel" id={`p-${id}`}>
+          {shot ? (
+            <Image src={shot} alt="" width={960} widths={[480, 720, 960, 1280]} sizes="(min-width: 64rem) 50vw, 1px" loading={eagerShot ? 'eager' : 'lazy'} fetchpriority={eagerShot ? 'high' : undefined} decoding={eagerShot ? 'sync' : 'async'} style={data.focus ? `object-position: ${data.focus}` : undefined} />
+          ) : (
+            <div class="noshot">no screenshot</div>
+          )}
+          <dl class="spec">
+            <dt>name</dt><dd>{data.title}</dd>
+            <dt>type</dt><dd>{data.kind === 'client' ? 'client site' : 'personal project'}</dd>
+            <dt>stack</dt><dd>{data.tags.join(', ')}</dd>
+            {compact && <><dt>about</dt><dd>{data.description}</dd></>}
+            <dt>url</dt><dd>{data.url}</dd>
+          </dl>
+        </figure>
+      );
+    })}
+  </div>
 </div>
+<style is:inline set:html={rules + fallback}></style>
 
 <style>
-  .posts { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; margin-top: 0.75rem; }
-  @media (min-width: 36rem) {
-    :global(html:not(.fit)) .posts:has(> :nth-child(2)) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  }
-  @media (min-width: 48rem) {
-    :global(html:not(.fit)) .posts:has(> :nth-child(3):last-child),
-    :global(html:not(.fit)) .posts:has(> :nth-child(6):last-child) { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  }
-  article {
+  .index { display: grid; grid-template-columns: minmax(0, 1fr); min-height: 0; }
+  .list { min-width: 0; min-height: 0; container-type: inline-size; }
+  .rows { list-style: none; margin: 0; padding: 0; counter-reset: row; }
+  .group { margin: 0; padding: 0.5rem 1rem; font-size: 0.8rem; font-weight: 600; color: var(--muted); border-bottom: 1px solid var(--line); background: var(--surface); }
+  .rows + .group { border-top: 1px solid var(--line); }
+
+  .row {
+    counter-increment: row;
     position: relative;
-    border: 1px solid color-mix(in srgb, var(--muted) 50%, transparent);
-    border-radius: 0.5rem;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-    min-height: 0;
+    display: grid;
+    grid-template-columns: 2.25rem minmax(0, 1fr);
+    column-gap: 0.25rem;
+    margin: 0;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--line);
   }
-  article:hover { border-color: var(--link); }
-  /* A project without a screenshot only takes the height its text needs. */
-  article:not(:has(img)) { align-self: start; }
-  @media (prefers-reduced-motion: no-preference) {
-    article { transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; }
-    article:hover { transform: translateY(-3px); box-shadow: 0 8px 24px color-mix(in srgb, var(--fg) 12%, transparent); }
-    img { transition: transform 0.4s ease; }
-    article:hover img { transform: scale(1.03); }
+  .row:last-child { border-bottom: 0; }
+  .row::before {
+    content: counter(row, decimal-leading-zero);
+    grid-row: 1 / span 3;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    line-height: 1.9;
+    color: var(--muted);
   }
-  article:has(a:focus-visible) { outline: 2px solid var(--link); outline-offset: 2px; }
+  .row > * { grid-column: 2; min-width: 0; }
+  .row:is(:hover, :focus-within) { background: var(--surface); box-shadow: inset 3px 0 0 var(--link); }
+  .row:is(:hover, :focus-within)::before { color: var(--link); }
 
-  img { flex: none; display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; object-position: top; }
-  .body { padding: 0.55rem 0.75rem 0.7rem; flex: none; display: flex; flex-direction: column; }
-  .tags { margin-top: auto; }
-  h3 { margin: 0 0 0.2rem; font-size: 1rem; line-height: 1.25; }
-  h3 a { text-decoration: none; }
-  h3 a:hover { text-decoration: underline; }
-  h3 a:focus-visible { outline: none; }
-  /* Stretched link: the whole card is clickable. */
-  h3 a::after { content: ''; position: absolute; inset: 0; }
-  p { margin: 0 0 0.5rem; font-size: 0.85rem; line-height: 1.35; }
+  .title { margin: 0; font-family: var(--mono); font-size: 1rem; line-height: 1.5; font-weight: 700; }
+  .title a { color: var(--fg); text-decoration: none; }
+  .title a::after { content: ''; position: absolute; inset: 0; }
+  .title a::before { content: '\2197'; float: right; color: var(--link); margin-left: 0.5rem; }
+  .title a:hover { color: var(--link); }
+  .title a:focus-visible { outline: none; }
+  .row:has(a:focus-visible) { outline: 2px solid var(--link); outline-offset: -2px; }
 
-  /* Fit mode (set by fit-grid.ts): the grid has a definite height; column count comes from JS
-     and the screenshot absorbs whatever height the text leaves. */
-  :global(html.fit) .posts {
-    flex: 1;
-    min-height: var(--min-h, 0);
-    grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));
-    grid-auto-rows: minmax(0, 1fr);
-    grid-template-rows: var(--rows, none);
+  .tags { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 0 0.25rem; font-family: var(--mono); font-size: 0.78rem; line-height: 1.6; color: var(--link); }
+  .tags li { margin: 0; padding: 0; border: 0; border-radius: 0; font-size: inherit; color: inherit; }
+  .tags li + li::before { content: '/'; margin-right: 0.25rem; color: var(--muted); }
+  .desc { margin: 0.2rem 0 0; font-size: 0.9rem; line-height: 1.45; }
+
+  .row > .inline-shot { grid-column: 2 / -1; grid-row: 4; max-width: 32rem; }
+  .inline-shot { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; margin-top: 0.6rem; border: 1px solid var(--line); }
+  .preview { display: none; }
+
+  /* Medium container: title and stack share a line, description below. */
+  @container (min-width: 26rem) {
+    .row { grid-template-columns: 2.25rem minmax(0, 1fr) auto; }
+    .row > .title { grid-column: 2; grid-row: 1; }
+    .row > .tags { grid-column: 3; grid-row: 1; align-self: center; margin-left: 1rem; flex-wrap: nowrap; }
+    .row > .desc { grid-column: 2 / -1; grid-row: 2; }
+    .row::before { grid-row: 1; }
+    .title a::before { display: none; }
   }
-  /* Hidden until fit-grid.ts has chosen the columns, so cards never visibly reflow. The animation
-     is a safety net: if the script never runs, the grid appears after 1.5s anyway. */
-  :global(html.fit) .posts:not([data-fit]) { visibility: hidden; animation: show-grid 0s 1.5s forwards; }
-  @keyframes show-grid { to { visibility: visible; } }
-  /* In fit mode a text-only card fills its cell instead of leaving dead space below it. */
-  :global(html.fit) article:not(:has(img)) { align-self: stretch; }
-  :global(html.fit) article:not(:has(img)) .body { flex: 1; justify-content: center; }
-  @media (min-width: 90rem) {
-    :global(html.fit) article:not(:has(img)) .body { padding: 1rem 1.25rem; }
-    :global(html.fit) article:not(:has(img)) .body h3 { font-size: 1.4rem; margin-bottom: 0.4rem; }
-    :global(html.fit) article:not(:has(img)) .body p { font-size: 1.05rem; line-height: 1.5; margin-bottom: 0.75rem; }
-    :global(html.fit) article:not(:has(img)) .tags { margin-top: 0; }
+  /* Wide container: a real table, one column per field. */
+  @container (min-width: 44rem) {
+    .row { grid-template-columns: 2.25rem minmax(8rem, 12rem) minmax(6rem, 9rem) minmax(0, 1fr); column-gap: 0.75rem; align-items: start; }
+    .row > .title, .row > .tags, .row > .desc { grid-row: 1; margin: 0; }
+    .row > .title { grid-column: 2; }
+    .row > .tags { grid-column: 3; display: block; margin: 0; font-size: 0.75rem; align-self: start; line-height: 1.7; }
+    .row > .desc { grid-column: 4; font-size: 0.85rem; }
+    .row::before { line-height: 1.7; }
+    .tags li { display: block; }
+    .tags li + li::before { content: none; }
   }
-  /* The image absorbs spare height but is capped at 1.65:1 (source is 16:9) so it never crops much
-     horizontally; any further spare height goes to the text area. */
-  :global(html.fit) article:has(img) { container-type: inline-size; }
-  :global(html.fit) img { flex: 1000 1 0; min-height: 5rem; aspect-ratio: auto; height: auto; max-height: calc(100cqw / 1.65); }
-  :global(html.fit) article:has(img) .body { flex: 1 0 auto; }
+
+  @media (min-width: 64rem) and (min-height: 34rem) {
+    .index { grid-template-columns: minmax(0, 11fr) minmax(0, 10fr); gap: 1px; background: var(--line); height: 100%; }
+    .list { background: var(--bg); display: flex; flex-direction: column; }
+    .rows { display: flex; flex-direction: column; flex: 1 1 auto; }
+    .row { flex: 1 1 auto; align-content: center; }
+    .inline-shot { display: none; }
+    .preview { container-type: inline-size; display: grid; grid-template: minmax(0, 1fr) / minmax(0, 1fr); background: var(--bg); min-height: 0; }
+    .panel { grid-area: 1 / 1; margin: 0; display: flex; flex-direction: column; min-height: 0; opacity: 0; visibility: hidden; }
+    .panel img { display: block; flex: 1 1 0; width: 100%; min-height: calc(100cqw * 9 / 16); max-height: calc(100cqw * 3 / 4); object-fit: cover; object-position: top; border-bottom: 1px solid var(--line); }
+    .spec { flex: 1; margin: 0; padding: 0.75rem 1rem; display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 0.2rem 1rem; align-content: start; font-family: var(--mono); font-size: 0.8rem; color: var(--fg); }
+    .spec dt { color: var(--muted); }
+    .spec dd { margin: 0; overflow-wrap: anywhere; }
+    .noshot { flex: none; min-height: calc(100cqw * 9 / 16); display: grid; place-items: center; font-family: var(--mono); color: var(--muted); background: var(--surface); }
+    figcaption { display: none; flex: none; display: flex; justify-content: space-between; gap: 1rem; padding: 0.5rem 1rem; border-top: 1px solid var(--line); font-family: var(--mono); font-size: 0.8rem; color: var(--muted); }
+    figcaption span:first-child { color: var(--fg); }
+  }
+  @media (min-width: 64rem) and (min-height: 34rem) {
+    /* Compact (home): rows show name + stack only; the description is read out of the preview and kept for assistive tech. */
+    .compact { grid-template-columns: minmax(0, 9fr) minmax(0, 11fr); }
+    .compact .row { grid-template-columns: 2.25rem minmax(0, 1fr); padding-block: 0.5rem; }
+    .compact .row > .title { grid-column: 2; grid-row: 1; }
+    .compact .row > .tags { grid-column: 2; grid-row: 2; margin: 0; align-self: auto; flex-wrap: wrap; }
+    .compact .row::before { grid-row: 1; }
+    .compact .row > .desc { position: absolute; width: 1px; height: 1px; margin: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    .compact .row > .title a::before { display: block; }
+  }
+  @media (min-width: 64rem) and (min-height: 34rem) and (max-height: 50rem) {
+    .list { overflow-y: auto; }
+    .row { padding: 0.4rem 1rem; }
+    .title { font-size: 0.92rem; line-height: 1.4; }
+    .desc, .row > .desc { font-size: 0.8rem; line-height: 1.35; margin-top: 0.1rem; }
+    .tags { font-size: 0.72rem; }
+    .group { padding: 0.3rem 1rem; }
+  }
+  @media (min-width: 64rem) and (min-height: 34rem) and (prefers-reduced-motion: no-preference) {
+    .panel { transition: opacity 0.12s linear; }
+  }
 </style>
