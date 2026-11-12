@@ -5,9 +5,10 @@ import { Image } from 'astro:assets';
 interface Props {
   kind?: 'client' | 'personal';
   ids?: string[];
+  eager?: boolean;
 }
 
-const { kind, ids } = Astro.props;
+const { kind, ids, eager = false } = Astro.props;
 const projects = await getCollection('projects', ({ id, data }) => (ids ? ids.includes(id) : data.kind === kind));
 
 // Screenshots live in src/assets/projects/<id>.jpg; projects without one render without an image.
@@ -20,7 +21,7 @@ const shotFor = (id: string) => shots[`../assets/projects/${id}.jpg`]?.default;
     const shot = shotFor(id);
     return (
       <article>
-        {shot && <Image src={shot} alt="" width={800} loading="lazy" />}
+        {shot && <Image src={shot} alt="" width={800} loading={eager ? 'eager' : 'lazy'} />}
         <div class="body">
           <h3><a href={data.url}>{data.title}</a></h3>
           <p>{data.description}</p>
