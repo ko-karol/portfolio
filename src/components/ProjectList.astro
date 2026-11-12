@@ -9,7 +9,7 @@ interface Props {
 const { kind } = Astro.props;
 const projects = await getCollection('projects', ({ data }) => data.kind === kind);
 
-// Screenshots live in src/assets/projects/<id>.jpg; projects without one render as plain posts.
+// Screenshots live in src/assets/projects/<id>.jpg; projects without one render without an image.
 const shots = import.meta.glob<{ default: ImageMetadata }>('../assets/projects/*.jpg', { eager: true });
 const shotFor = (id: string) => shots[`../assets/projects/${id}.jpg`]?.default;
 ---
@@ -18,8 +18,12 @@ const shotFor = (id: string) => shots[`../assets/projects/${id}.jpg`]?.default;
   {projects.map(({ id, data }) => {
     const shot = shotFor(id);
     return (
-      <article class:list={{ 'has-shot': shot }}>
-        {shot && <Image src={shot} alt="" width={800} loading="lazy" />}
+      <article>
+        {shot && (
+          <a class="shot" href={data.url} tabindex="-1" aria-hidden="true">
+            <Image src={shot} alt="" width={800} loading="lazy" />
+          </a>
+        )}
         <header>
           <a href={data.url}>{data.title}</a>
           <span>{data.kind}</span>
@@ -32,21 +36,13 @@ const shotFor = (id: string) => shots[`../assets/projects/${id}.jpg`]?.default;
 </div>
 
 <style>
-  .posts { display: grid; gap: 1rem; margin-top: 1rem; }
-  article { position: relative; isolation: isolate; border: 1px solid var(--muted); overflow: hidden; }
+  .posts { display: grid; gap: 1.5rem; margin-top: 1rem; }
+  article { border: 1px solid var(--muted); overflow: hidden; }
+  .shot { display: block; border-bottom: 1px solid var(--muted); }
+  img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; object-position: top; }
   header { display: flex; justify-content: space-between; gap: 1rem; padding: 0.4rem 0.75rem; border-bottom: 1px solid var(--muted); background: color-mix(in srgb, var(--muted) 15%, transparent); }
   header a { font-weight: bold; }
   header span, footer { color: var(--muted); font-size: 0.85rem; }
   p { margin: 0; padding: 0.75rem; }
   footer { padding: 0 0.75rem 0.6rem; }
-
-  /* Screenshot as background; fixed dark scrim keeps text readable in both themes. */
-  img { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; }
-  .has-shot::before { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(rgb(0 0 0 / 0.15) 0%, rgb(0 0 0 / 0.45) 45%, rgb(0 0 0 / 0.85)); }
-  .has-shot { border-color: transparent; color: #fff; min-height: 14rem; display: flex; flex-direction: column; }
-  .has-shot header { background: rgb(0 0 0 / 0.35); border-bottom-color: rgb(255 255 255 / 0.25); }
-  .has-shot header a { color: #fff; }
-  .has-shot header span, .has-shot footer { color: rgb(255 255 255 / 0.8); }
-  .has-shot p { flex: 1; display: flex; align-items: flex-end; text-shadow: 0 1px 3px rgb(0 0 0 / 0.8); }
-  .has-shot header, .has-shot footer { text-shadow: 0 1px 3px rgb(0 0 0 / 0.8); }
 </style>
