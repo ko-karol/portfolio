@@ -1,8 +1,0 @@
-/* ═══════════════════════════════════════════════════════════
-   GLOBAL STYLES ENTRY POINT
-   Import order matters (generic → specific)
-═══════════════════════════════════════════════════════════ */
-
-@import './tokens.css';
-@import './reset.css';
-@import './utilities.css';

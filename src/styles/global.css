@@ -1,0 +1,27 @@
+body {
+  font-family: system-ui, sans-serif;
+  line-height: 1.5;
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 1rem;
+  color: #111;
+  background: #fff;
+}
+
+header { margin-bottom: 2rem; }
+.name { font-weight: bold; font-size: 1.5rem; text-decoration: none; color: inherit; }
+nav { margin-top: 0.5rem; }
+nav a { margin-right: 1rem; }
+
+section { margin-top: 2.5rem; }
+
+ul { list-style: none; padding: 0; }
+li { margin-bottom: 1.5rem; }
+li p { margin: 0.25rem 0; }
+.tags { color: #555; font-size: 0.9rem; }
+
+form { display: grid; gap: 0.5rem; max-width: 28rem; }
+input, textarea, button { font: inherit; padding: 0.5rem; }
+button { justify-self: start; cursor: pointer; }
+
+footer { margin-top: 3rem; color: #555; }

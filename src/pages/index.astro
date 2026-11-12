@@ -1,18 +1,30 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Hero from '../sections/Hero.astro';
-import Currently from '../sections/Currently.astro';
-import Work from '../sections/Work.astro';
-import About from '../sections/About.astro';
-import Contact from '../sections/Contact.astro';
 ---
 
 <Layout title="Karol | Full-Stack Developer">
-  <main id="main">
-    <Hero />
-    <Currently />
-    <About />
-    <Work />
-    <Contact />
-  </main>
+  <h1>Full-Stack Developer</h1>
+  <p>TypeScript, React, Node.js. Available for freelance and full-time work.</p>
+
+  <section>
+    <h2>About</h2>
+    <p>I build web applications. Founders &amp; Coders graduate, three years freelancing for charitable organisations. Based in the UK, working remotely.</p>
+    <p>I use AI coding agents for prototyping and boilerplate, with human review of architecture and code.</p>
+    <p><strong>Skills:</strong> JavaScript, TypeScript, React, Astro, SQLite, NixOS, Docker</p>
+    <p><strong>Now:</strong> reading SICP, building a NixOS home server, learning systems design patterns.</p>
+  </section>
+
+  <section id="contact">
+    <h2>Contact</h2>
+    <p>Email: <a href="mailto:karol@ko-karol.com">karol@ko-karol.com</a></p>
+    <form action="https://formspree.io/f/mbdawelb" method="POST">
+      <label for="name">Name</label>
+      <input id="name" name="name" type="text" required />
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" required />
+      <label for="message">Message</label>
+      <textarea id="message" name="message" rows="6" required></textarea>
+      <button type="submit">Send message</button>
+    </form>
+  </section>
 </Layout>

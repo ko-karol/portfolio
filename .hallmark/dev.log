@@ -1,5 +1,0 @@
-npm notice run galactic-giant@0.0.1 npx
-npm notice run 'astro' preview --port 4322
- astro  v6.4.8 ready in 13 ms
-┃ Local    http://localhost:4322/
-┃ Network  use --host to expose
