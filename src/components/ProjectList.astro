@@ -17,11 +17,12 @@ const shotFor = (id: string) => shots[`../assets/projects/${id}.jpg`]?.default;
 ---
 
 <div class="posts">
-  {projects.map(({ id, data }) => {
+  {projects.map(({ id, data }, index) => {
     const shot = shotFor(id);
+    const first = eager && index === 0;
     return (
       <article>
-        {shot && <Image src={shot} alt="" width={800} loading={eager ? 'eager' : 'lazy'} style={data.focus ? `object-position: ${data.focus}` : undefined} />}
+        {shot && <Image src={shot} alt="" width={800} widths={[320, 480, 640, 800]} sizes="(min-width: 64rem) 34vw, calc(100vw - 2rem)" loading={first ? 'eager' : 'lazy'} fetchpriority={first ? 'high' : undefined} decoding={first ? 'sync' : 'async'} style={data.focus ? `object-position: ${data.focus}` : undefined} />}
         <div class="body">
           <h3><a href={data.url}>{data.title}</a></h3>
           <p>{data.description}</p>
