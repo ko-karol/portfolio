@@ -1,15 +1,22 @@
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
-
-let mm: gsap.MatchMedia | undefined;
-
 // Content is visible by default; animation only runs when JS is available
-// and the user has not asked for reduced motion.
-function init() {
-  mm = gsap.matchMedia();
-  mm.add('(prefers-reduced-motion: no-preference)', () => {
+// and the user has not asked for reduced motion. GSAP is loaded on demand,
+// so reduced-motion visitors never download it.
+let cleanup: (() => void) | undefined;
+let run = 0;
+
+async function init() {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const current = ++run;
+
+  const [{ default: gsap }, { ScrollTrigger }] = await Promise.all([
+    import('gsap'),
+    import('gsap/ScrollTrigger'),
+  ]);
+  // A newer navigation started while GSAP was loading.
+  if (current !== run) return;
+  gsap.registerPlugin(ScrollTrigger);
+
+  const ctx = gsap.context(() => {
     gsap.from('main > h1', { opacity: 0, y: 12, duration: 0.5, ease: 'power2.out' });
 
     gsap.utils.toArray<HTMLElement>('main section, main article, main > ul > li').forEach((el) => {
@@ -22,11 +29,13 @@ function init() {
       });
     });
   });
+  cleanup = () => ctx.revert();
 }
 
 document.addEventListener('astro:page-load', init);
 // Revert animations (and inline styles) before the old page is swapped out.
 document.addEventListener('astro:before-swap', () => {
-  mm?.revert();
-  mm = undefined;
+  run++;
+  cleanup?.();
+  cleanup = undefined;
 });
