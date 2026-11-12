@@ -25,7 +25,10 @@ body {
   background: var(--bg);
 }
 
-a { color: var(--link); }
+h1 { font-size: clamp(2rem, 6vw, 2.75rem); line-height: 1.15; letter-spacing: -0.02em; margin: 0 0 0.75rem; }
+h2 { font-size: 1.5rem; letter-spacing: -0.01em; margin: 0 0 0.75rem; }
+
+a { color: var(--link); text-underline-offset: 0.2em; }
 :focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
 
 .skip {
@@ -39,12 +42,12 @@ a { color: var(--link); }
   padding: 0.25rem 0.5rem;
 }
 
-header { margin-bottom: 2rem; }
+header { margin-bottom: 3rem; }
 .name { font-weight: bold; font-size: 1.5rem; text-decoration: none; color: inherit; }
 nav { margin-top: 0.5rem; display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; }
 nav a[aria-current="page"] { color: inherit; font-weight: bold; text-decoration: none; }
 
-section { margin-top: 2.5rem; }
+section { margin-top: 3.5rem; }
 
 ul { list-style: none; padding: 0; }
 li { margin-bottom: 1.5rem; }
@@ -66,7 +69,7 @@ html { scroll-behavior: smooth; }
   html { scroll-behavior: auto; }
 }
 
-.lead { font-size: 1.25rem; margin-bottom: 0.75rem; }
+.lead { font-size: 1.3rem; line-height: 1.45; color: var(--muted); max-width: 32rem; margin: 0 0 1rem; }
 .cta { display: flex; gap: 1.25rem; }
 
 /* Set by an inline script in Layout.astro; never present without JS. */
