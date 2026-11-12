@@ -90,5 +90,9 @@ const shotFor = (id: string) => shots[`../assets/projects/${id}.jpg`]?.default;
     :global(html.fit) article:not(:has(img)) .body p { font-size: 1.05rem; line-height: 1.5; margin-bottom: 0.75rem; }
     :global(html.fit) article:not(:has(img)) .tags { margin-top: 0; }
   }
-  :global(html.fit) img { flex: 1 1 0; min-height: 5rem; aspect-ratio: auto; height: auto; }
+  /* The image absorbs spare height but is capped at 1.65:1 (source is 16:9) so it never crops much
+     horizontally; any further spare height goes to the text area. */
+  :global(html.fit) article:has(img) { container-type: inline-size; }
+  :global(html.fit) img { flex: 1000 1 0; min-height: 5rem; aspect-ratio: auto; height: auto; max-height: calc(100cqw / 1.65); }
+  :global(html.fit) article:has(img) .body { flex: 1 0 auto; }
 </style>

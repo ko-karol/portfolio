@@ -6,7 +6,7 @@ document.addEventListener('submit', async (event) => {
   event.preventDefault();
   const status = form.querySelector<HTMLElement>('.status');
   const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
-  if (!status || !button) return;
+  if (!status || !button || button.disabled) return; // already sending: ignore repeat submits
   button.disabled = true;
   status.textContent = '';
   try {
@@ -15,11 +15,17 @@ document.addEventListener('submit', async (event) => {
       body: new FormData(form),
       headers: { Accept: 'application/json' },
     });
-    if (!res.ok) throw new Error(String(res.status));
+    if (!res.ok) {
+      status.textContent =
+        res.status < 500
+          ? "Couldn't send your message. Please check the fields and try again."
+          : 'The server had a problem sending your message. Please try again in a moment.';
+      return;
+    }
     form.reset();
     status.textContent = "Message sent — I'll get back to you soon.";
   } catch {
-    status.textContent = 'Oops! There was a problem submitting your form.';
+    status.textContent = "Couldn't reach the server. Check your connection and try again.";
   } finally {
     button.disabled = false;
   }

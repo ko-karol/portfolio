@@ -5,6 +5,7 @@
 const FIT_QUERY = '(min-width: 64rem) and (min-height: 34rem)';
 const MIN_IMAGE = 64; // px; below this a screenshot is not worth showing
 const TARGET_RATIO = 16 / 9;
+const MIN_RATIO = 1.65; // keep in sync with the img max-height in ProjectList.astro
 const MAX_COLS = 6;
 
 const root = document.documentElement;
@@ -14,7 +15,18 @@ let frame = 0;
 function bodyHeight(cards: HTMLElement[]): number {
   // Text-only cards have no screenshot to size, so only cards with one set the text height.
   const withImage = cards.filter((card) => card.querySelector('img'));
-  return Math.max(0, ...(withImage.length ? withImage : cards).map((card) => card.querySelector<HTMLElement>('.body')?.offsetHeight ?? 0));
+  // Image cards stretch .body to fill spare room; measure its natural height instead.
+  return Math.max(
+    0,
+    ...(withImage.length ? withImage : cards).map((card) => {
+      const body = card.querySelector<HTMLElement>('.body');
+      if (!body) return 0;
+      body.style.flex = 'none';
+      const h = body.offsetHeight;
+      body.style.removeProperty('flex');
+      return h;
+    }),
+  );
 }
 
 // Rows holding only text-only cards take their content height; screenshot rows share the rest.
@@ -50,7 +62,13 @@ function fitGrid(grid: HTMLElement) {
     if (image < MIN_IMAGE) continue;
     // Rows must fill: every missing cell in the last row costs far more than any aspect mismatch.
     const empty = rows * cols - n;
-    const score = -Math.abs(Math.log(width / image / TARGET_RATIO)) - (empty / cols) * 10;
+    // Cropping (box wider than the source) is costly; a box taller than the source keeps its
+    // 16:9 image and only leaves spare room for text, so it is penalised far less.
+    // CSS caps the image box at MIN_RATIO; narrower cells keep it there and leave spare room for text.
+    const ratio = width / image;
+    const crop = Math.max(0, Math.log(ratio / TARGET_RATIO));
+    const spare = Math.max(0, Math.log(MIN_RATIO / ratio));
+    const score = -crop * 3 - spare * 1.5 - (empty / cols) * 10;
     if (score > best.score) best = { cols, score };
   }
 
