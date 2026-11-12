@@ -149,6 +149,16 @@ dd { margin: 0; }
 .side > section + section { margin-top: 1.5rem; }
 .work h2, .split h2 { margin-bottom: 0; }
 
+/* Small screens: projects come right after the intro, before About and Contact. */
+@media (max-width: 63.999rem) {
+  .home .side { display: contents; }
+  .home section { margin-top: 0; }
+  .home .intro { order: 1; }
+  .home .work { order: 2; }
+  .home .side > section:nth-child(2) { order: 3; }
+  .home #contact { order: 4; }
+}
+
 @media (min-width: 64rem) {
   .home { grid-template-columns: minmax(18rem, 21rem) minmax(0, 1fr); }
   .split { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); }
