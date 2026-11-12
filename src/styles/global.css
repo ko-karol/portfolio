@@ -108,7 +108,29 @@ html { scroll-behavior: smooth; }
 }
 
 .lead { font-size: 1.3rem; line-height: 1.45; color: var(--muted); max-width: 32rem; margin: 0 0 1rem; }
-.cta { display: flex; gap: 1.25rem; }
+.cta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.5rem; margin-top: 1.25rem; }
+.cta a:first-child {
+  display: inline-block;
+  padding: 0.6rem 1.1rem;
+  border-radius: 0.5rem;
+  background: var(--link);
+  color: var(--bg);
+  font-weight: 600;
+  text-decoration: none;
+}
+.cta a:first-child:hover { filter: brightness(1.1); }
+
+main > h1::before {
+  content: '';
+  display: block;
+  width: 3rem;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--link);
+  margin-bottom: 1rem;
+}
+
+::selection { background: color-mix(in srgb, var(--link) 30%, transparent); }
 
 /* Set by an inline script in Layout.astro; never present without JS. */
 .reveal :is(main > h1, main section, main article, main > ul > li) { opacity: 0; }

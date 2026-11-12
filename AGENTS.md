@@ -20,7 +20,7 @@ Multi-page, plain HTML in Astro:
 
 ## Design Principles
 
-- **Plain and basic**: semantic HTML first, minimal styling, no decorative frills.
+- **Plain and basic**: semantic HTML first, minimal styling, no decorative frills. The only flourishes: one teal accent (`--link`), a short accent rule above each page h1, a filled primary CTA, and card hover lift (disabled under reduced motion).
 - **No eyebrow headings** ("About me", "Selected work", etc.)
 - **No diagonal clip-paths** or overlapping sections
 - **Progressive enhancement**: everything works without JS. JS only adds the fetch-based contact form submit and GSAP scroll reveals.
