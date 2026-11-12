@@ -1,21 +1,14 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { Image } from 'astro:assets';
-import photo from '../assets/karol.jpg';
 import ProjectList from '../components/ProjectList.astro';
 ---
 
 <Layout title="Karol | Full-Stack Developer"
   description="Full-stack developer working with TypeScript, React and Node.js. Available for freelance and full-time work."
 >
-  <div class="hero">
-    <Image class="photo" src={photo} alt="Karol" width={240} height={240} loading="eager" />
-    <div>
-      <h1>Full-Stack Developer</h1>
-      <p class="lead">TypeScript, React, Node.js. Available for freelance and full-time work.</p>
-      <p class="cta"><a href="/projects">See projects</a> <a href="#contact">Get in touch</a></p>
-    </div>
-  </div>
+  <h1>Full-Stack Developer</h1>
+  <p class="lead">TypeScript, React, Node.js. Available for freelance and full-time work.</p>
+  <p class="cta"><a href="/projects">See projects</a> <a href="#contact">Get in touch</a></p>
 
   <section>
     <h2>Work</h2>

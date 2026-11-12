@@ -7,7 +7,7 @@ Personal portfolio website for Karol — Full-Stack Developer specializing in Ja
 Multi-page, plain HTML in Astro:
 
 ```
-/          Home: photo + intro + CTA, featured work (2 cards), About, Contact form
+/          Home: intro + CTA, featured work (2 cards), About, Contact form
 /projects  Client work + Personal projects (cards)
 /signal    "Valuable Reads": curated articles with commentary
 /404       Not found
@@ -16,7 +16,7 @@ Multi-page, plain HTML in Astro:
 - Nav: Home, Projects, Signal only. External links (GitHub, LinkedIn) live in the footer, never the nav.
 - Content comes from `src/data/projects.json` and `src/data/reads.json` (content collections, schemas in `src/content.config.ts`).
 - Project screenshots: `src/assets/projects/<project id>.jpg`, 16:9. A project without one renders without an image.
-- Photo: `src/assets/karol.jpg` (GitHub avatar). Share image for Open Graph is the Toast screenshot; site URL is `https://ko-karol.com` (set in `astro.config.mjs`).
+- Share image for Open Graph is the Toast screenshot; site URL is `https://ko-karol.com` (set in `astro.config.mjs`). No personal photo on the site.
 
 ## Design Principles
 
