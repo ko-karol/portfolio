@@ -11,6 +11,7 @@ Requires Node 22.12 or newer. Run from the project root.
 | `npm install`     | Install dependencies                        |
 | `npm run dev`     | Start dev server at `localhost:4321`        |
 | `npm run build`   | Build the production site to `./dist/`      |
+| `npm run check`   | Type-check Astro and TypeScript files       |
 | `npm run preview` | Preview the production build locally        |
 
 ## Structure
