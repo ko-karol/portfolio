@@ -1,13 +1,20 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import ProjectList from '../components/ProjectList.astro';
+import projects from '../data/projects.json';
+
+const client = projects.filter((p) => p.kind === 'client').length;
+const personal = projects.length - client;
 ---
 
 <Layout title="Projects | Karol"
   description="Client websites for nonprofits and charities, plus personal projects including a React Native strength-training app."
 >
   <div class="projects">
-    <h1>Projects</h1>
+    <div class="projects-head">
+      <h1>Projects</h1>
+      <p>{client} client sites built freelance, {personal} personal projects.</p>
+    </div>
     <ProjectList eager heading="h2" />
   </div>
 </Layout>

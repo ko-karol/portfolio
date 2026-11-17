@@ -13,6 +13,11 @@ import ProjectList from '../components/ProjectList.astro';
         <p class="cta"><a href="#work">See projects</a> <a href="#contact">Get in touch</a></p>
       </section>
 
+    <section id="work" class="work">
+      <h2 class="work-title">Work</h2>
+      <ProjectList eager />
+    </section>
+
       <section class="about panel">
         <h2>About</h2>
         <p>I build web applications. Founders &amp; Coders graduate, three years freelancing for charitable organisations. Based in the UK, working remotely.</p>
@@ -46,11 +51,6 @@ import ProjectList from '../components/ProjectList.astro';
           <button type="submit">Send message</button>
           <p class="status" role="status"></p>
         </form>
-    </section>
-
-    <section id="work" class="work">
-      <h2 class="work-title">Work</h2>
-      <ProjectList eager />
     </section>
   </div>
 </Layout>
